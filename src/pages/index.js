@@ -1,21 +1,47 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
+import { Layout } from "../components/Layout/Layout"
+import { PostCard } from "../components/PostCard/PostCard"
+import { Meta } from "../components/Meta/Meta"
+import { MetaTypes } from "../components/Meta/Meta.types"
+import { RightIcon } from "../icons/RightIcon"
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+const BlogIndex = ({ data }) => {
+  const { edges: posts } = data.allMarkdownRemark
 
-export default IndexPage
+  return (
+    <Layout>
+      <Meta type={MetaTypes.PAGE}/>
+      <div className='flex flex-col lg:flex-row'>
+        {posts.map(({ node: post }) => <PostCard post={post} key={post.id} className='mr-8'/>)}
+        <RightIcon size={80}/>
+      </div>
+    </Layout>
+  )
+}
+
+export const pageQuery = graphql`
+  query blogIndex {
+    allMarkdownRemark {
+      edges {
+        node {
+          id
+          excerpt
+          fields {
+            tagSlugs {
+              label
+              value
+            }
+          }
+          frontmatter {
+            title
+            slug
+          }
+        }
+      }
+    }
+  }
+`
+
+export default BlogIndex

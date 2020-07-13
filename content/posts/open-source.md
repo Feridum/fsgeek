@@ -1,0 +1,52 @@
+---
+title: "Czy jesteśmy więźniami open source?"
+slug: "czy-jestesmy-wiezniami-open-source"
+author: "Feridum"
+image: "../images/open-source/logo.jpg"
+tags: ["open source", "javascript"]
+date: 2020-07-05T09:41:56+02:00
+draft: false
+---
+
+Open source jest rozwiązaniem, które dostarcza nam ogromną ilość bibliotek, frameworków czy innych narzędzi z których korzystamy na co dzień jako programiści. Jednak nie macie wrażenia, że stajemy się przez to trochę leniwi lub nawet stajemy się trochę więźniami open source?
+
+<!--more-->
+
+## Open source the good part
+
+Nie da się zaprzeczyć, że współcześnie programowanie opiera się na rozwiązaniach open source. React, Angular, Vue, Node, Express, Material Design, Symfony, Laravel - tę listę można by wydłużać w nieskończoność. Trzeba przyznać, że dzięki pracy pojedynczych programistów jak i całych zespołów możemy korzystać z tych rozwiązań i przyśpieszać naszą codzienną pracę. Tu od razu też apel by, jeśli chcecie się jakoś odwdzięczyć, to najlepszym sposobem będzie pomoc w naprawianiu błędów i rozwijaniu produktu.  Nie tak dawno twórca Lodash (z którego pewnie większość z was korzysta) prosił o pomoc w rozwijaniu tego jak i innych projektów
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I&#39;m looking for volunteer maintainers for Lodash and other projects I have. Just show up and start tackling issues. I&#39;ll extend maintainer bits to those showing up :)</p>&mdash; John-David Dalton (@jdalton) <a href="https://twitter.com/jdalton/status/1272230153200885762?ref_src=twsrc%5Etfw">June 14, 2020</a></blockquote>
+
+Więc jeśli widzicie, że w waszej ulubionej bibliotece są jakieś problemy, które chcielibyście naprawić to nie wahajcie się napisać do twórcy jak możecie pomóc - myślę, że doceni chęć pomocy :) 
+
+
+## Open source the bad part
+
+Jednak nie jest tak, że open source nie jest pozbawione wad. Nie macie wrażenia, że jedną z myśli dotyczących jakiegoś problemu jest "A może jest biblioteka do tego?". Nie mam nic przeciwko małym bibliotekom, które dostarczają konkretnych rozwiązań ale czy każda linijka powinna trafiać jako paczka npm'a i być ściągana przy tworzeniu projektu? Świetnym przykładem jest biblioteka [is-even](https://github.com/jonschlinkert/is-even), której kod wygląda następująco: 
+
+```js
+var isOdd = require('is-odd');
+
+module.exports = function isEven(i) {
+  return !isOdd(i);
+};
+```
+
+Czyli dodajemy nową bibliotekę do projektu by odwrócić wynik i zwrócić. I okazuje się, że z tej biblioteki według Githuba korzysta ponad 3 tys repozytoriów ([link](https://github.com/jonschlinkert/is-even/network/dependents?dependent_type=REPOSITORY) do źródła). Nie uważacie, że to trochę za dużo jak na takiego jednolinijkowca? Zresztą dalej nie jest lepiej ponieważ is-odd zależy od is-number. I od tej ostatniej w githubie zależy 6 milionów repozytoriów ([źródło](https://github.com/jonschlinkert/is-number/network/dependents)). Cały czas się zastanawiam dlaczego zamiast napisać małą funkcję, która będzie siedzieć w naszym kodzie decydujemy się na pobranie kolejnej zależności nad którą nie mamy władzy. I potem chodzą memy, że ściągając node_modules ściągamy pół internetu ;) 
+
+Inna sprawa to coś co ja określam jako interfejs do interfejsu do interfejsu do biblioteki. Jako przykład podam bibliotekę mongoose i mongodb (do obu nic nie mam, korzystałem z obu i chcę by tutaj posłużyły tylko jako przykład). Mongodb jest oficialną biblioteką do połączeń z bazą danych MongoDB od twórców, natomiast mongoose jest wrapperem na mongodb i dostarcza kolejną warstwę abstrakcji. I pewnie jakbym poszukał bardziej w githubie to znalazłbym nakładkę na mongoose. Problem z takimi nakładkami pojawia się gdy w oryginalnym rozwiązaniu (w tym przypadku w bazie danych MongoDB) pojawia się błąd, albo nowa funkcjonalność (która oczywiście jest nam potrzebna). I teraz w zależności ile mamy takich nakładek to czas w którym to do nas dotrze rozciąga się od bardzo szybko do nigdy (jeśli biblioteka zdążyła zostać porzucona). I tak jak w moim przykładzie mongodb, jako że jest od twórców, dostanie poprawkę bardzo szybko to w mongoose będziemy musieli poczekać bo a) zależy od mongodb b) może się okazać, że trzeba przerobić część abstrakcji, która nie uwzględniła np.: jakiegoś parametru lub sytuacji.
+
+
+## Kontrola nad package.json
+
+Cały post ma na celu tak naprawdę zachęcić do zastanowienia się nad tym co instalujemy do naszych projektów. Chciałbym zachęcić do tego by się zastanowić podczas instalacji czy naprawdę potrzebujemy do tego nową bibliotekę. Może da się to zrobić prostą funkcją, albo przekopiować kod z biblioteki, którą chcemy użyć np.: is-even, is-odd itd. Zalet takiego rozwiązania jest kilka: 
+
+- kontrola nad rozwiązaniem - jesteśmy w stanie ingerować w kod rozwiązania i dostosowywać do naszych potrzeb
+- większe bezpieczeństwo - im mniej zewnętrznych zależności tym większe bezpieczeństwo naszego kodu
+- mniejszy rozmiar node_modules
+
+Gorąco polecam stronę [bundlephobia.com](https://bundlephobia.com/) gdzie możecie sprawdzić rozmiar biblioteki i ile ma zależności. Bardzo przydatne narzędzie kiedy macie dwie biblioteki i zastanawiacie się nad wyborem jednej - polecam by wybierać te o najmniejszym rozmiarze i minimalną liczbą zależności. Również jeśli macie do wyboru bibliotekę a rozwiązanie, które nakłada kolejny interfejs zachęcam do zastanowienia się czy naprawdę go potrzebujecie. Bo jeśli nie będziecie go w pełni wykorzystywać albo widzicie, że będą z czymś problemy to może warto skorzystać z oryginalnego rozwiązania?
+
+A wy co sądzicie o tym co napisałem o open source? Zgadzacie się czy macie inne przemyślenia? Staracie się kontrolować ilość i wielkość instalowanych zależności w projekcie?
+

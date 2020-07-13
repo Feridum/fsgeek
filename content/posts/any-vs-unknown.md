@@ -1,0 +1,110 @@
+---
+title: "Typescript - any vs unknown"
+slug: "typescript-any-vs-unknown"
+author: "Feridum"
+image: "../images/any-vs-unknown/logo.jpg"
+tags: ["typescript", "any", "unknown", "javascript"]
+date: 2019-10-29T17:20:09+02:00
+draft: false
+---
+
+Dużo ludzi wybiera Typescripta z powodu przewagi oraz bezpieczeństwa jakie daje typowanie. Jednak nie wszystkie biblioteki i wbudowane funkcje mają dobrze opisane typy i możemy się natknąć na typ `any`. Jak możemy się przed nim bronić i jak może nam w tym pomóc typ `unknown`?
+
+<!--more-->
+
+## Any
+
+Skoro tak lubimy poczucie bezpieczeństwa, które daje nam typowanie dlaczego mamy taki typ jak `any`. Jest to związane z tym, że Typescript jest nadzbiorem dla JS'a. W związku z tym ciągle mamy możliwość korzystania z jego API, któremu czasami nie da się statycznie przypisać typów np.: JSON.parse(…) jako typ zwracany daje `any`. 
+
+Co tak naprawdę powoduje przypisanie do zmiennej typu `any`? Oznacza to tyle, że wyłączamy sprawdzanie typów i mamy pełną władzę nad zmienną. Typescript nie będzie nam sygnalizował błędów więc istnieje szansa na błąd wystąpi w trakcie korzystania z aplikacji.
+
+```ts
+const a: any = 'test'
+a.someMethod(); //OK
+```
+
+Kolejna rzecz to jesteśmy w stanie typ `any` przypisać do dowolnego innego typu
+ 
+```ts
+ 
+const a: any = 1 // OK
+const var1: any = a; // OK
+const var2: unknown = a; // OK
+const var3: string = a; // OK
+const var4: number = a; // OK
+const var5: object = a; // OK
+const var6: boolean = a; // OK 
+const var7: Array<number> = a // OK;
+
+```
+
+To znowu może powodować błędy w aplikacji. Jeśli przypiszemy zmienną `any` do określonego typu bez sprawdzenia może się okazać, że dalej w aplikacji dostajemy nieprawidłową daną mimo, że mamy wszystko dobrze otypowane i taka sytuacja nie powinna mieć miejsca. 
+
+## Unknown
+
+Trochę lepszy jest typ `unknown`, który został wprowadzony w Typescript 3.0 jako bardziej bezpieczny odpowiednik `any`. Ciągle do zmiennej tego typu możemy przypisać dowolną wartość ale w odróżeniu od `any` nie możemy wywołać dowolnej metody
+```ts
+const a: unknown = 'test'
+a.someMethod(); //ERROR
+```
+
+Różnica pojawia się gdy chcemy rzutować naszą zmienną na określony typ. Tak jak w przypadku `any` mogliśmy to robić i nie było żadnych błędów tak tutaj Typescript nam nie pozwoli na taką operację dopóki nie będzie pewny, że może ją bezpiecznie przeprowadzić 
+```ts
+ 
+const a: unknown= 1 // OK
+const var1: any = a; // OK
+const var2: unknown = a; // ERROR
+const var3: string = a; // ERROR
+const var4: number = a; // ERROR
+const var5: object = a; // ERROR
+const var6: boolean = a; // ERROR
+const var7: Array<number> = a; // ERROR
+
+```
+
+Jak możemy w takim razie przypisać zmienną `unknown` to określonego typu. Pierwsze rozwiązanie to wykorzystanie mechanizmu `typeof` z czystego JS'a
+
+```ts
+const a: unknown = 'foo'
+if (typeof a === 'string') {
+    const var1: string = a
+}
+
+```
+
+Inny sposób to w jawny sposób wymuszenie typu przy pomocy konstrukcji `as`
+
+```ts
+const a: unknown = 'foo'
+const var1: string = a as string;
+```
+
+To rozwiązanie może być niebezpieczne ponieważ możemy wymusić niepoprawny typ i aplikacja nam się wywali w niespodziewanym momencie
+
+```ts
+const a: unknown = 'foo'
+const var1: any[] = a as any[];
+```
+
+Kolejny sposób to znane w Typescripcie `Type Guards`, które są szczególnie przydatne gdy mamy własne rozbudowane typy
+```ts
+ 
+interface MyObject {
+    a: string, 
+    b: string
+}
+const a: unknown = {
+    a: 'foo',
+    b: 'bar'
+}
+function isMyObject(pet: any): pet is MyObject {
+    return (pet as MyObject).a !== undefined;
+}
+if (isMyObject(a)) {
+    const var1: MyObject = a;
+}
+```
+
+
+Jak widać `unknown` daje nam podobną elastyczność przy tworzeniu zmiennych ale pilnuje nas żebyśmy nie mogli nieświadomie przypisać do poprawnie otypowej zmiennej. Kiedy powinniśmy tego używać? Wszędzie tam gdzie potrzebujemy korzystać z typu `any` oraz na obrzeżach aplikacji gdzie stan może być nieokreślony. W środku aplikacji już zachęcam do niekorzystania z typu `any` - typowanie aplikacji wtedy traci na jakości.
+

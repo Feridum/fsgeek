@@ -7,3 +7,17 @@
 @tailwind components;
 
 @tailwind utilities;
+
+ol, ul {
+    padding-left: 40px;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+ol {
+    list-style: decimal;
+}
+
+ul {
+    list-style: disc;
+}

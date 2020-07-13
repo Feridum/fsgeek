@@ -1,0 +1,75 @@
+---
+title: "Open Graph dla bloggerów"
+slug: "open-graph-dla-bloggerow"
+author: "Feridum"
+image: "../images/open-graph/logo.jpg"
+tags: ["open graph", "blogowanie", "seo dla bloggerów"]
+date: 2018-04-17T08:00:00+02:00
+draft: false
+---
+
+Zauważyliście, że jak udostępniacie post z Medium albo innego bloga to po wklejeniu tworzy się taka łada karta, która zawiera tytuł, link, zdjęcie? I nie musieliście nic robić by cos takiego powstało? Jeśli nie wiecie jak coś takiego uzyskać na swoim blogu lub jesteście ciekawi jak to osiągnąć to zapraszam do dalszego czytania.
+
+<!--more-->
+
+## Czym jest Open Graph? 
+
+Jest to protokół, który pozwala nam osiągnąć to co wspomniałem we wstępie czyli ładnie sformatowane linki idealnie pasujace do naszej tablicy na facebooku. Został stworzony 2 kwietnia 2010 roku przez Facebook'a jako sposób na prezentację treści na ich platformie. Wykorzystuje prosty mechanizm meta tagów w nagłówku strony, które opisują to co znajduje się na stronie i pozwalają na ładne sformatowanie tych treści. 
+
+Aby umieścić taki meta-tag na naszej stronie musimy w sekcji `head` umieścić następującą linijkę
+
+{{< highlight html >}}
+<meta property="klucz" content="wartość" />
+{{< /highlight >}}
+
+gdzie klucz będzie jedną z własności opisanych poniżej. 
+
+## Podstawowe tagi
+
+Open Graph jest uniwersalnym formatem który pasuje do wielu rożnych typów stron jednak ja się skupię na tych własnościach, które mogą być przydatne jeśli piszecie bloga.
+
+Istnieje 4 podstawowe tagi, które powinny istnieć dla każdej strony: 
+
+- `og:title` - tytuł naszej strony
+- `og:type` - typ strony
+- `og:image` - adres pod którym znajduje się obrazek, który chcemy wyświetlić
+- `og:url`  - url do strony
+
+Jeśli mamy bloga to w polu type powinniśmy wpisywać dwie wartości: `article` - dla strony gdzie jest post oraz `website` dla innych. 
+
+Oprócz tych 4 tagów dla każdego typu oprócz `website` zostały zdefiniowane tagi pomocnicze, które precyzują pewne elementy naszego wybranego typu. W przypadku `article` mamy dostęp do następujących dodatkowych własności: 
+
+- `article:published_time` - data opublikowania artykułu
+- `article:modified_time` - data ostatniej modyfikacji
+- `article:expiration_time`- data po której artykuł jest już nieaktualny
+- `article:author` - autor artukułu
+- `article:section` - sekcja do której chcemy przypisać artykuł np.: Frontend
+- `article:tag` - tag jakim opisujemy nasz artykuł
+
+W przypadku ostatniej własności możemy podać więcej niż jeden meta-tag z kolejnymi wartościami.
+
+{{< highlight html >}}
+<meta property="article:tag" content="tag1" />
+<meta property="article:tag" content="tag2" />
+<meta property="article:tag" content="tag3" />
+{{< /highlight >}}
+
+
+## Tagi dla Twittera
+
+Oczywiście Facebook nie jest jedyną platformą gdzie można się dzielić swoimi wpisami więc i istnieją specjalne właśności Open Graph dla nich, między innymi dla Twittera. Mamy tutaj grupę 5 tagów: 
+
+- `twitter:card` - tutaj można wpisać jedną wartość z  `summary`, `summary_large_image`, `app`, `player`
+- `twitter:site` - nazwa profilu z Twittera
+- `twitter:title` - tytuł karty
+- `twitter:description` - opis karty
+- `twitter:image` - link do obrazka, który będzie umieszczony w karcie
+
+Dzięki temu po wklejeniu zwykłego linka zostanie on zamieniony w dużo ładniejszą formę: 
+
+![twitter card](../images/open-graph/twitter-card.png)
+
+## Jak testować
+
+Na sam koniec warto jeszcze wspomnieć o tym jak testować open graph na naszej stronie by mieć pewność, że wszystko poprawnie umieściliśmy i jest czytane tak jak chcemy. Do ogólnego sprawdzenia można użyć [opengraphcheck](http://opengraphcheck.com), jednak sprawdza on tylko podstawowe tagi. Dużo lepszym pomysłem jest wykorzystanie narzędzi od [Facebook'a](https://developers.facebook.com/tools/debug/sharing/) oraz [Twittera](https://cards-dev.twitter.com/validator), które sprawdzają wszystkie tagi ale również wyświetlają efekt graficzny dla naszego linku. Warto wykorzystać jeśli widzimy, że coś nie działa według naszego pomysłu.
+

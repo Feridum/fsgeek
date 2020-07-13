@@ -1,0 +1,104 @@
+---
+title: "Generowanie plików z Plop"
+slug: "generowanie-plikow-z-plop"
+author: "Feridum"
+image: "../images/plop/logo.jpg"
+tags: ["javascript", "typescript", "produktywnosc"]
+date: 2020-01-22T16:25:00+01:00
+draft: false
+---
+
+Narzędzia CLI są wszechobecne i trzeba przyznać, że ułatwiają nam życie. Dzięki nim jesteśmy w stanie zautomatyzować wiele rzeczy i skupić się na tym co istotne czyli warstwie biznesowej. Jednym z zadań, które CLI wykonują  jest automatyczne tworzenie plików, wypełnionych początkową treścią. Jak w krótkim czasie możemy sobie sami stworzyć taką funkcjonalność?
+
+<!--more-->
+
+## Podejście proste
+
+Najprostsze podejście nie wymaga żadnych bibliotek tylko odrobinę wiedzy i znajomości Regex'a. Możemy wykorzystać wbudowane w Node.js funkcje by odczytać plik i następnie przy pomocy różnych Regexów podmienić wartości na takie jakie chcemy. Jaki jest problem takiego rozwiązania? Po pierwsze musimy sami budować CLI, dbać o walidację danych oraz o całą resztę procesu.  Jednak te rzeczy można by zautomatyzować by dało  się szybciej tworzyć nowe szablony. I do tego celu możemy wykorzystać bibliotekę [Plop](https://github.com/plopjs/plop)
+
+## Plop
+
+Standardowo zacznijmy od instalacji
+
+```console
+npm install --save-dev plop
+```
+
+Teraz możemy w naszym projekcie wykorzystywać polecenie `plop`. Jednak to nie wszystko. Aby całość działała poprawnie potrzebujemy jeszcze pliku konfiguracyjnego gdzie zdefiniujemy sobie co i jak chcemy tworzyć. Plik powinien mieć nazwę `plopfile.js` i być w głównym katalogu projektu. Sam plik ma prostą strukturę, która wygląda następująco: 
+
+```js
+module.exports = function (plop) {
+}
+```
+
+A co możemy umieścić wewnątrz obiektu? Możemy tutaj dodać 4 rodzaje elementów: 
+
+- setGenerator - tworzy generator
+- setHelper - tworzy helper, który możemy wykorzystywać w naszych szablonach (np.: modyfikacja tekstu)
+- setPartial - tworzy kawałek kodu, który możemy wykorzystywać w szablonach (np.: często powtarzający się kawałek kodu)
+- setActionType - tworzy naszą własną akcję
+- setPropmt - tworzy nasz nowy prompt
+- load - ładuje dane z innego plopfile'a lub npm'a
+
+## Hello World
+
+Jak widać biblioteka ma ogromne możliwości. Sam jeszcze nie bawiłem się wszystkimi dlatego dziś tylko prosty przykład - ale już tyle wystarczy by zautomatyzować pracę. Standardowo przy nauce nowego języka piszemy słynne `hello world` dlatego tu też podejdziemy tradycyjnie. Zacznijmy od `setGenerator`:
+
+```text
+module.exports = function (plop) {
+    plop.setGenerator('hello-world',{
+        description: 'hello.txt file',
+        prompts: [],
+        actions:[]
+    })
+}
+```
+
+Pierwsza wartość jest nazwą generatora i będzie potem przez nas używana do przy wywoływaniu komendy. Potem mamy opis. `Prompts` jest jedną z bardziej interesujących sekcji w tej konfiguracji. Wpisujemy tutaj obiekty które konfigurują pytania w konsoli tworzone przy pomocy biblioteki `Inquirer.js` - to znaczy, że możemy wpisać tutaj wszystko co daje ta biblioteka. No i na sam koniec `Actions` czyli co ma zrobić biblioteka na podstawie danych wpisanych przez użytkownika. Mamy tutaj dostępnych kilka opcji: 
+
+- Add
+- AddMany
+- Modify
+- Append
+- Custom
+
+To teraz możemy stworzyć pierwszy szablon wraz z zawartością
+
+```js
+Hello {{ name }}
+```
+
+Tekst oznaczony przy pomocy `{{ }}` będzie zamieniony na podstawie danych podanych przez użytkownika. Muszą się one zgadzać ze zmiennymi, które ustawimy w `prompts`. No i na koniec trzeba jeszcze wypełnić pola `prompts` i `actions`
+
+```js
+module.exports = function (plop) {
+    plop.setGenerator('hello-world',{
+        description: 'hello.txt file',
+        prompts: [
+            {
+                type: 'input',
+                name: 'name',
+                message: 'What is your name',
+                validate: (value)=>value.length >0 ? true : 'name is required'
+            }
+        ],
+        actions:[
+            {
+                type: 'add',
+                path: './{{name}}.txt',
+                templateFile: 'templates/hello.txt',
+                abortOnFail: true
+            },
+        ]
+    })
+}
+```
+
+Teraz wystarczy, że to uruchomimy. Mamy tutaj dwie opcję: zainstalujemy bibliotekę plop globalnie albo dodamy sobie wpis w sekcji scripts `"plop": "plop"` . Ja osobiście preferuję drugą opcję. 
+```console
+npm run plop hello-world
+```
+
+Dzięki temu uruchomimy nasz nowy generator i po wypełnieniu danych powstanie nam nowy plik zgodnie z ustawieniami. Gdzie możemy coś takiego wykorzystać? Na pewno podczas tworzenia nowych komponentów możemy to wykorzystać do tworzenia kompletu plików: komponent, kontener, typowanie, testy wraz z minimalnym szablonem. Drugi przykład to dodawnie nowego obiektu do store w redux gdzie dodajemy model, akcje, typowania itd. Poprawnie wykorzystanie plop.js może znacząco przyspieszyć tworzenie oprogramowania przez nas i wyeliminować powtarzalne  oraz nudne elementy.
+
+

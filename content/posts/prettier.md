@@ -1,0 +1,74 @@
+---
+title: "Bądź produktywny - Prettier"
+slug: "badz-produktywny-prettier"
+author: "Feridum"
+image: "../images/prettier/logo.jpg"
+tags: ["badz produktywny", "prettier", "produktywnosc"]
+date: 2018-05-03T08:45:00+02:00
+draft: false
+---
+
+Jedna z rzeczy która potrafi zająć czas podczas programowania to kijowe formatowanie. Każdy ma swój ulubiony styl, niektórzy wolą spacje nad tabulacją, natomiast inni wolą podwójny cudzysłów od pojedynczego. Ale pracując razem w projekcie warto wystosować wspólny styl i używać narzędzi, które będą tego pilnowały. Ja polecam narzędzie o nazwie Prettier
+
+<!--more-->
+
+## Co to jest Prettier?
+
+Prettier jest narzędziem, które usprawnia proces tworzenia oprogramowania poprzez wprowadzenie jednolitego formatowania kodu.  Usuwa on oryginalne formatowanie plików i wprowadza tam zdefiniowane przez nas reguły. 
+
+Znalazłem to narzędzie jakieś pół roku temu i wprowadziło ono pewien porządek w kodzie nad którym pracowaliśmy z kolegą. Zniknęły problemy z formatowaniem, które wynikały z pominięcia jakiegoś pliku, drobnych różnic w konfiguracji czy czasami innych preferencji. 
+
+Dzięki wykorzystaniu Prettiera trochę też zaoszczędziliśmy na czasie. Nie było potrzeby skupiać się na formatowaniu podczas pisania kodu - teraz wystarcza jedna komenda. Dodatkowo podczas przeglądania PR nie ma potrzeby zwracania uwagi na styl - Prettiera da się prosto podpiąć pod CI, żeby samo sprawdziło czy kod spełnia wymogi formatowania a jeśli nie to poinformowało nas o tym. 
+
+Korzystanie z niego jest banalnie proste tak samo jak instalacja. Możemy go zainstalować globalnie lub tylko lokalnie dla projektu co według mnie jest lepszym rozwiązaniem.
+
+```console
+yarn add prettier
+```
+
+## Opcje formatowania
+
+Żeby móc formatować tekst warto wiedzieć jakie mamy opcje. A mamy ich całkiem sporo: 
+
+- Print Width  - ilość znaków w pojedynczej linii. Domyślnie jest 80 ale możemy zmienić na inną wartość liczbową `--print-width 100`
+- Tab Width - liczba spacji, które są umieszczane na każdym kolejnym poziomie zagnieżdżenia. Domyślnie 2 ale można wstawić inną wartość liczbową `--tab-width 4`
+- Tabs - domyślnie do przesuwania kolejnych zagnieżdżeń są wstawiane spacje. Żeby zmienić trzeba wykorzystać flagę `--use-tabs` 
+- Semicolons - domyślnie na końcu każdej linii jest dodawany średnik. Jeśli damy wartość `--no-semi` to średnik zostanie umieszczony na początku każdej linii gdzie jego brak mógłby powodować błędy
+- Quotes - czy chcemy używać pojedynczego cudzysłowu zamiast podwójnego. Domyślnie są podwójny cudzysłów - do zmiany wystarczy dać `--single-quote`
+- Trailing Commas  - opcja, która ustawia czy mają być dodawane tzw.`trailing commas` tam gdzie to możliwe w przypadku struktury mającej więcej niż jedną linię. Mamy tutaj 3 opcje: `none` - domyślna, nie ustawia `trailing commas`, `es5` - ustawia tylko tam gdzie jest to poprawne dla standardu ES5 (obiekty, tablice), `all` - wszędzie gdzie to możliwe (np.: argumenty funkcji). Ustawiamy przy pomocy flagi `-- trailing-comma` np.: `--trailing-comma all`
+- Bracket Spacing - ustawia czy po otwarciu i przed zamknięciem nawiasu w obiekcie mają się pojawić spacje. Domyślnie są wstawiane spacje ale można zmienić przy pomocy `--no-bracket-spacing`
+- JSX Bracekts - domyślnie gdy korzystamy z Prettiera umieszcza on znak `>` zamykający element JSX w nowej linii. Jeśli chcemy by nie był przenoszony do następnej linii to możemy użyć flagi `--jsx-bracket-same-line` 
+- Arrow Function Parentheses - opcja dotyczy funkcjonalności z ES6 czyli `arrow functions`. W Prettierze możemy ustawić tutaj 2 wartości: `avoid` - kiedy to tylko możliwe nawiasy będą pominięte dla argumentów, `always` - nawiasy będą umieszczane zawsze. Domyślnie jest wartość `avoid` a możemy ją zmienić przy pomocy `--arrow-parens always`
+- Require Pragma - ciekawa opcja na sam koniec jeśli mamy bardzo dużo plików i nie chcemy wszystkich formatować od razu to możemy użyć flagi `--require-pragma`. Wtedy zostaną sformatowane tylko pliki które mają na górze specjalny komentarz
+
+```js
+/**
+ * @prettier
+ */
+```
+	
+Wszystkie inne pliki zostaną pomięte.
+
+## Jak z niego korzystać
+
+Z Prettiera korzysta się przy pomocy CLI i nie jest to na szczęście skomplikowane. Najprostszym sposobem jest użycie opcji formatowania o których wspomniałem wyżej bezpośrednio w poleceniu np.:
+```console
+prettier --print-width 100 --use-tabs --single-quote --write "*.js"
+```
+
+Na samym końcu ważne jest przełącznik `--write`, który powoduje nadpisanie formatowania w pliku na ten zdefiniowany przez nas. Oczywiście jeśli użyjemy dużo przełączników to polecenie będzie bardzo długie. Wtedy możemy wykorzystać plik `.prettierrc` w którym umieścimy naszą konfigurację
+```js
+{
+	"printWidth": 100,
+	"useTabs": true,
+	"singleQuote": true
+}
+```
+
+Wtedy wystarczy tylko krótkie polecenie
+
+```console
+prettier --write "*.js"
+```
+
+Oprócz samego nadpisywania plików warte wykorzystania jest również przełącznik `--debug-check`. Sprawdza on wtedy wszystkie pliki i jeśli jakiś jest sformatowany niezgodnie z naszymi zasadami to wyświetli błąd. Sprawdza się to idealnie by sprawdzić czy nasz PR jest poprawnie sformatowany zanim wciągniemy go do głównego brancha.

@@ -4,7 +4,7 @@ slug: "spa-vs-ssr-vs-static-site"
 author: "Feridum"
 image: "../images/spa-ssr/logo.jpg"
 tags: ["spa", "ssr", "static site", "webdevelopment"]
-date: 2020-07-13T16:05:00+02:00
+date: 2020-07-13T16:15:00+02:00
 ---
 
 Dzisiaj nie ma jednego dobrego sposobu na tworzenie stron internetowych. Możemy korzystać ze SPA, SSR czy też stron statycznych. Każde z tych rozwiązań posiada swoje plusy i minusy. Zanim zaczniemy nowy projekt, warto rozważyć wszystkie wady i zalety by potem nie żałować. 

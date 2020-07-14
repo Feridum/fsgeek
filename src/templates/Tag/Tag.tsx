@@ -42,6 +42,7 @@ export const postQuery = graphql`
         frontmatter {
           title
           slug
+          url
           image {
             childImageSharp {
               fluid(maxWidth: 800) {

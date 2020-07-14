@@ -28,7 +28,7 @@ tags:
   Początki pracy z Dockerem nie da się ukryć, że są niewygodne. Zamiast jednego miejsca do którego się można zalogować nagle jest kilka kontenerów, który każdy robi coś innego. Chcesz zmienić konfigurację nginx to musisz się zalogować na jego kontener. Chesz odpalić komendy w Symofny to musisz zmienić kontener na php’owy. To samo z bazą danych, redis’em itd.<br /> Pamiętam, że strasznie wtedy przeklinałem Dockera bo byłem przyzwyczajony do Vagranta gdzie wszystko było dostępne w jednym miejscu i gdzie w jednej linii mogłem uruchomić polecenie Symofny a w następnej zalogować się do bazy danych.  Do stworzenia prostej aplikacji potrzebujemy nagle kilku kontenerów, żeby strona mogła działać. Chyba w każdej prostej aplikacji mamy na start 3 kontenery: php, nginx/apache i mysql. A potem ta liczba może już tylko rosnąć.
 </p>
 
-![Docker i jego kontenery]("../wp-content/uploads/2016/12/containers_everywhere.jpg")
+![Docker i jego kontenery](../wp-content/uploads/2016/12/containers_everywhere.jpg)
 
 <p dir="auto">
   Teraz jednak jak już miałem okazję parę miesięcy pracować z Dockerem to nie zamieniłbym tego na nic innego. Dlaczego? Bo jak się pozna już Dockera i zrozumie zasadę jego działania to potem już jest tylko lepiej. Co nam daje Docker:<br /> 1. elastyczność w zarządzaniu serwerem &#8211; możliwość szybkiej zmiany danego kontenera na inny<br /> 2. oszczędność czasu &#8211; dodanie nowego kontenera trwa chwilę<br /> 3. władzę nad tym co robimy- możesz sobie złożyć serwer sam z gotowych klocków lub napisać własne<br /> 4. poczucie bezpieczeństwa &#8211; jeśli posypie ci się jeden kontener to reszta jest nietknięta

@@ -6,6 +6,7 @@ import "../../style/main.css"
 import { Header } from "../header/Header"
 import CookieConsent, { Cookies } from "react-cookie-consent"
 import clsx from "clsx"
+import ReactGA from 'react-ga';
 
 export const Layout = ({ children, className }: LayoutProps) => {
   const data = useStaticQuery(graphql`
@@ -18,6 +19,11 @@ export const Layout = ({ children, className }: LayoutProps) => {
     }
   `)
 
+  const onStopFollow = (event:  React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    event.preventDefault();
+    Cookies.set("gatsby-gdpr-google-analytics", false);
+  }
+
   // @ts-ignore
   return (
     <>
@@ -29,17 +35,17 @@ export const Layout = ({ children, className }: LayoutProps) => {
           location="bottom"
           buttonText="Rozumiem"
           declineButtonText="Odmawiam"
-          w="flex"
-          buttonClasses="border border-teal-700 bg-teal-900 text-white block rounded-sm font-bold py-2 px-3 flex items-center"
-          declineButtonClasses="border border-teal-700 text-teal-700 block rounded-sm font-bold py-2 px-3 flex items-center hover:bg-teal-900 hover:text-white ml-3"
+          buttonClasses="border border-teal-700 bg-teal-900 text-white block rounded-sm font-bold py-2 px-3 flex items-center mr-3 mt-3"
+          declineButtonClasses="border border-teal-700 text-teal-700 block rounded-sm font-bold py-2 px-3 flex items-center hover:bg-teal-900 hover:text-white"
           expires={150}
           onAccept={() => {
-            Cookies.set("gatsby-gdpr-google-analytics", true)
+            Cookies.set("gatsby-gdpr-google-analytics", true);
+            ReactGA.initialize("UA-56643830-4");
+            ReactGA.pageview(window.location.pathname + window.location.search);
           }}
           onDecline={() => {
             Cookies.set("gatsby-gdpr-google-analytics", false)
           }}
-          enableDeclineButton
           flipButtons
           style={{
             background: "#ffffff",
@@ -48,17 +54,14 @@ export const Layout = ({ children, className }: LayoutProps) => {
             color: "#000"
           }}
           disableButtonStyles
+          cookieName='fsgeekCookie'
         >
-          Ta strona korzysta z plików cookies(ciasteczka). Są one wykorzystywane do zbierania anonimowych danych
-          dotyczących wykorzystania strony.
-          Dane są wykorzystywane do ulepszeń strony i śledzenia ilości wizyt użytkowników.
-
-          Jeśli odmówisz dane na temat twoich wizyt nie będą zbierane. Jedno ciasteczko zostanie zapisane aby zapamiętać
-          twoje preferencje.
+          Korzystam z ciastek by śledzić informacje o liczbie odwiedzających poszczególne strony. W dowolnej chwili masz możliwość wyłączenia plików cookie w przeglądarce, dzięki czemu nie będą zbierane żadne informacje. Kliknij w przycisk by ukryć komunikat. :)
         </CookieConsent>
       </div>
       <footer className='bg-teal-900 p-6 h-20'>
         <Link to='/polityka-prywatnosci' className='text-gray-200 text-sm'> Polityka prywatności</Link>
+        <a className='text-gray-200 text-sm ml-4' onClick={onStopFollow} href='/'> Przestań mnie śledzić</a>
       </footer>
     </>
   )

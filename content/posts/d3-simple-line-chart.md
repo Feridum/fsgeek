@@ -15,6 +15,7 @@ Wykresy są doskonałym sposobem do reprezentowania nudnych danych liczbowych. D
 ## Inne artykuły z serii o D3.js
 
 1. [Osie na wykresie](/post/d3-osie-na-wykresie)
+2. [Obsługa zdarzeń](/post/d3-obsluga-zdarzen)
 
 
 ## Dlaczego D3.js?

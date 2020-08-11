@@ -35,6 +35,7 @@ export const WebsiteMeta = ({ siteUrl, type }: WebsiteMetaProps) => {
     "@context": `https://schema.org/`,
     "@type": type,
     url: canonical,
+    logo: publisherLogo,
     image: shareImage ?
       {
         "@type": `ImageObject`,

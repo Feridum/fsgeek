@@ -39,7 +39,7 @@ const BlogTags = ({ data }: BlogTags) => {
           return (
             <Link to={`/tags/${name}`} key={index}>
               <div
-              className="flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-blue-700 bg-blue-100 border border-blue-300 ">
+              className="flex justify-center items-center m-2 font-medium py-2 px-4 bg-white rounded-full text-blue-700 bg-blue-100 border border-blue-300 ">
               <div className="text-xs font-normal leading-none max-w-full flex-initial">{name}</div>
             </div>
             </Link>

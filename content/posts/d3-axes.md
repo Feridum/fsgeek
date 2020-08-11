@@ -15,6 +15,7 @@ Nie ma wykresu bez dobrze opisanych osi, które mówią nam jak odczytywać dane
 ## Inne artykuły z serii o D3.js
 
 1. [Tworzenie prostego wykresu liniowego](/post/d3-prosty-wykres-liniowy)
+2. [Obsługa zdarzeń](/post/d3-obsluga-zdarzen)
 
 
 ## Osie w D3.js

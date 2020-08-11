@@ -1,0 +1,85 @@
+---
+title: "Node.js i MongoDB - łączenie z bazą danych"
+slug: "nodejs-mongodb-laczenie-baza-danych"
+author: "Feridum"
+image: "../images/node-mongo/logo.jpg"
+tags: ["node.js", "mongodb", "bazy danych", "javascript"]
+date: 2020-08-10T20:30:00+02:00
+---
+
+Zazwyczaj jak uczymy się o bazach danych to o bazach relacyjnych np.: MySQL. Jednak nie jest to jedyna możliwość i możemy korzystać również z baz dokumentowych, których reprezentantem jest MongoDB. Jest to też dosyć popularna baza, z której możemy korzystać w Node.js.
+
+<!--more-->
+
+## MongoDB
+
+MongoDB jest przykładem bazy danych typu NoSQL. W bazach SQL dane są przechowywane w uporządkowanej strukturze zwanej tablicą, gdzie każda z kolumn definiuje jeden rodzaj danych, a w wierszach są kolejne zestawy danych. Dane z różnych tabel są połączone przy pomocy relacji, dzięki czemu można budować skomplikowane modele. W NoSQL mamy większą dowolność w kwestii sposobu przechowywania danych i wszystko zależy od tego, jaką bazę wykorzystujemy. W MongoDB dane są przechowywane za pomocą dokumentów, w których obowiązuje struktura klucz-wartość. Najprościej sobie wyobrazić to jako rodzaj pliku `*.json`. Taka struktura daje sporo elastyczności i jednocześnie jest prosta do czytania. 
+
+Zabawę z tą bazą danych najprościej zacząć korzystając z [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Oprócz tego, że mamy darmową bazę do zabaw to również możemy ją wypełnić przykładowymi danymi. Jest to o tyle fajne, że od razu dostajemy sporo danych, na których możemy się bawić i uczyć. 
+
+## Łączenie z MongoDB w Node.js
+
+Aby móc się bawić musimy się najpierw połączyć z bazą. Kiedy korzystamy z bazy danych w aplikacji, to najczęściej potrzebujemy połączenia z nią od samego początku. Dlatego ja preferuję nawiązanie połączenia, a potem przekazanie go dalej do właściwej części aplikacji. Jak może wyglądać w takim scenariuszu plik `index.js`? 
+
+```js
+const {fetchListings} = require("./app/listings");
+const {connectToDatabase} = require('./db/connect');
+const createListingRepository = require('./db/repository/listings');
+
+(async ()=>{
+   const db = await connectToDatabase();
+   const listingRepository = createListingRepository(db);
+   fetchListings(listingRepository);
+})()
+
+```
+
+Dzięki wykorzystaniu z IIFE możemy mieć asynchroniczną funkcję, która będzie odpowiedzialna za nawiązanie połączenia. Sam kod odpowiedzialny za połączenie z bazą danych jest prosty i da się go używać pomiędzy aplikacjami.
+
+```js
+const { MongoClient } = require("mongodb");
+
+const connectionString = process.env.MONGO_CONNECTION_STRING;
+
+const client = new MongoClient(connectionString);
+
+
+const connectToDatabase = async () => {
+    try {
+        await client.connect();
+
+        return  client.db("DATABSE_NAME");
+    } catch {
+        await client.close();
+        throw new Error('Conncection failed')
+    }
+}
+
+
+module.exports = {
+    connectToDatabase,
+}
+
+```
+
+Jak widać, korzystam tutaj z biblioteki mongodb, która jest oficjalną biblioteką do połączenia z tą bazą danych od twórców MongoDB. Aby nawiązać połączenie z bazą danych potrzebujemy tzw.: `connection string`. Jest to specjalny tekst, który zawiera adres bazy danych, login i hasło do niej. Są to dane wrażliwe, których nie chcemy umieszczać w kodzie. Dużo lepszym rozwiązaniem jest trzymanie takich danych w zmiennej środowiskowej. Wtedy lokalnie możemy ustawić dane naszej bazy, a dane produkcyjne są znane tylko właściwym osobom. Te dane wykorzystujemy do utworzenia nowego klienta i następnie nawiązania połączenia z bazą. Jeśli wszystko pójdzie sprawnie, to możemy zwrócić dostęp do konkretnej bazy danych. W przypadku wystąpienia błędu warto zakończyć połączenie i zwrócić błąd dalej.
+
+## Pobieranie dokumentów
+
+Mając nawiązane połączenie z bazą danych, możemy odpytywać o konkretne dane.  W aplikacji mamy kilka możliwości wykorzystania dostępu do bazy danych. Możemy przekazać bazę danych dalej, co jest rozwiązaniem najprostszym, ale utrudni nam to testowanie aplikacji. Drugie, lepsze rozwiązanie to wykorzystanie repozytorium, do którego przekażemy połączenie do bazy danych i które zwróci metody pozwalające na komunikację z bazą. I dopiero te metody przekażemy do części właściwej aplikacji. Dlaczego takie rozwiązanie jest lepsze? Ponieważ mamy kontrolę nad tym, co może robić aplikacja, jest to zdefiniowane w jednym miejscu i bardzo prosto jest napisać zmockowaną wersję tych metod na potrzeby testów. Jak może wyglądać takie repozytorium?
+
+```js
+const createListingRepository = (db) => {
+    const fetchAll = (options) => db.collection(NAZWA_KOLEKCJI).find(options);
+
+    return {
+        fetchAll
+    }
+}
+
+module.exports = createListingRepository;
+```
+
+Nie ma tu nic skomplikowanego - robimy proste funkcje, które przekazujemy potem dalej. Co do opcji to możemy albo pozwolić użytkownikowi na to wszystko, co pozwala mongodb albo ograniczyć do paru opcji. Dodatkowo wraz z rozwojem aplikacji można dopisywać kolejne metody. Jako bonus widzimy tutaj jak pobrać całą kolekcję - ale to jest temat na kolejny post i tam opowiem o tym w szczegółach.  
+
+Na sam koniec warto wspomnieć, że powyższe przykłady będą lepiej wyglądały, gdy wykorzystamy Typescripta, dzięki temu nasze repozytoria będą fajnie otypowane. Drugie rozszerzenie jest związane z top-level await, dzięki czemu pozbędziemy się IIFE z kodu i plik `index.js` będzie wyglądał schludniej. Jednak wstrzymałbym się z korzystaniem z tego w produkcyjnych aplikacjach, ponieważ jest to ciągle funkcjonalność eksperymentalna.

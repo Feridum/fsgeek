@@ -135,6 +135,7 @@ module.exports = {
               url: `${site.siteMetadata.siteUrl}${node.path}`,
               lastmod: date.replace('T', ' '),
               priority: node.path.indexOf('post') === -1 ? 0.5 : 0.8,
+              changefreq: `daily`,
             }
           })
       }
@@ -160,8 +161,8 @@ module.exports = {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
                   date: edge.node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  url: site.siteMetadata.siteUrl + '/' + edge.node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + '/' + edge.node.fields.slug,
                   custom_elements: [{ "content:encoded": edge.node.html }],
                 })
               })
@@ -188,7 +189,11 @@ module.exports = {
             output: "/index.xml",
             title: "FSGeek blog",
             match: "^/post/",
-            language: "pl"
+            language: "pl",
+            site_url : "https://fsgeek.pl/",
+            image_url : "https://fsgeek.pl/logo.png",
+            feed_url: "https://fsgeek.pl/index.xml",
+            categories: ['programming', 'webdev']
           }
         ]
       }

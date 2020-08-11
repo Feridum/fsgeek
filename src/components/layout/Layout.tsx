@@ -35,8 +35,10 @@ export const Layout = ({ children, className }: LayoutProps) => {
           location="bottom"
           buttonText="Rozumiem"
           declineButtonText="Odmawiam"
-          buttonClasses="border border-teal-700 bg-teal-900 text-white block rounded-sm font-bold py-2 px-3 flex items-center mr-3 mt-3"
+          buttonWrapperClasses='w-full pb-2 lg:w-auto lg:pb-0'
+          buttonClasses="border border-teal-700 bg-teal-900 text-white block rounded-sm font-bold py-2 px-3 flex items-center mr-3 mt-3 ml-auto"
           declineButtonClasses="border border-teal-700 text-teal-700 block rounded-sm font-bold py-2 px-3 flex items-center hover:bg-teal-900 hover:text-white"
+          contentClasses='w-5/6'
           expires={150}
           onAccept={() => {
             Cookies.set("gatsby-gdpr-google-analytics", true);
@@ -51,10 +53,12 @@ export const Layout = ({ children, className }: LayoutProps) => {
             background: "#ffffff",
             boxShadow: "rgba(0, 0, 0, 0.5) 0px 9px 10px 5px",
             borderTop: "1px solid rgb(203, 214, 226)",
-            color: "#000"
+            color: "#000",
+            alignItems: 'center',
           }}
           disableButtonStyles
           cookieName='fsgeekCookie'
+          overlay
         >
           Korzystam z ciastek by śledzić informacje o liczbie odwiedzających poszczególne strony. W dowolnej chwili masz możliwość wyłączenia plików cookie w przeglądarce, dzięki czemu nie będą zbierane żadne informacje. Kliknij w przycisk by ukryć komunikat. :)
         </CookieConsent>

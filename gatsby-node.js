@@ -123,7 +123,7 @@ exports.onCreateNode = ({ node, actions }) => {
       const tagSlugs = node.frontmatter.tags.map(
         tag => ({
           label: formatTag(tag),
-          value: `/tags/${formatTag(tag)}/`
+          value: `/tags/${formatTag(tag)}`
         })
       )
       createNodeField({ node, name: `tagSlugs`, value: tagSlugs })

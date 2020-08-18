@@ -67,6 +67,7 @@ export const PostMeta = ({ title, description, imageUrl, siteUrl, tags, publishe
   return (
     <>
       <Helmet htmlAttributes={{ lang: config.language || "auto" }}>
+        <link rel="canonical" href={canonical} />
         <title>{title}</title>
         <meta
           name="description"
@@ -108,6 +109,9 @@ export const PostMeta = ({ title, description, imageUrl, siteUrl, tags, publishe
         <script type="application/ld+json">
           {JSON.stringify(jsonLd, undefined, 4)}
         </script>
+        <meta name="robots" content="index, follow"/>
+        <meta name="googlebot" content="index, follow" />
+        <meta name="bingbot" content="index, follow" />
       </Helmet>
       <ImageMeta image={shareImage}/>
     </>

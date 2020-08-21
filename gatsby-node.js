@@ -38,26 +38,26 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   Array.from({ length: numPages }).forEach((_, i) => {
     const currentPage = i + 1;
-    const previousPage = currentPage === 2 ? '/post' : `/post/page/${i-1}`
+    const previousPage = currentPage === 2 ? '/post' : `/post/page/${i-1}/`
 
     createPage({
-      path: i === 0 ? `/post` : `/post/page/${i + 1}`,
+      path: i === 0 ? `/post` : `/post/page/${i + 1}/`,
       component: path.resolve(`./src/templates/MainList/MainList.tsx`),
       context: {
         limit: postsPerPage,
         skip: i * postsPerPage,
-        nextPage: currentPage === numPages ? null : `/post/page/${currentPage+1}`,
+        nextPage: currentPage === numPages ? null : `/post/page/${currentPage+1}/`,
         previousPage: i === 0 ? null : previousPage,
       },
     });
 
     createPage({
-      path: i === 0 ? `/` : `/page/${i + 1}`,
+      path: i === 0 ? `/` : `/page/${i + 1}/`,
       component: path.resolve(`./src/templates/MainList/MainList.tsx`),
       context: {
         limit: postsPerPage,
         skip: i * postsPerPage,
-        nextPage: currentPage === numPages ? null : `/page/${currentPage+1}`,
+        nextPage: currentPage === numPages ? null : `/page/${currentPage+1}/`,
         previousPage: i === 0 ? null : previousPage,
       },
     });
@@ -66,7 +66,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   posts.forEach(({ node }, index) => {
     createPage({
-      path: node.frontmatter.url ? node.frontmatter.url : `/post/${node.frontmatter.slug}`,
+      path: node.frontmatter.url ? node.frontmatter.url : `/post/${node.frontmatter.slug}/`,
       component: path.resolve(`./src/templates/Post/Post.tsx`),
       // You can use the values in this context in
       // our page layout component
@@ -82,17 +82,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
     Array.from({ length: numPages }).forEach((_, i) => {
       const currentPage = i + 1;
-      const basicPath = `/tags/${formatTag(tag.fieldValue)}`;
-      const previousPage = currentPage === 2 ? basicPath : `${basicPath}/page/${i-1}`
+      const basicPath = `/tags/${formatTag(tag.fieldValue)}/`;
+      const previousPage = currentPage === 2 ? basicPath : `${basicPath}/page/${i-1}/`
 
       createPage({
-        path: i === 0 ? basicPath : `${basicPath}/page/${i + 1}`,
+        path: i === 0 ? basicPath : `${basicPath}/page/${i + 1}/`,
         component: path.resolve(`./src/templates/Tag/Tag.tsx`),
         context: {
           tag: formatTag(tag.fieldValue),
           limit: postsPerPage,
           skip: i * postsPerPage,
-          nextPage: currentPage === numPages ? null : `${basicPath}/page/${currentPage+1}`,
+          nextPage: currentPage === numPages ? null : `${basicPath}/page/${currentPage+1}/`,
           previousPage: i === 0 ? null : previousPage,
         },
       });
@@ -116,14 +116,14 @@ exports.onCreateNode = ({ node, actions }) => {
     createNodeField({
       node,
       name: `slug`,
-      value: `post/${node.frontmatter.slug}`
+      value: `post/${node.frontmatter.slug}/`
     })
 
     if (node.frontmatter.tags) {
       const tagSlugs = node.frontmatter.tags.map(
         tag => ({
           label: formatTag(tag),
-          value: `/tags/${formatTag(tag)}`
+          value: `/tags/${formatTag(tag)}/`
         })
       )
       createNodeField({ node, name: `tagSlugs`, value: tagSlugs })

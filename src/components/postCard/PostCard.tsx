@@ -6,7 +6,7 @@ import Img from "gatsby-image"
 
 export const PostCard = ({ post, className }: PostCardProps) => {
 
-  const url = post.frontmatter.url ? post.frontmatter.url : `/post/${post.frontmatter.slug}`;
+  const url = post.frontmatter.url ? post.frontmatter.url : `/post/${post.frontmatter.slug}/`;
 
   return (
     <div className={clsx(className, "w-full lg:w-auto mt-4 lg:mt-0 h-auto self-stretch")}>

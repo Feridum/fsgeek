@@ -11,6 +11,10 @@ Zazwyczaj jak uczymy się o bazach danych to o bazach relacyjnych np.: MySQL. Je
 
 <!--more-->
 
+## Inne wpisy z tej serii
+
+- [Pobieranie danych](https://fsgeek.pl/post/nodejs-mongodb-pobieranie-danych/)
+
 ## MongoDB
 
 MongoDB jest przykładem bazy danych typu NoSQL. W bazach SQL dane są przechowywane w uporządkowanej strukturze zwanej tablicą, gdzie każda z kolumn definiuje jeden rodzaj danych, a w wierszach są kolejne zestawy danych. Dane z różnych tabel są połączone przy pomocy relacji, dzięki czemu można budować skomplikowane modele. W NoSQL mamy większą dowolność w kwestii sposobu przechowywania danych i wszystko zależy od tego, jaką bazę wykorzystujemy. W MongoDB dane są przechowywane za pomocą dokumentów, w których obowiązuje struktura klucz-wartość. Najprościej sobie wyobrazić to jako rodzaj pliku `*.json`. Taka struktura daje sporo elastyczności i jednocześnie jest prosta do czytania. 

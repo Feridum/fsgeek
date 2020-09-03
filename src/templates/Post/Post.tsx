@@ -11,8 +11,9 @@ import url from "url"
 import { Meta } from "../../components/Meta/Meta"
 import { MetaTypes } from "../../components/Meta/Meta.types"
 import { parseISO } from "date-fns"
+import { Helmet } from "react-helmet"
 
-const Post = ({ data: { markdownRemark: post, site }, location: { pathname }, ...rest }: PostProps) => {
+const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: PostProps) => {
 
   const postUrl = url.resolve(site.siteMetadata.siteUrl, pathname)
   const disqusConfig = {
@@ -31,7 +32,11 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname }, ..
               description: post.excerpt,
               publishedAt: post.frontmatter.date
             }}/>
-      <Layout className='lg:w-5/6'>
+      <Helmet>
+        <script async={true} defer={true} crossOrigin="anonymous" src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v8.0&appId=846208848853284" />
+      </Helmet>
+      <div id="fb-root"/>
+      <Layout className='lg:w-full'>
         <PostTitle
           className='mb-4'
           title={post.frontmatter.title}
@@ -40,10 +45,19 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname }, ..
           wordCount={post.wordCount.words}
           postUrl={postUrl}
         />
-        <div
-          className='post'
-          dangerouslySetInnerHTML={{ __html: post.html }}
-        />
+        <div className='w-full flex flex-col lg:flex-row justify-between'>
+          <div
+            className='post w-full lg:w-3/4'
+            dangerouslySetInnerHTML={{ __html: post.html }}
+          />
+          <div className="fb-page w-full lg:w-1/5" data-href="https://www.facebook.com/fsgeekk/" data-tabs="" data-width=""
+               data-height=""
+               data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+               data-show-facepile="true">
+            <blockquote cite="https://www.facebook.com/fsgeekk/" className="fb-xfbml-parse-ignore"><a
+              href="https://www.facebook.com/fsgeekk/" rel="noreferrer">Full Stack Geek</a></blockquote>
+          </div>
+        </div>
         <div className="py-4">
           {post.fields.tagSlugs && post.fields.tagSlugs.map(tag => {
             return (

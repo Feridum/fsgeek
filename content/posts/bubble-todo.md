@@ -7,29 +7,29 @@ tags: ["low code", "no code", "bubble"]
 date: 2020-09-14T15:30:00+02:00
 ---
 
-15 minut to nie jest dużo czasu. Pewnie niektórzy zdążą przygotować sobie w tym czasie kawę, otworzyć ulubione IDE i zastanowić się, od czego zacząć. Natomiast ja pokażę wam, jak w tym czasie da się zrobić prostą aplikację todo. Wykorzystam do tego platformę Bubble.io.
+15 minut to nie jest dużo czasu. Pewnie niektórzy zdążą sobie przygotować w tym czasie kawę, otworzyć ulubione IDE i zastanowić się, od czego zacząć. Natomiast ja pokażę wam, jak w tym ograniczonym czasie da się zrobić prostą aplikację todo. Wykorzystam do tego platformę Bubble.io.
 
 <!--more-->
 
 ## Buuble.io
 
-[Bubble.io](http://bubble.io) jest przykładem aplikacji no-code o których pisałem [tutaj](https://fsgeek.pl/post/czym-jest-low-code-no-code). Jest bardzo zaawansowaną platformą, która umożliwia tworzenie aplikacji internetowych. Posiada gotową bibliotekę elemntów, pozwalających na tworzenie UI aplikacji oraz na łączenie tego z danymi. To, co mnie najbardziej przypadło do gustu to system reagowania na zdarzenia na stronie. Od strony wizualnej jest bardzo prostym systemem, ale pozwala na tworzenie zaawansowanych reakcji na zdarzenia. Powoduje to, że czasami trzeba się zastanowić jak ugryźć dany problem.
+[Bubble.io](http://bubble.io) jest przykładem aplikacji no-code o których pisałem [tutaj](https://fsgeek.pl/post/czym-jest-low-code-no-code). Jest bardzo zaawansowaną platformą, która umożliwia tworzenie stron i aplikacji internetowych. Posiada gotową bibliotekę elementów, pozwalających na tworzenie UI aplikacji oraz na łączenie ich z danymi. To, co mnie najbardziej przypadło do gustu to system reagowania na zdarzenia w aplikacji. Od strony wizualnej jest bardzo prostym systemem, ale jednocześnie pozwala na tworzenie zaawansowanych reakcji na zdarzenia. Powoduje to, że czasami trzeba się zastanowić jak ugryźć dany problem, by odpowiednio wyklikać go w edytorze.
 
 ## Tworzenie aplikacji
 
-Aplikacje typu todoapps są idealnym projektem na początek — prosty UI, formularz oraz tworzenie i zarządzanie danymi. Zazwyczaj ich stworzenie zajmuje trochę czasu, ponieważ trzeba wybrać biblioteki, napisać komponenty, ostylować je i dodać logikę, która będzie zarządzać wpisanymi danymi. Natomiast ja pokażę, jak można to zrobić w 15 minut z wykorzystaniem bubble.io. 
+Aplikacje typu todoapps są idealnym projektem na początek — prosty UI, formularz, tworzenie i zarządzanie danymi. Zazwyczaj ich stworzenie zajmuje trochę czasu, ponieważ trzeba wybrać biblioteki, napisać komponenty, ostylować je i dodać logikę, która będzie zarządzać wpisanymi danymi — szczególnie jeśli dopiero się uczymy. Natomiast ja pokażę, jak można to zrobić w 15 minut z wykorzystaniem bubble.io. 
 
 Zaczniemy od stworzenia modelu danych, który będzie reprezentował nasze zadania. Aby to zrobić trzeba wejść do `Data > Data types > New type` 
 
-![create new type](../images/bubble-todo/create_type.jpg)
+![create new type](../images/bubble-todo/create_type.png)
 
 Następnie musimy dodać nowe pola. Dla podstawowych zadań wystarczy nam pole tekstowe `name` oraz pole `finished`, które przyjmie wartości true/false,
 
-![add field](../images/bubble-todo/add_field.jpg)
+![add field](../images/bubble-todo/add_field.png)
 
 ![fields](../images/bubble-todo/fields.png)
 
-Mając określony kształt danych, możemy stworzyć odpowiedni widok. Robimy to w zakładce `Design`. Dla podstawowej wersji potrzebujemy pola tekstowego, by móc wpisać nazwę zadania, przycisk oraz listę zadań z polem typu checkbox do zaznaczania gotowych zadań. Wszystkie rzeczy możemy przeciągnąć z listy elementów. Dla dwóch pierwszych elementów będą to odpowiednio ` Input forms > Input` i `Visual Elements > Button`. Do wyświetlenia listy elementów skorzystamy z elementu `Containers > Repeating Groups`. Możemy teraz określić wygląd listy. Aby to robić, musimy przeciągnąć odpowiednie elementy do **pierwszego wiersza**. Wykorzystamy do tego elementy `Visual Elements > Text` i `Input forms > Checkbox`. Wszystko, co będzie się znajdowało w tym wierszu, zostanie potem powielone w kolejnych. Tak będzie wyglądała nasza aplikacja po przeciagnięciu wszystkich elementów.
+Mając określony kształt danych, możemy stworzyć odpowiedni widok. Robimy to w zakładce `Design`. Dla podstawowej wersji potrzebujemy pola tekstowego, by móc wpisać nazwę zadania, przycisk oraz listę zadań z polem typu checkbox do zaznaczania gotowych zadań. Wszystkie rzeczy możemy przeciągnąć z listy elementów. Dla dwóch pierwszych elementów będą to odpowiednio ` Input forms > Input` i `Visual Elements > Button`. Do wyświetlenia listy elementów skorzystamy z elementu `Containers > Repeating Groups`. Możemy teraz określić wygląd listy. Aby to robić, musimy przeciągnąć odpowiednie elementy do **pierwszego wiersza**. Wykorzystamy do tego elementy `Visual Elements > Text` i `Input forms > Checkbox`. Wszystko, co będzie się znajdowało w tym wierszu, zostanie potem powielone w kolejnych. Po wykonaniu wszystkich kroków nasza aplikacja będzie wyglądała następująco.
 
 ![app ui](../images/bubble-todo/ui.png)
 
@@ -45,7 +45,7 @@ Teraz wystarczy, że ustawimy pole tekstowe oraz checkbox, by brały wartości z
 
 Dla checkboxa musimy ustawić dla `Preset status` wartość `Dynamic` oraz w `Dynamic status` ustawić by brał wartość z pola `finished`.
 
-![checkbox list value](../images/bubble-todo/checkbox.jpg)
+![checkbox list value](../images/bubble-todo/checkbox.png)
 
 Tym sposobem mamy już ograne wyświetlanie danych. Zostało już tylko dodawanie nowych. Do tego celu trzeba skorzystać ze wspomnianego przeze mnie systemu zdarzeń. Chcemy reagować na zdarzenie kliknięcia przycisku, tak aby skutkowało to dodaniem zadania o nazwie, która była w polu tekstowym. Zrobimy to w zakładce `Workflow`.
 
@@ -54,15 +54,15 @@ Tym sposobem mamy już ograne wyświetlanie danych. Zostało już tylko dodawani
 Teraz musimy wyklikać po kolei elementy: 
 
 - kliknąć na pole `Click here to add an event` i wybrać `Elements > An Element is clicked`
-- następnie jako reakcją wybrać `Data(things) > Create a new thing`
+- następnie jako reakcje wybrać `Data(things) > Create a new thing`
 - w oknie ustawień wybieramy, że chcemy utworzyć `task` i ustawić wartość `name` na bazie pola input
 - dodatkowo możemy po dodaniu nowego pola wyczyścić pole tekstowe, by było gotowe na kolejne wpisy (reakcja `Elemnt Actions > Reset inputs`)
 
-![button click event](../images/bubble-todo/event.jpg)
+![button click event](../images/bubble-todo/event.png)
 
-![action for input](../images/bubble-todo/action.jpg)
+![action for input](../images/bubble-todo/action.png)
 
-![action values for input](../images/bubble-todo/action_value.jpg)
+![action values for input](../images/bubble-todo/action_value.png)
 
 Podobnie musimy ustawić dla pola checkbox. Tylko tutaj jako zdarzenie wybierzemy `Elements > An Input's value is changed` a jako akcję `Data(things) > Make changes to thing`.
 
@@ -70,6 +70,6 @@ Podobnie musimy ustawić dla pola checkbox. Tylko tutaj jako zdarzenie wybierzem
 
 Na sam koniec dobrze by było zobaczyć efekty naszych działań. Możemy to podejrzeć klikając przycisk `Preview` w prawym górnym rogu aplikacji.
 
-![Preview link](../images/bubble-todo/preview.jpg)
+![Preview link](../images/bubble-todo/preview.png)
 
 Jeśli zrobiliśmy wszystko poprawnie, to dostaliśmy prostą aplikację todo. Jak widać, nie jest to trudne i nie zajęło dużo czasu. Oczywiście nie wygląda oszałamiająco ale mamy podstawową funkcjonalność. Teraz można popracować nad UI, bawić się w dodawanie filtrów, kolejnych pól, sortowania lepszej edycji zadań itd. Jednym słowem możemy skupić się na tym. co sprawi, że nasza lista todo będzie tą wyjątkową, z której ludzie będą chcieli korzystać. A wy co sądzicie o tej platformie? Pracowaliście z nią? A może korzystaliście z czegoś innego, co według was jest lepsze?

@@ -41,6 +41,12 @@ export const Header = () => {
               Tagi
             </div>
           </Link>
+          <Link to='/kontakt' title='Tagi'>
+            <div
+              className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto h-" >
+              Kontakt
+            </div>
+          </Link>
 
           <div className='flex flex-row lg:ml-auto pb-6 lg:pb-0 px-6 bg-teal-900 w-4/5 lg:w-auto'>
             <a href="https://www.facebook.com/fsgeekk"

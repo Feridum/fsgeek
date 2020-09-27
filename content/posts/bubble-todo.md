@@ -11,6 +11,10 @@ date: 2020-09-16T13:00:00+02:00
 
 <!--more-->
 
+## Zobacz video na YouTube
+
+`youtube: vUixaotMNGM`
+
 ## Buuble.io
 
 [Bubble.io](http://bubble.io) jest przykładem aplikacji no-code o których pisałem [tutaj](https://fsgeek.pl/post/czym-jest-low-code-no-code). Jest bardzo zaawansowaną platformą, która umożliwia tworzenie stron i aplikacji internetowych. Posiada gotową bibliotekę elementów, pozwalających na tworzenie UI aplikacji oraz na łączenie ich z danymi. To, co mnie najbardziej przypadło do gustu to system reagowania na zdarzenia w aplikacji. Od strony wizualnej jest bardzo prostym systemem, ale jednocześnie pozwala na tworzenie zaawansowanych reakcji na zdarzenia. Powoduje to, że czasami trzeba się zastanowić jak ugryźć dany problem, by odpowiednio wyklikać go w edytorze.

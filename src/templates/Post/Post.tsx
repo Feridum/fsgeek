@@ -37,6 +37,14 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
       </Helmet>
       <div id="fb-root"/>
       <Layout className='lg:w-full'>
+        <div className='rounded-lg bg-orange-500 w-full p-4 text-white flex justify-between items-center mb-6'>
+        Stworzyłem nowy kanał na YouTube - zapraszam do odwiedzenia
+          <a href='https://www.youtube.com/channel/UCooPcxqwzgbQUpnh4FAoZpw'>
+          <button className='text-orange-800 bg-white p-2 rounded-lg '>
+            Odwiedź kanał
+          </button>
+          </a>
+        </div>
         <PostTitle
           className='mb-4'
           title={post.frontmatter.title}

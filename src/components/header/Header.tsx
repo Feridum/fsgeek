@@ -32,7 +32,7 @@ export const Header = () => {
           <Link to='/' title='Strona główna'>
             <div
               className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto">
-              Strona główna
+              Zobacz inne ciekawe posty
             </div>
           </Link>
           <Link to='/tags' title='Tagi'>
@@ -44,7 +44,7 @@ export const Header = () => {
           <Link to='/kontakt' title='Tagi'>
             <div
               className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto h-" >
-              Kontakt
+              Poznaj autora
             </div>
           </Link>
 

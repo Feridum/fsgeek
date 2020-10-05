@@ -18,7 +18,7 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
   const postUrl = url.resolve(site.siteMetadata.siteUrl, pathname)
   const disqusConfig = {
     url: postUrl,
-    identifier: post.id,
+    identifier: pathname,
     title: post.frontmatter.title
   }
 

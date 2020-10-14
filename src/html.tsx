@@ -16,6 +16,7 @@ export default function HTML(props: any) {
         <div
           key={`body`}
           id="___gatsby"
+          className='pageContainer'
           dangerouslySetInnerHTML={{ __html: props.body }}
         />
         {props.postBodyComponents}

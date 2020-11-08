@@ -18,8 +18,8 @@ code[class*="language-"] {
     }
     a {
         padding-bottom: .1em;
-        border-bottom: 1px dashed rgba(70,185,128,.5);
-        color: #5fbf5e;
+        border-bottom: 1px dashed rgba(255,116,0,.5);
+        color: #ff7400;
         opacity: 1;
     }
     .gatsby-resp-image-wrapper {

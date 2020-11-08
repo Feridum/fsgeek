@@ -113,6 +113,9 @@ fs.readFile('./a.txt', 'utf-8').then((path)=>fs.readFile(path, 'utf-8')).then(co
 
 ```
 
+Więcej o Promise'ach możesz przeczytać tutaj - [Promise.all(), .allSettled(), .race(), any()](https://fsgeek.pl/post/javascript-promise-all-allsettled-race-any/)
+
+
 ## Async/await
 
 Na sam koniec zostawiłem wisienkę na torcie czyli składnię `async/await`, która pojawiła się prawie zaraz po Promise'ach ponieważ już w ES7. Jest to inny sposób w jaki możemy sobie poradzić z Promise'ami - a dokładniej jak sprawić by kod asynchroniczny zapisać jako synchroniczny. Mamy tutaj dwa nowe słowa kluczowe, które najczęściej stosujemy razem: `async` i `await`.  Słowo `async` stosujemy tylko do funkcji - oznaczamy tym, że funkcja zawsze zwraca Promise'a nawet jeśli zwracana wartość nim nie jest. 
@@ -148,3 +151,5 @@ const readFile = async ()=> {
 ```
 
 Oczywiście dzisiaj przedstawiłem pokrótce najpopularniejsze sposoby na poradzenie sobie z asynchronicznością. Temat jest tak obszerny, że o każdej z tych metod można napisać osobny post. Ja najczęściej wykorzystuję Promise'y ale ostatnio również korzystam dużo z async/await i pracuje mi się z tym bardzo wygodnie. A wy z czego korzystacie? 
+
+Jeśli ten wpis był dla ciebie pomocny i znasz kogoś, komu też mógłby pomóc - wyślij mu ten post - na pewno będzie Ci za to wdzięczny, 

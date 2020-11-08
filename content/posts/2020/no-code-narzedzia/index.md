@@ -1,0 +1,93 @@
+---
+title: "18 narzędzi, którymi stworzysz swoją aplikację bez programisty"
+slug: "18-narzedzi-nocode-do-stworzenia-aplikacji"
+author: "Feridum"
+image: "./logo.jpg"
+tags: ["no-code", "low-code"]
+date: 2020-10-26T15:15:00+01:00
+---
+
+Nie zawsze potrzeba zespołu programistów, by stworzyć pierwszy prototyp aplikacji. Nie trzeba nawet samemu potrafić programować. Wystarczy parę narzędzi, trochę czasu i chęci, by stworzyć pierwszą wersję aplikacji. I tę wiedzę wykorzystać, by sprawdzić produkt i ulepszyć, zanim zrobi to konkurencja.
+
+<!--more-->
+
+
+## [Webflow](https://webflow.com/)
+
+Pierwszy portal na liście to Webflow, który pozwala w prostym edytorze stworzyć strony internetowe. Dużą zaletą jest intuicyjny interfejs, który pozwala rozmieścić elementy aplikacji. Równie ważna jest też możliwość ustawiania elementów w zależności od rozdzielczości ekranu. Sprawdzi się idealnie do stworzenia **landing page'a** do twojej aplikacji, **prostego bloga** lub nawet strony **sklepu**. Powoduje to, że praktycznie każdy jest w stanie stworzyć stronę w weekend i pokazać ją publicznie.
+
+
+ Idealny do: 
+
+- landing page's
+- strona sprzedaży
+- prosty sklep
+
+Alternatywy: 
+
+- [Carrd](https://carrd.co/)
+- [UI Bakery](https://uibakery.io/)
+- [Landen](https://www.landen.co/)
+
+## [Bubble.io](https://bubble.io/)
+
+W przypadku kiedy mamy bardziej **zaawansowaną aplikację** i chcemy zarządzać użytkownikami, rolami, dodawać i edytować dane to potrzebne jest bardziej zaawansowane narzędzie, którego przykładem jest Bubble.io. Możemy tam w przystępny sposób tworzyć aplikację, przeciągając odpowiednie elementy i definiując ich zachowanie. Dodatkowo jest tam wbudowany fajny system reagowania na zdarzenia i wykonywania odpowiednich akcji. Ostatnio bawię się tym narzędziem i pokazuję, jak można tworzyć w tym aplikację [na kanale YouTube](https://www.youtube.com/channel/UCooPcxqwzgbQUpnh4FAoZpw). Odwiedź go, jeśli chcesz szybko zbudować swoją aplikację.
+
+Alternatywy:
+
+- [UI Bakery](https://uibakery.io/)
+- [AppGyver](https://www.appgyver.com/)
+- [Glide](https://www.glideapps.com/)
+
+## [Airtable](https://airtable.com/)
+
+Airtable jest przykładem aplikacji przeznaczonej do **zbierania i zarządzania danymi**. Jest taką bazą danych, z ładnym interfejsem dla użytkownika. Dodatkowo możemy, te dane zbierać w widoki by je można było w prosty sposób przeglądać i edytować. Najprostszym widokiem jest zwykła tabela, w której dane są przedstawione w postaci kolumn i wierszy. Możemy też filtrować i grupować dane - przydaje się to w momencie, gdy chcemy nowy widok z listą konkretnych elementów np.: nieukończonych zadań. Inne widoki to kalendarz, galeria czy też tablica Kanbana (czyli możemy stworzyć sobie prostą Jirę za darmo). Ciekawą opcją jest tworzenie formularzy, za pomocą których można zbierać dane i umieszczać je w tabeli.
+
+Funkcjonalności:
+
+- zbieranie danych
+- tworzenie połączeń między tabelami
+- możliwość tworzenia zaawansowanych widoków z danych
+- możliwość tworzenia formularzy do wypełniania danych
+
+Alternatywy: 
+
+- [Tadabase](https://tadabase.io/)
+- [Google Tables](https://tables.area120.google.com/)
+- Google Sheets
+
+## [Zapier](https://zapier.com/)
+
+Zapier pozwala nam **połączyć dwie aplikacje by komunikowały się między sobą**. Jest to świetne rozwiązanie dla twórców serwisów, ponieważ nie muszą tworzyć integracji do każdej istniejącej platformy tylko do tej jednej. Natomiast użytkownicy są w stanie połączyć dwie(lub więcej) aplikacje w zwarty ekosystem. Dzięki temu mając kilka aplikacji, możemy połączyć je w jeden duży system, który będzie realizował zaawansowane procesy.
+
+Funkcjonalności: 
+
+- łączenie ze sobą aplikacji
+- tworzenie zaawansowanych procesów
+- automatyzacja wykonywania zadań
+
+Alternatywy: 
+
+- [Integromat](https://www.integromat.com/en/)
+- [IFTTT](https://ifttt.com/)
+
+## [Typeform](https://www.typeform.com/)
+
+Typeform jest narzędziem, które umożliwia tworzenie **zaawansowanych formularzy**. Formularze mogą mieć nie tylko skomplikowaną logikę dotyczącą pytań, ale również będą wyglądały estetycznie dla użytkownika końcowego. Dzięki temu możemy zbierać informacje od naszych użytkowników, by usprawnić aplikację lub też nawet uczynić z formularzy część aplikacji.
+
+Funkcjonalności: 
+
+- intuicyjny interfejs
+- dużo rodzajów pytań
+- liczne integracje
+
+Alternatywy: 
+
+- [Tally](https://tally.so/)
+- Google Form
+
+## A co z programistami?
+
+Spokojnie. Te narzędzia pomogą w stworzeniu pierwszych wersji aplikacji tzw.: Proof of Concept, ale nie spowodują, że programiści będą niepotrzebni. Ciągle, doświadczony zespół może nie tylko stworzyć nam aplikację, jakiej potrzebujemy, ale również być partnerami w rozmowach. Ci najlepsi nie będą się skupiali tylko na rozwiązaniu technicznym, ale będą również dopytywać o biznes, co może pozwoli ci go jeszcze bardziej rozwinąć. Im więcej informacji dostaną na początek, im bardziej **TY** będziesz wiedział, jak aplikacja ma działać, tym więcej możesz wyciągnąć z takiej współpracy. A może uznasz, że twój pomysł się nie sprawdzi i trzeba inaczej ugryźć dany problem? Wtedy ciągle masz pieniądze, by zacząć coś nowego i wrócić z działającym pomysłem do programistów by go zoptymalizowali pod ciebie. 
+
+Jeśli masz jakieś pytania/chciałbyś się dowiedzieć czegoś więcej to napisz do mnie maila na [blog@fsgeek.pl](mailto:blog@fsgeek.pl). Świat no-code zmienia się tak szybko, że codziennie dochodzą nowe platformy, rozwiązania i możliwości.

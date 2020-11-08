@@ -86,13 +86,13 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       const previousPage = currentPage === 2 ? basicPath : `${basicPath}/page/${i-1}/`
 
       createPage({
-        path: i === 0 ? basicPath : `${basicPath}/page/${i + 1}/`,
+        path: i === 0 ? basicPath : `${basicPath}page/${i + 1}/`,
         component: path.resolve(`./src/templates/Tag/Tag.tsx`),
         context: {
           tag: formatTag(tag.fieldValue),
           limit: postsPerPage,
           skip: i * postsPerPage,
-          nextPage: currentPage === numPages ? null : `${basicPath}/page/${currentPage+1}/`,
+          nextPage: currentPage === numPages ? null : `${basicPath}page/${currentPage+1}/`,
           previousPage: i === 0 ? null : previousPage,
         },
       });

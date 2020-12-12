@@ -107,12 +107,12 @@ module.exports = {
     {
       resolve: `gatsby-plugin-gdpr-cookies`,
       options: {
-        googleAnalytics: {
-          trackingId: "UA-56643830-4",
-          cookieName: "gatsby-gdpr-google-analytics",
-          anonymize: true
+        googleTagManager: {
+          trackingId: 'GTM-PBG24GD',
+          cookieName: 'gatsby-gdpr-google-tagmanager',
+          dataLayerName: 'dataLayer',
         },
-        environments: ["production"]
+        environments: ['production']
       }
     },
     {

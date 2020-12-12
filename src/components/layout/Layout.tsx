@@ -6,9 +6,11 @@ import "../../style/main.css"
 import { Header } from "../header/Header"
 import CookieConsent, { Cookies } from "react-cookie-consent"
 import clsx from "clsx"
-import ReactGA from 'react-ga';
+import { useLocation } from "@reach/router" // this helps tracking the location
+import { initializeAndTrack } from 'gatsby-plugin-gdpr-cookies'
 
 export const Layout = ({ children, className }: LayoutProps) => {
+  const location = useLocation();
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -21,7 +23,7 @@ export const Layout = ({ children, className }: LayoutProps) => {
 
   const onStopFollow = (event:  React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
-    Cookies.set("gatsby-gdpr-google-analytics", false);
+    Cookies.set("gatsby-gdpr-google-tagmanager", false);
   }
 
   // @ts-ignore
@@ -41,12 +43,11 @@ export const Layout = ({ children, className }: LayoutProps) => {
           contentClasses='w-5/6'
           expires={150}
           onAccept={() => {
-            Cookies.set("gatsby-gdpr-google-analytics", true);
-            ReactGA.initialize("UA-56643830-4");
-            ReactGA.pageview(window.location.pathname + window.location.search);
+            Cookies.set("gatsby-gdpr-google-tagmanager", true);
+            initializeAndTrack(location)
           }}
           onDecline={() => {
-            Cookies.set("gatsby-gdpr-google-analytics", false)
+            Cookies.set("gatsby-gdpr-google-tagmanager", false)
           }}
           flipButtons
           style={{
@@ -57,7 +58,7 @@ export const Layout = ({ children, className }: LayoutProps) => {
             alignItems: 'center',
           }}
           disableButtonStyles
-          cookieName='fsgeekCookie'
+          cookieName='fsgeekCookieGT'
           overlay
         >
           Korzystam z ciastek by śledzić informacje o liczbie odwiedzających poszczególne strony. W dowolnej chwili masz możliwość wyłączenia plików cookie w przeglądarce, dzięki czemu nie będą zbierane żadne informacje. Kliknij w przycisk by ukryć komunikat. :)

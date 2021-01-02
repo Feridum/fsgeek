@@ -9,17 +9,17 @@ const Contact = () => {
   return (
     <Layout className='flex flex-col items-center'>
       <Meta type={MetaTypes.PAGE} url={'/tags'}/>
-      <h2 className="text-black font-bold text-4xl underline hover:text-teal-600"><a href='mailto:blog@fsgeek.pl'>📧 Napisz do mnie maila</a></h2>
+      <h2 className="text-black font-bold text-4xl underline hover:text-teal-600 text-center"><a href='mailto:kontakt@fsgeek.pl'>📧 Napisz do mnie maila na kontakt@fsgeek.pl</a></h2>
       <a href='https://socialshub.net/FSGeek'>
       <button
         className="border border-teal-700 text-black block rounded-lg font-bold py-4 px-6 mt-6 flex items-center hover:bg-teal-500" aria-label="Następna strona">
-        <span className='hidden sm:block'> 💻 Odwiedź mnie na innych portalach</span>
+        <span> 💻 Odwiedź mnie na innych portalach</span>
       </button>
       </a>
       <a href='https://socialshub.net/AleksanderPatschek'>
         <button
           className="border border-teal-700 block rounded-lg font-bold py-4 px-6 mt-6 flex items-center hover:bg-teal-500" aria-label="Następna strona">
-          <span className='hidden sm:block'>🧑 Poznaj autora</span>
+          <span>🧑 Poznaj autora</span>
         </button>
       </a>
     </Layout>

@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import clsx from "clsx"
 import { Link } from "gatsby"
-import { FacebookIcon, TwitterIcon } from "../../icons"
+import { FacebookIcon, InstagramIcon, TwitterIcon } from "../../icons"
 
 export const Header = () => {
   const [isMenuHidden, setHidden] = useState(true)
@@ -32,7 +32,7 @@ export const Header = () => {
           <Link to='/' title='Strona główna'>
             <div
               className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto">
-              Zobacz inne ciekawe posty
+              &#128064; Zobacz inne ciekawe posty
             </div>
           </Link>
           <Link to='/tags' title='Tagi'>
@@ -41,17 +41,27 @@ export const Header = () => {
               Tagi
             </div>
           </Link>
-          <Link to='/kontakt' title='Tagi'>
+          <Link to='/kontakt' title='Kontakt'>
             <div
               className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto h-" >
               Poznaj autora
             </div>
           </Link>
+          <a href='https://news.fsgeek.pl/' title="dołącz do newslettera">
+            <div
+              className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto h-" >
+              &#128231; Dołącz do newslettera
+            </div>
+          </a>
 
           <div className='flex flex-row lg:ml-auto pb-6 lg:pb-0 px-6 bg-teal-900 w-4/5 lg:w-auto'>
+            <a href="https://www.instagram.com/fsgeek/"
+               target="_blank" title="Otwórz fanpage" rel="noreferrer">
+              <InstagramIcon size={20}/>
+            </a>
             <a href="https://www.facebook.com/fsgeekk"
                target="_blank" title="Otwórz fanpage" rel="noreferrer">
-              <FacebookIcon size={20}/>
+              <FacebookIcon size={20} className='ml-3'/>
             </a>
             <a href="https://twitter.com/FSGeekk"
                target="_blank" title="Otwórz profil na Twitter" rel="noreferrer">

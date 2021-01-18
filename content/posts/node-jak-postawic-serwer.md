@@ -9,7 +9,7 @@ image : "../images/nodejs-serwer/logo.jpg"
 menu : ""
 share : true
 slug : "node-jak-postawic-serwer"
-tags : ["node","Node.js", "własny", "serwer"]
+tags : ["node","Node.js", "wlasny", "serwer"]
 title : "Node.js - jak postawić własny serwer HTTP"
 
 ---

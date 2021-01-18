@@ -9,7 +9,7 @@ image : "../images/node-events/logo.jpg"
 menu : ""
 share : true
 slug : "nodejs-asynchroniczne-zdarzenia"
-tags : ["Node.js","events", "zdarzenia", "wydarzenia", "jak działa chat", "jak działa messenger", "jak działają powiadomienia"]
+tags : ["Node.js","events", "zdarzenia", "wydarzenia", "jak dziala chat", "jak dziala messenger", "jak dzialaja powiadomienia"]
 title : "Node.js - asynchroniczne zdarzenia"
 
 ---

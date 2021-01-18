@@ -3,7 +3,7 @@ title: "Angular pipes - czyli jak przekształcać zmienne na widoku"
 slug: "angular-pipes-czyli-jak-przeksztalcac-zmienne-na-widoku"
 author: "Feridum"
 image: "../images/angular-pipes/logo.jpg"
-tags: ["Angular pipes", "transformacja obiektów", "Angular", "przekształcanie zmiennych"]
+tags: ["Angular pipes", "transformacja obiektow", "Angular", "przeksztalcanie zmiennych"]
 date: 2018-07-27T07:05:00+02:00
 draft: false
 ---

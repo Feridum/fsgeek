@@ -38,11 +38,11 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
       </Helmet>
       <div id="fb-root"/>
       <Layout className='lg:w-full'>
-        <div className='rounded-lg bg-orange-500 w-full p-4 text-white flex justify-between items-center mb-6'>
-          Hej, zbieram informacje o tym jakie tematy cię interesują. Pozwoli mi to pisać dla Ciebie jeszcze lepsze posty.
-          <a href='https://tally.so/r/Zw8KO3' target='_blank'>
-            <button className='text-orange-800 bg-white p-2 rounded-lg '>
-              Odpowiedz na parę pytań
+        <div className='rounded-lg bg-orange-500 w-full p-4 text-white flex justify-between items-center mb-6 lg:text-lg font-bold lg:flex-row flex-col'>
+          Cześć, stworzyłem newsletter by móc dać ci jeszcze więcej wartości w 2021
+          <a href='https://news.fsgeek.pl/'>
+            <button className='text-orange-800 bg-white p-2 rounded-lg mt-2 lg:mt-0'>
+              Chcę dołączyć do newslettera
             </button>
           </a>
         </div>
@@ -56,20 +56,26 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
         />
         <div className='w-full flex flex-col lg:flex-row justify-between'>
           <div
-            className='post w-full lg:w-3/4'
+            className='post w-full lg:w-3/4 flex lg:flex-col flex-col-reverse'
           >
             <div className='w-full mb-8 bg-teal-200 p-4 rounded-lg'>
               Cześć. Cieszę się, że czytasz mój post. Jeśli podoba ci się to co piszę i chcesz otrzymywać informacje o
-              nowych postach to  <a href='https://www.facebook.com/fsgeekk' target="_blank"> odwiedź mnie na Facebooku </a>.
+              nowych postach to  <a href='https://news.fsgeek.pl/'> dołącz do mojego newslettera </a>.
 
               <br/><br/>
-              Jeśli zauważysz, że jakieś treści się zdezaktualizowały, a jesteś nimi zainteresowany to napisz do mnie. Zależy mi na
+              Jeśli zauważysz, że jakieś treści się zdezaktualizowały, a jesteś nimi zainteresowany to <a href='mailto:kontakt@fsgeek.pl'>napisz do mnie na kontakt@fsgeek.pl</a>. Zależy mi na
               tym aby tworzyć dla ciebie treści o największej jakości.
               <br/>
-              <div className='text-xl text-center w-full my-3'>Dziękuję za pomoc i polubienie mnie na Facebooku - to daje siły do pisania kolejnych postów.</div>
+              <div className='text-xl text-center w-full my-3'>Dziękuję za pomoc i dołączenie do newslettera - to daje siły do pisania kolejnych postów.</div>
             </div>
 
             <div className='post' dangerouslySetInnerHTML={{ __html: post.html }}/>
+
+            <div className='post '>
+              Dopisując się do newslettera, dostaniesz dodatkowe treści do każdego postu oraz zadania do przećwiczenia.&nbsp;
+              <a href='https://news.fsgeek.pl/'>
+                Dołączam do newslettera, by nauczyć się jeszcze więcej </a>
+            </div>
           </div>
           <div className="fb-page w-full lg:w-1/5" data-href="https://www.facebook.com/fsgeekk/" data-tabs=""
                data-width=""

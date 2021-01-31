@@ -17,11 +17,11 @@ export const PostTitle = ({title, className, date, readingTime, wordCount, postU
         <div className='md:ml-auto flex flex-row'>
           Udostępnij:
           <a href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}&t=${title}`}
-             target="_blank" title="Udostępnij na Facebook" className='ml-5'>
+             target="_blank" title="Udostępnij na Facebook" className='ml-5' rel="noreferrer">
             <FacebookIcon size={20}/>
           </a>
           <a href={`https://twitter.com/share?url=${postUrl}`}
-             target="_blank" title="Udostępnij na Twitter">
+             target="_blank" title="Udostępnij na Twitter" rel="noreferrer">
             <TwitterIcon size={20} className='ml-3'/>
           </a>
 

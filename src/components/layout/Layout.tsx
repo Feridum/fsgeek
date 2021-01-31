@@ -11,15 +11,6 @@ import { initializeAndTrack } from 'gatsby-plugin-gdpr-cookies'
 
 export const Layout = ({ children, className }: LayoutProps) => {
   const location = useLocation();
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
 
   const onStopFollow = (event:  React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();

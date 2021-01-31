@@ -9,48 +9,73 @@ const BlogTags = () => {
         <h1 className="post-title">Polityka prywatnosci</h1>
       </header>
       <article>
-        <ol>
-          <li><p>Serwis zbiera w sposób automatyczny tylko informacje zawarte w plikach cookies.</p></li>
-
-          <li><p>Pliki (cookies) są plikami tekstowymi, które przechowywane są w urządzeniu końcowym użytkownika
-            serwisu. Przeznaczone są do korzystania ze stron serwisu. Przede wszystkim zawierają nazwę strony
-            internetowej swojego pochodzenia, swój unikalny numer, czas przechowywania na urządzeniu końcowym.</p></li>
-
-          <li><p>Operator serwisu <a href="https://fsgeek.pl" target="_blank">FSGeek</a> jest podmiotem zamieszczającym
-            na urządzeniu końcowym swojego użytkownika pliki cookies oraz mającym do nich dostęp.</p></li>
-
-          <li><p>Operator serwisu wykorzystuje pliki (cookies) w celu:</p>
-
-            <ul>
-              <li>przygotowywania statystyk pomagających poznaniu preferencji i zachowań użytkowników, analiza tych
-                statystyk jest anonimowa i umożliwia dostosowanie zawartości i wyglądu serwisu do panujących trendów,
-                statystyki stosuje się też do oceny popularności strony;
-              </li>
-            </ul>
-          </li>
-
-          <li><p>Serwis stosuje dwa zasadnicze rodzaje plików (cookies) - sesyjne i stałe. Pliki sesyjne są tymczasowe,
-            przechowuje się je do momentu opuszczenia strony serwisu (poprzez wejście na inną stronę, wylogowanie lub
-            wyłączenie przeglądarki). Pliki stałe przechowywane są w urządzeniu końcowym użytkownika do czasu ich
-            usunięcia przez użytkownika lub przez czas wynikający z ich ustawień.</p></li>
-
-          <li><p>Użytkownik może w każdej chwili dokonać zmiany ustawień swojej przeglądarki, aby zablokować obsługę
-            plików (cookies) lub każdorazowo uzyskiwać informacje o ich umieszczeniu w swoim urządzeniu. Inne dostępne
-            opcje można sprawdzić w ustawieniach swojej przeglądarki internetowej. Należy pamiętać, że większość
-            przeglądarek domyślnie jest ustawione na akceptację zapisu plików (cookies)w urządzeniu końcowym.</p></li>
-
-          <li><p>Operator Serwisu informuje, że zmiany ustawień w przeglądarce internetowej użytkownika mogą ograniczyć
-            dostęp do niektórych funkcji strony internetowej serwisu.</p></li>
-
-          <li><p>Pliki (cookies) z których korzysta serwis (zamieszczane w urządzeniu końcowym użytkownika) mogą być
-            udostępnione jego partnerom oraz współpracującym z nim reklamodawcą.</p></li>
-
-          <li><p>Informacje dotyczące ustawień przeglądarek internetowych dostępne są w jej menu (pomoc) lub na stronie
-            jej producenta.</p></li>
-
-          <li><p>Bardziej szczegółowe informacje na temat plików (cookies) dostępne są na stronie
-            (ciasteczka.org.pl)</p></li>
-        </ol>
+      § 1 POSTANOWIENIA OGÓLNE
+      <ol>
+<li>Polityka prywatności wyjaśnia zasady przetwarzania danych osobowych, przechowywania informacji lub ich uzyskiwania do nich dostępu w Twoich urządzeniach (tzw. telekomunikacyjnych urządzeniach końcowych) i dotyczy wyłącznie strony działającej w sieci web pod adresem https://fsgeek.pl/.</li>
+<li>Administratorem Twoich danych osobowych jest Aleksander Patschek prowadzący działalność nie wymagającą rejestracji w rozumieniu ustawy Prawo przedsiębiorców z miejscem jej wykonywania w Katowice 40-008 przy ul. Warszawska 40/2A.</li>
+<li>Polityka prywatności dotyczy wyłącznie przetwarzania danych osobowych użytkowników w związku z przeglądaniem strony internetowej oraz korzystaniem z jej funkcjonalności.</li>
+  </ol>
+§ 2 PRZETWARZANIE DANYCH OSOBOWYCH
+<ol>
+<li>We wszystkich sprawach dotyczących ochrony danych osobowych możesz kontaktować się z administratorem. Kontakt możesz realizować w sposób osobisty wysyłając wiadomość na adres e-mail kontakt@fsgeek.pl.</li>
+<li>Administrator przetwarzana Twoje dane osobowe w celu wysyłania Ci własnych informacji handlowych oraz treści pro-mujących produkty i działalność administratora – na podstawie art. 6 ust. 1 lit. a rozporządzenia 2016/679 – a więc Twojej zgody. Dodatkowo, Twoje dane osobowe będą przetwarzane do celów statystycznych i analitycznych.</li>
+<li>Twoje dane osobowe są ujawniane podmiotom współpracującym z administratorem. Takie podmioty nazywa się odbiorcami danych. Ujawnienie danych przez administratora jest możliwe co do zasady w następujących przypadkach:</li>
+  <ul>
+  <li>gdy obowiązek taki wynika z przepisów prawa – dotyczy to ujawniania przez administratora Twoich danych;</li>
+  <li>gdy administrator musi ujawnić dane by móc zrealizować umowę z dostawcą systemu rozsyłającego newsletter – działanie takie zawsze odbywa się na podstawie zawartej umowy powierzenia przetwarzania danych;</li>
+  <li>gdy administrator decyduje się na ujawnienie danych osobowych z powodu własnego, prawnie uzasadnionego interesu;</li>
+  <li>gdy wynika to z wyrażonej przez Ciebie zgody na przetwarzanie danych.</li>
+</ul>
+Wszystkie powyższe przypadku są praktykami w pełni zgodnymi z RODO.
+Podmiotami, którym administrator ujawni Twoje dane osobowe będą:
+<ul>
+<li>MyDevil ADMIN.NET.PL Tomasz Rzepka Arkadiusz Nowara S.C. (NIP: 8733250257)</li>
+<li>UAB “MailerLite”, J. Basanavičiaus 15, LT-03108 Vilnius, Lithuania</li>
+</ul>
+<li>Twoje dane osobowe będą przekazywane do innych państw, niż należące do Europejskiego Obszaru Gospodarczego – tzw. państw trzecich. Jest to niezbędne w celu zapewnienia prawidłowego działania newslettera. Aby przeciwdziałać ewentualnym ryzykom, zawarte zostaly umowy powierzenia przetwarzania zapewniające odpowiedni poziom bezpie-czeństwa Twoich danych. Przekazywane danych poza Europejski Obszar Gospodarczy jest w nich oparte o standardowe klauzule umowne zatwierdzone przez Komisję Europejską. Taki sposób przetwarzania jest w pełni legalny i zgodny z RODO.</li>
+<li>Twoje dane osobowe będą przetwarzane przez czas trwania zgody. W chwili gdy cofniesz zgodę, Twoje dane zostaną bezpowrotnie usunięte i ich przetwarzanie zakończy się. Ze względu na ograniczenia techniczne i organizacyjne proces usuwania trwa do 30 dni.</li>
+<li>Przysługuje Tobie prawo do żądania od administratora sprostowania, usunięcia, ograniczenia Twoich danych osobowych. Prawa te przysługują Tobie tylko w sytuacjach, w których wniesienie takiego żądania jest faktycznie uzasadnione.
+Przysługuje Tobie także prawo do cofnięcia w dowolnym momencie zgody na przetwarzanie Twoich danych osobowych. Cofnięcie zgody nie wpłynie na zgodność z prawem przetwarzania danych realizowanego do chwili jej cofnięcia.</li>
+<li>Nie musisz podawać swoich danych osobowych. Pamiętaj tylko, że bez podania swoich danych osobowych (adresu e-mail) nie będziesz w stanie zapisać się na newsletter i otrzymywać informacji w nim zawartych.</li>
+<li>Twoje dane osobowe będą przetwarzane w sposób zautomatyzowany, ale nie będą podlegały profilowaniu.</li>
+<li>Przysługuje Tobie prawo do wniesienia skargi w związku z tym jak przetwarzane są Twoje dane osobowe do organu nadzorczego, którym jest Prezes Urzędu Ochrony Danych Osobowych z siedzibą w Warszawie (00-193), przy ul. Stawki 2.</li>
+</ol>
+§ 3 PRZECHOWYWANIE INFORMACJI LUB UZYSKIWANIE DOSTĘPU DO INFORMACJI JUŻ PRZECHOWYWANEJ NA TELEKMUNIKACYJNYM URZĄDZENIU KOŃCOWYM <br/>
+Strona nie zbiera w sposób automatycznych żadnych informacji, za wyjątkiem informacji zawartych w tzw. ciasteczkach (ang. cookies). Strona wykorzystuje względem użytkowników tzw. stałe i sesyjne pliki cookies. Ilość plików cookie zapisywanych na urzą-dzeniach poszczególnych użytkowników może być różna — wynika to z rodzaju urządzenia, wykorzystywanego przeglądarki i wtyczek oraz ich ustawień. Sesyjne pliki cookies są przechowywane w urządzeniu użytkownika do czasu opuszczenia strony internetowej lub wyłączenia przeglądarki. Stałe pliki cookies są przechowywane w urządzeniu końcowym użytkownika przez określony w ich parametrach czas — może to być czas sesji, czas określony z góry lub czas do ich usunięcia przez użytkownika. Strona wykorzystuje następujące typy plików cookie:
+<ol>
+<li> Pliki niezbędne do zapewnienia bezpieczeństwa i niezawodności:</li>
+<ul>
+<li>Cloudflare</li>
+<li>cookie, które trzyma informację o preferencjach śledzenia przez Google Analytics</li>
+</ul>
+<li>Pliki związane z analizą i statystykami</li>
+<ul>
+<li>Google Analytics</li>
+</ul>
+<li>Pliki związane z mediami społecznościowymi</li>
+<ul>
+<li>pliki cookies związane z korzystaniem z wtyczki fb</li>
+</ul>
+</ol>
+§ 4 BLOKADA COOKIES
+<ol>
+<li>Zawsze masz możliwość zablokowania zapisywania plików cookies poprzez odpowiednią zmianę ustawień przeglądarki internetowej.</li>
+<li>Wyłączenie cookies może mieć wpływ na funkcjonowanie strony.</li>
+<li>Brak zmiany domyślnych ustawień Twojej przeglądarki oznacza akceptację dla stosowanych cookies. Zgodnie z przepisami polskiego prawa fsgeek.pl przyjmuje, że możesz wyrazić lub odmówić zgody na wykorzystywanie plików cookies poprzez odpowiednią konfigurację swojej przeglądarki. Zgoda tak wyrażona może być w każdym momencie wycofana.</li>
+<li>Możesz w dowolnym momencie usunąć pliki cookie przechowywane na swoim urządzeniu. Wycofanie zgody nie wpływa na zgodność z prawem przetwarzania danych zawartych w plikach cookie do chwili jej wycofania. Wycofanie zgody wyrażonej za pośrednictwem opcji przeglądarki jest szczegółowo opisane na stronach internetowych dostawców poszcze-gólnych przeglądarek — poniżej znajdziesz hiperłącza do tych najpopularniejszych:</li>
+<ul>
+<li>Internet Explorer: https://support.microsoft.com/pl-pl/help/17442/windows-internet-explorer-delete-ma-nage-cookies</li>
+<li>Mozilla Firefox: http://support.mozilla.org/pl/kb/ciasteczka</li>
+<li>Google Chrome: http://support.google.com/chrome/bin/answer.py?hl=pl&answer=95647</li>
+<li>Opera: http://help.opera.com/Windows/12.10/pl/cookies.html</li>
+<li>Safari: https://support.apple.com/kb/PH5042?locale=en-GB</li>
+</ul>
+<li>Masz możliwość zweryfikowania w każdej chwili swoich ustawień w przeglądarce, również w stosunku do poszczegól-nych plików cookie. W tym celu możesz skorzystać m.in. z następujących narzędzi:</li>
+  <ul>
+  <li>http://www.youronlinechoices.com/pl/twojewybory</li>
+  <li>http://optout.aboutads.info/?c=2&lang=EN</li>
+</ul>
+</ol>
       </article>
     </Layout>
   )

@@ -1,0 +1,34 @@
+---
+title: "Czy sztuczna inteligencja (AI) zabierze ci pracę w Web Development?"
+slug: "przyszlosc-ai-w-web-development"
+author: "Feridum"
+image: "./logo.jpg"
+tags: ["ai", "sztuczna inteligencja", "web development"]
+date: "2021-01-25T16:00:00.390Z"
+---
+
+Sztuczna inteligencja (AI) zaczyna być wykorzystywana wszędzie. Już nawet lodówki mają zaimplementowane funkcjonalności oparte o AI (a przynajmniej tak piszą). W programowaniu też zaczyna być ten temat coraz bardziej widoczny. Dużo szumu w tym temacie zrobiło GPT-3. Pokazało, że część pracy może być wykonywana przez maszyny. Trzeba sobie zadać następujące pytanie. Jaki wpływ na web development ma sztuczna inteligencja (AI)?
+
+<!--more--> 
+
+## Zagrożenie czy szansa?
+
+Ja z natury jestem osobą, która szuka zawsze pozytywnych stron. Z jedej strony AI można potraktować jako zagrożenie - bezduszna maszyna będzie tworzyła za nas aplikacje i zabierała pracę. Na pewno jest to częściowo prawda. Już teraz część zadań przekazujemy maszynom. Natomiast ja uważam, że praca stanie się przyjemniejsza. Nudne, powtarzalne zadania przekażemy maszynie do zrobienia. A co nam wtedy zostanie do roboty? My w tym czasie zrobimy nową funkcjonalność, usprawnimy aplikacje - ulepszymy część biznesową. Będziemy mieli w końcu czas by zajmować się rzeczami istotnymi. AI w branży Web Development stawia dopiero pierwsze kroki. Ale już zaczyna się robić interesująco. Gdzie możemy wykorzystać to, co nam daje AI? Jakie mamy już teraz możliwości?
+
+## Zaawansowane narzędzia
+
+To jest to, na co ja czekam z niecierpliwością. Czekam na coraz lepsze narzędzia, które będą wspierane sztuczną inteligencją. A możliwości mamy tutaj ogromne. Podpowiadanie składni, zaawansowane sprawdzanie składni, generowanie plików, całych projektów, sprawdzanie podatności w kodzie itd. Mamy potężną bazę kodu na Githubie i może uda się w przyszłości ją wykorzystać. To, co wpadło mi do głowy podczas pisania tego postu to testy e2e oparte na AI. Zamiast samodzielnego pisania kodu mamy kod AI, który udaje użytkownika i chodzi po stronie. To mogłoby zmienić nasze podejście do testów aplikacji. Jednak jest to tylko jeden mały przykład tego, co można zbudować.
+
+## Sterowanie głosem
+
+Dostępność treści jest coraz ważniejszym tematem. Pojawia się coraz więcej artykułów, dobrych praktyk, zasad jak budować dostępne aplikacje. I zainteresowanie tym tematem będzie tylko rosnąć. Coraz więcej osób ma dostęp do aplikacji, część z nich ma pewne ograniczenia i wygrają te aplikacje, które będę dostosowane pod ten rynek. Według mnie sterowanie głosem/komendy głosowe będą jednym z elementów, które na to wpłyną. Pomyśl, jak bardzo wzrośnie dostępność strony, gdy użytkownik będzie mógł sterować ją głosem - przewiń o 15 sekund, ciszej, głośniej, przewiń w dół, pauza itd. Ale do tego potrzebne jest już AI, które będzie w stanie przetworzyć głos w odpowiednią komendę. A nie jest to proste i niemożliwe do zrobienia tradycyjnym programowaniem (if'ami tego nie ogarniesz)
+
+## Chatboty
+
+Tutaj nie trzeba wiele opisywać, bo to już się dzieje. Mamy coraz więcej systemów do automatycznej komunikacji. I z każdym rokiem będzie tego coraz więcej, w lepszej jakości. Oby się nie okazało w przyszłości, że chatbot pisze lepiej od człowieka. A po co nam to? Zauważ, że powstaje coraz więcej aplikacji, są one globalne i dostępne 24h/dobę. Ilu ludzi potrzeba by zapewnić support w każdej strefie czasowej i każdym języku? Łatwiej jest posiadać bota, który będzie zaczynał rozmowy i ewentualnie przekierowywał do człowieka.
+
+## UX
+
+Na sam koniec UX(user-experience), czyli w skrócie jak naszemu użytkownikowi się dobrze korzysta ze strony/aplikacji. Widzę tu wiele możliwości, które może nam przynieść przyszłość. Personalizowane strony, zmiany w układzie na podstawie zachowania, możliwość oferowania lepszych usług, reklam, propozycji, usprawnienia w korzystaniu ze stron, poprawione bezpieczeństwo itd. To idealnie łączy się też z chatbotem, który może stać się naszym prywatnym trenerem, nauczycielem, doradcą. Przykładem takiej aplikacji jest D.A.R.E.K ([link do strony, która opisuje aplikację D.A.R.E.K](https://www.darek.ai/)) - który jest personalnym nauczycielem. 
+
+Prawda, że tego jest sporo? A to dopiero wierzchołek góry lodowej. Myślę, że w przyszłości czeka nas wiele interesujących projektów. Zarówno dla programistów, jak i użytkowników aplikacji.

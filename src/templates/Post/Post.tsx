@@ -22,15 +22,6 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
     title: post.frontmatter.title
   }
 
-  useEffect(()=>{
-    (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
-      var c={ a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
-      f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);
-      var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));
-      _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
-      var ml_account = ml('accounts', '2669557', 'd1b7k0h4n3', 'load');
-  },[])
-
   return (
     <>
       <Meta type={MetaTypes.ARTICLE} url={pathname}
@@ -41,10 +32,6 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
               description: post.excerpt,
               publishedAt: post.frontmatter.date
             }}/>
-      <Helmet>
-        <script async={true} defer={true} crossOrigin="anonymous"
-                src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v8.0&appId=846208848853284"/>
-      </Helmet>
       <div id="fb-root"/>
       <Layout className='lg:w-full'>
         {/* <div className='rounded-lg bg-orange-500 w-full p-4 text-white flex justify-between items-center mb-6 lg:text-lg font-bold lg:flex-row flex-col'>
@@ -83,7 +70,7 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
             <div className='post '>
              Jeśli podobał ci się ten artykuł to dołącz do newslettera. Dostaniesz dodatkowe treści do każdego postu oraz eksluzywne materiały, które pomogą ci pisac lepszy kod&nbsp;
               <a href='https://news.fsgeek.pl/'>
-                Chcę pisać lepszy kod </a>
+                Chcę uzyskać dostęp do bonusów </a>
             </div>
           </div>
           <div className="lg:w-1/5">
@@ -91,7 +78,9 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
                 data-width=""
                 data-height=""
                 data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                data-show-facepile="true">
+                data-show-facepile="true"
+                style={{minHeight: 130}}
+            >
               <blockquote cite="https://www.facebook.com/fsgeekk/" className="fb-xfbml-parse-ignore"><a
                 href="https://www.facebook.com/fsgeekk/" rel="noreferrer">Full Stack Geek</a></blockquote>
             </div>

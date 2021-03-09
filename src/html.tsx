@@ -22,6 +22,8 @@ export default function HTML(props: any) {
         />
         {props.postBodyComponents}
       </body>
+      <script async={true} defer={true} crossOrigin="anonymous"
+                src="https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v8.0&appId=846208848853284"/>
     </html>
   )
 }

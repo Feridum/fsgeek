@@ -12,6 +12,12 @@ code[class*="language-"] {
         margin-top: 1rem;
         margin-bottom: 0.5rem;
     }
+    h3 {
+        font-weight: 600;
+        font-size: 1.5em;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
     p {
         margin-top: 1.5rem;
         margin-bottom: 1.5rem;
@@ -26,9 +32,8 @@ code[class*="language-"] {
         margin: 2.5rem 0;
     }
     blockquote {
-        font-size: 1.5em;
+        font-size: 1.25em;
         border-left: solid 5px rgba(255,116,0,.5);
-        padding: 5px 0;
         padding-left: 15px;
     }
 }

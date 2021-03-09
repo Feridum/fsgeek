@@ -1,0 +1,193 @@
+---
+title: "Firestore - tworzenie, modyfikowanie i usuwanie danych"
+slug: "firebase-firestore-set-add-update-delete"
+author: "Feridum"
+image: "./logo.jpg"
+tags: ["firebase", "firestore", "javvascript"]
+date: "2021-03-09T16:00:00.536Z"
+---
+
+Przy bazie danych równie istotne, jak pobieranie danych, jest również ich tworzenie. Do podstawowych operacji możemy zaliczyć tworzenie, edycję i usuwanie dokumnetów oraz kolekcji. W przypadku Firestore jest kilka rozwiązań, które mogą zdziwić. Szczególnie osoby przyzwyczajone do baz relacyjnych.
+
+<!--more-->
+
+## Konfiguracja i pobieranie danych
+
+Jeśli nie masz do tej pory skonfigurowanego Firebase Firestore, to zacznij od przeczytania mojego poprzedniego postu - [Jak pobierać dane w Firebase](https://fsgeek.pl/post/firebase-firestore-pobieranie-danych/). Zobaczysz tam, co jest potrzebne, by skonfigurować Firebase w projekcie oraz jak pobrać pierwsze dokumenty. 
+
+## Tworzenie dokumentów
+
+Zacznę od tworzenia nowych dokumentów. Mamy dwie metody, by dodać do kolekcji nowy dokument - `set` i `add`. Czym się różnią? Najlepiej zacząć od przykładu.
+
+```js
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").set({
+    firstname: "FooFirstname",
+    lastname: "FooLastname",
+    name: "foo"
+})
+```
+
+```js
+const db = firebase.firestore();
+await db.collection("users").add({
+    firstname: "FooFirstname",
+    lastname: "FooLastname",
+    name: "foo"
+})
+```
+
+To, co widać to brak konieczności podania ID dokumentu, gdy korzystamy z `add`. Ma to swoje plusy i minusy. **Gdy korzystamy z `add`, to nie musimy się martwić o generowanie ID**, ale też nie mamy nad nimi żadnej kontroli. Natomiast w przypadku **`set` mamy pełną kontrolę nad tym, jakie ID generujemy**. Może to być pomocne, gdy chcemy np.: by ID był brany z domeny np.: numer ISBN co przyspieszy pobieranie danych.
+
+## Edycja dokumentów
+
+Istniejące dokumenty dobrze by było od czasu do czasu zaktualizować. Tutaj podobnie jak przy tworzeniu mamy dwie metody, które pozwalają aktualizować dokument - `set` i `update`. Jak wyglądają w akcji?
+
+```jsx
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").set({
+    firstname: "Foo2Firstname",
+    lastname: "Foo2Lastname",
+    name: "foo2"
+})
+```
+
+```jsx
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").update({
+    firstname: "Foo2Firstname",
+    lastname: "Foo2Lastname",
+    name: "foo2"
+})
+```
+
+Oba sposoby wyglądają podobnie więc jaka jest różnica? Metoda `set` nadpisuje dane - czyli jeśli dokument istniał, to **wszystskie dane zostaną nadpisane****. **Natomiast `update` pozwala na aktualizację pojedynczych pól**.
+
+> Metoda `set` pozwala na tworzenie, jak i aktualizowanie dokumentów.
+
+Jeśli nie wiemy, czy dokument już istnieje i nie chcemy stracić danych, to możemy skorzystać z opcji `merge: true`
+
+```json
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").set({
+    name: "foo2"
+}, { merge: true })
+```
+
+Przy takim ustawieniu metoda `set` zachowuje się jak `update`.
+
+## Aktualizacja pól w dokumencie
+
+Jeszcze poświęcę chwilę na temat aktualizacji pól. Dopóki są to proste pola, to aktualizacja nie sprawia problemu. Natomiast co zrobić, gdy mamy zagnieżdżony obiekt, tablicę lub chcemy inkrementować pole?
+
+### Zagnieżdżony obiekt
+
+W przypadku zagnieżdżonych obiektów trzeba bardzo uważać. Załóżmy, że mamy następujący obiekt.
+
+```jsx
+
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").set({
+    firstname: "Foo2Firstname",
+    lastname: "Foo2Lastname",
+    name: "foo2",
+		preferences: {
+			theme: "black",
+			language: "pl"
+		}
+})
+
+```
+
+Firestore nie sprawdza typowania naszego dokumentu. Co się stanie, jak zaktualizujemy dokument?
+
+```jsx
+await db.collection("users").doc("123-456").udpate({
+    preferences: {
+			theme: "light",
+		}
+})
+
+/*
+	Result: 
+	{
+	    firstname: "Foo2Firstname",
+	    lastname: "Foo2Lastname",
+	    name: "foo2",
+			preferences: {
+				theme: "light",
+			}
+	}
+	
+*/
+```
+Jak widać nasz zagnieżdżony obiekt został nadpisany i straciliśmy poprzednie dane. Co zrobić, gdy chcemy zaktualizować tylko jedno pole ? Wykorzystać tzw.: `dot notation`.  Jak będzie wyglądać wtedy powyższy przykład?
+
+```js
+await db.collection("users").doc("123-456").udpate({
+    preferences.theme: "light"
+})
+
+/*
+	Result: 
+	{
+	    firstname: "Foo2Firstname",
+	    lastname: "Foo2Lastname",
+	    name: "foo2",
+			preferences: {
+				theme: "light",
+				language: "pl"
+			}
+	}
+	
+*/
+```
+
+### Tablica
+
+W przypadku tablic mamy do wyboru dwie operacje - dodanie wartości lub usunięcie. Aby dodać wartość, musimy skorzystać z metody **`arrayUnion()` - doda ona wartość, o ile nie występuje już w tablicy**. Nie musimy się więc martwić o duplikaty w tablicy. Analogicznie **do usuwania wartości jest metoda `arrayRemove()`.**
+
+```json
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").udpate({
+    roles: firebase.firestore.FieldValue.arrayUnion("admin")
+})
+
+await db.collection("users").doc("123-456").udpate({
+    roles: firebase.firestore.FieldValue.arrayRemove("admin")
+})
+```
+
+### Inkrementowanie pola
+
+Do inkrementowania pola również jest dedykowana metoda.  **`increment(value)`- inkrementuje (lub dekrementuje) pole o wartość podaną w metodzie**. Uwaga - jeśli pole nie istnieje lub nie jest typu liczbowego to zostanie ustawione na podaną wartość.
+
+```jsx
+await db.collection("users").doc("123-456").udpate({
+    age: firebase.firestore.FieldValue.increment(1)
+})
+```
+
+## Usuwanie dokumentów
+
+W Firestore możemy usunąć dwa elementy - dokumenty lub pola w dokumencie. **Nie możemy natomiast usuwać całych kolekcji.** Do usuwania dokumentu służy metoda `delete()`.
+
+```jsx
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").delete();
+```
+
+> Usunięcie dokumentu nie usuwa subkolekcji podpiętych pod dokument
+
+Natomiast usunięcie pola można zrobić przy okazji aktualizacji dokumentu
+
+```jsx
+const db = firebase.firestore();
+await db.collection("users").doc("123-456").update({
+    name: firebase.firestore.FieldValue.delete()
+})
+```
+
+**Trzeba zwrócić uwagę, że wtedy jeden dokument będzie mieć inną strukturę.** Dlatego, zamiast usuwania polecam, by ustawiać pustą wartość. 
+
+A co z kolekcjami? Tak jak wspomniałem, nie możemy ich usunąć przy pomocy jednej komendy. Aby usunąć kolekcje, musimy pobrać i usunąć wszystkie dokumenty. W przypadku dużych kolekcji taka operacja będzie kosztowna i lepiej wykonać ją na backendzie.

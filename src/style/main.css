@@ -26,7 +26,10 @@ html, body {
     height: 100%
 }
 
+.block-scroll{
+    overflow: auto;
+}
+
 .pageContainer {
     height: 100%;
-    overflow: auto;
 }

@@ -42,7 +42,7 @@ Jeśli wszystko zostało zrobione poprawnie, to po uruchomieniu polecenia `docke
 
 ## CMD vs ENTRYPOINT
 
-Na sam koniec coś bardziej zaawansowanego - różnica pomiędzy `CMD` a `ENDPOINT`. Obydwa wywołają polecenie w naszym kontenerze, ale diabeł tkwi w szczegółach. 
+Na sam koniec coś bardziej zaawansowanego - różnica pomiędzy `CMD` a `ENTRYPOINT`. Obydwa wywołają polecenie w naszym kontenerze, ale diabeł tkwi w szczegółach. 
 
 > Polecenie CMD da się nadpisać podczas uruchamiania obrazu
 

@@ -3,11 +3,11 @@ title: "Firestore - tworzenie, modyfikowanie i usuwanie danych"
 slug: "firebase-firestore-set-add-update-delete"
 author: "Feridum"
 image: "./logo.jpg"
-tags: ["firebase", "firestore", "javvascript"]
+tags: ["firebase", "firestore", "javascript"]
 date: "2021-03-09T16:00:00.536Z"
 ---
 
-Przy bazie danych równie istotne, jak pobieranie danych, jest również ich tworzenie. Do podstawowych operacji możemy zaliczyć tworzenie, edycję i usuwanie dokumnetów oraz kolekcji. W przypadku Firestore jest kilka rozwiązań, które mogą zdziwić. Szczególnie osoby przyzwyczajone do baz relacyjnych.
+Przy bazie danych równie istotne, jak pobieranie danych, jest również ich tworzenie. Do podstawowych operacji możemy zaliczyć tworzenie, edycję i usuwanie dokumentów oraz kolekcji. W przypadku Firestore jest kilka rozwiązań, które mogą zdziwić. Szczególnie osoby przyzwyczajone do baz relacyjnych.
 
 <!--more-->
 

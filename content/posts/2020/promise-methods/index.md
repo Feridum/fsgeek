@@ -66,7 +66,7 @@ const promise1 = new Promise((resolve) => setTimeout(resolve, 100, 'resolve 100'
 const promise2 = new Promise((resolve) => setTimeout(resolve, 200, 'resolve 200'));
 const reject1 = new Promise((resolve, reject) => setTimeout(reject, 150, 'reject 150'));
 
-const test1 = await Promise.race([promise1, promise2]) // resolve 100
+const test1 = await Promise.race([promise1, reject1]) // resolve 100
 const test2 = await Promise.race([promise2, reject1]) // reject 150
 ```
 

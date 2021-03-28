@@ -39,7 +39,7 @@ Alternatywy:
 - [AppGyver](https://www.appgyver.com/)
 - [Glide](https://www.glideapps.com/)
 
-## [Airtable](https://airtable.com/)
+## [Airtable](https://airtable.com/invite/r/lhBOyKr7)
 
 Airtable jest przykładem aplikacji przeznaczonej do **zbierania i zarządzania danymi**. Jest taką bazą danych, z ładnym interfejsem dla użytkownika. Dodatkowo możemy, te dane zbierać w widoki by je można było w prosty sposób przeglądać i edytować. Najprostszym widokiem jest zwykła tabela, w której dane są przedstawione w postaci kolumn i wierszy. Możemy też filtrować i grupować dane - przydaje się to w momencie, gdy chcemy nowy widok z listą konkretnych elementów np.: nieukończonych zadań. Inne widoki to kalendarz, galeria czy też tablica Kanbana (czyli możemy stworzyć sobie prostą Jirę za darmo). Ciekawą opcją jest tworzenie formularzy, za pomocą których można zbierać dane i umieszczać je w tabeli.
 
@@ -68,7 +68,7 @@ Funkcjonalności:
 
 Alternatywy: 
 
-- [Integromat](https://www.integromat.com/en/)
+- [Integromat](https://www.integromat.com/?pc=fsgeek)
 - [IFTTT](https://ifttt.com/)
 
 ## [Typeform](https://www.typeform.com/)

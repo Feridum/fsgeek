@@ -9,7 +9,10 @@ export const PostTitle = ({title, className, date, readingTime, wordCount, postU
 
   return (
     <div className={clsx(className)}>
-      <h1 className='title border-b-2 pb-2'>{title}</h1>
+      <div className="border-b-2 pb-2 flex-row justify-between flex items-end">
+        <h1 className='title inline'>{title}</h1>
+        <h2 className='text-sm inline'>Aleksander Patschek</h2>
+      </div>
       <div className='flex flex-row mt-1 flex-wrap'>
         <div className='w-full md:w-auto mr-4'>Czas czytania: {readingTime} min</div>
         <div className='w-full md:w-auto mr-4'>Liczba słów: {wordCount}</div>

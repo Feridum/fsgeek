@@ -35,7 +35,6 @@ const embedClasses = [
 ].join(`,`)
 
 exports.onRouteUpdate = () => {
-    console.log(document.querySelector(embedClasses))
     if (document.querySelector(embedClasses) !== null) {
         injectMailerLiteScript()
     }

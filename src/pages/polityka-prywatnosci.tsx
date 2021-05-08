@@ -29,7 +29,8 @@ const BlogTags = () => {
 Wszystkie powyższe przypadku są praktykami w pełni zgodnymi z RODO.
 Podmiotami, którym administrator ujawni Twoje dane osobowe będą:
 <ul>
-<li>MyDevil ADMIN.NET.PL Tomasz Rzepka Arkadiusz Nowara S.C. (NIP: 8733250257)</li>
+            <li>MyDevil ADMIN.NET.PL Tomasz Rzepka Arkadiusz Nowara S.C. (NIP: 8733250257)</li>
+            <li>Facebook Ireland Ltd.: https://www.facebook.com/privacy/explanation</li>
 <li>UAB “MailerLite”, J. Basanavičiaus 15, LT-03108 Vilnius, Lithuania</li>
 </ul>
 <li>Twoje dane osobowe będą przekazywane do innych państw, niż należące do Europejskiego Obszaru Gospodarczego – tzw. państw trzecich. Jest to niezbędne w celu zapewnienia prawidłowego działania newslettera. Aby przeciwdziałać ewentualnym ryzykom, zawarte zostaly umowy powierzenia przetwarzania zapewniające odpowiedni poziom bezpie-czeństwa Twoich danych. Przekazywane danych poza Europejski Obszar Gospodarczy jest w nich oparte o standardowe klauzule umowne zatwierdzone przez Komisję Europejską. Taki sposób przetwarzania jest w pełni legalny i zgodny z RODO.</li>

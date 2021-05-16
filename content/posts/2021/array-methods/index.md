@@ -7,7 +7,7 @@ tags: ["javascript",]
 date: "2021-05-18T16:00:00.084Z"
 ---
 
-W Javascript tablice są jednym z najbardziej popularnych i wykorzystywanych obiektów. Możemy na nim operować na dwa sposoby - mutując oryginalną tablicę lub tworząc nowy obiekt za każdym razem. W poście pokazuję jak wykonać podstawowe operacje na tablicach w tych dwóch podejściach.
+W Javascript tablice są jednym z najbardziej popularnych i wykorzystywanych obiektów. Możemy na nich operować na dwa sposoby - mutując oryginalną tablicę lub tworząc nowy obiekt za każdym razem. W poście pokazuję jak wykonać podstawowe operacje na tablicach w tych dwóch podejściach.
 
 <!--more-->
 

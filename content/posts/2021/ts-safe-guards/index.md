@@ -48,9 +48,9 @@ Podczas kompilacji pojawi się błąd spowodowany tym, że w typie `ErrorRespons
 
 ## Podejście szybkie i złe
 
-Możemy pozbyć się tego problemy na dwa szybkie sposoby, z których każdy jest błędny. Po pierwsze możemy wykorzystać typ `any` - ale **typ any jest zawsze zły i nigdy nie powinieneś z niego korzystać**.
+Możemy pozbyć się tego problemu na dwa szybkie sposoby, z których każdy jest błędny. Po pierwsze możemy wykorzystać typ `any` - ale **typ any jest zawsze zły i nigdy nie powinnaś/powinieneś z niego korzystać**.
 
-Inne podejście to wykorzystanie operatora `as`. Powoduje on, że zmienna będzie w danym miejscu traktowana jako podany typ. Na pewno usunie to błędy TS'a, ale jeśli wykorzystasz to nieumiejętnie to możesz dostać błędy, gdy źle nadpiszesz typ.
+Inne podejście to wykorzystanie operatora `as`. Powoduje on, że zmienna będzie w danym miejscu traktowana jako podany typ. Na pewno usunie to błędy TS'a, ale jeśli wykorzystasz to nieumiejętnie, to możesz dostać błędy, gdy źle nadpiszesz typ. Albo, gdy zmienna będzie miała inną wartość niż oczekiwana przez Ciebie.
 
 ```tsx
 const parseResponse = (response: RequestResponse)=>{
@@ -86,6 +86,6 @@ const isValid = (response: RequestResponse): response is GoodResponse {
 }
 ```
 
-W powyższym przykładem `response is GoodResponse` jest właśnie type predicate. Jest on postaci `<zmienna> is <typ>`, gdzie zmienną jest, ta sama zmienna co została przekazana w funkcji, a typ musi być składowym typem uni.
+W powyższym przykładzie `response is GoodResponse` jest właśnie `type predicate`. Jest on postaci `<zmienna> is <typ>`, gdzie zmienną jest ta sama zmienna, co została przekazana w funkcji, a typ musi być składowym typem uni.
 
-Jeżeli nasza funkcja zwróci wartosć `true`, to TS wie jakiego typu jest zmienna. Dzięki temu mamy jedną funkcję, którą wykorzystamy w wielu miejscach. I jeśli coś się zmieni, to wystarczy, że zmienimy jedną funkcję.
+Jeżeli nasza funkcja zwróci wartość `true`, to TS wie jakiego typu jest zmienna. Dzięki temu mamy jedną funkcję, którą wykorzystamy w wielu miejscach. A jeśli coś się zmieni, to wystarczy, że zmienimy jedną funkcję.

@@ -1,0 +1,91 @@
+---
+title: "Czy wiesz jak sobie poradzić z Union Types?"
+slug: "typescript-type-guard-type-predicate"
+author: "Feridum"
+image: "./logo.png"
+tags: ["typescript"]
+date: "2021-06-01T16:00:00.489Z"
+---
+
+Typescript jest popularnym wyborem przy starcie nowych projektów. Typowanie pomaga pisać lepszy kod, który będzie bardziej odporny na błędy. Jednak jest też druga strona medalu. Typowanie może powodować dodatkowe wyzwania.
+
+<!--more-->
+
+## Union types
+
+Union type jest specjalnym rodzajem typu w Typescript. Unia pozwala przypisać więcej niż jeden typ do zmiennej. Wykorzystujemy do tego znak `|` np.:
+
+```tsx
+const value: number | string;
+
+const response: Error | Response;
+```
+
+Możemy to wykorzystywać np.: w przypadku odpowiedzi z backendu, gdzie dostajemy dwie różne odpowiedzi zależne od statusu. Dzięki temu mamy w pełni otypowaną odpowiedź. Ale pojawiają się też inne problemy.
+
+```tsx
+type ErrorResponse = {
+    errorMessage: string
+}
+
+type GoodResponse = {
+    data: string;
+}
+
+type RequestResponse = ErrorResponse | GoodResponse
+
+const parseResponse = (response: RequestResponse)=>{
+    return JSON.parse(response.data);
+}
+
+/*
+Property 'data' does not exist on type 'RequestResponse'.
+  Property 'data' does not exist on type 'ErrorResponse'.
+*/
+```
+
+Podczas kompilacji pojawi się błąd spowodowany tym, że w typie `ErrorResponse`, nie ma pola data. Musimy w jakiś sposób podpowiedzieć kompilatorowi, jaki dokładnie typ mamy.
+
+## Podejście szybkie i złe
+
+Możemy pozbyć się tego problemu na dwa szybkie sposoby, z których każdy jest błędny. Po pierwsze możemy wykorzystać typ `any` - ale **typ any jest zawsze zły i nigdy nie powinnaś/powinieneś z niego korzystać**.
+
+Inne podejście to wykorzystanie operatora `as`. Powoduje on, że zmienna będzie w danym miejscu traktowana jako podany typ. Na pewno usunie to błędy TS'a, ale jeśli wykorzystasz to nieumiejętnie, to możesz dostać błędy, gdy źle nadpiszesz typ. Albo, gdy zmienna będzie miała inną wartość niż oczekiwana przez Ciebie.
+
+```tsx
+const parseResponse = (response: RequestResponse)=>{
+    return JSON.parse((response as GoodResponse).data);
+}
+```
+
+## Type Guard
+
+Dużo lepszym pomysłem jest wykorzystanie mechanizmu `type guard`. Dzięki odpowiednim operacjom możemy w czasie runtime, określić, z jakim typem mamy do czynienia. Dzięki temu jesteśmy zabezpieczeni oraz eliminujemy błędy TS'a.
+
+### Operator `in`
+
+Operator in istnieje w JS i pozwala sprawdzić, czy pole istnieje w obiekcie. Jeżeli będziemy sprawdzać pole unikalne dla danego typu, to TS będzie w stanie określić typ obiektu. Dzięki temu zyskujemy bezpieczeństwo - mamy pewność, że pole istnieje i możemy z niego pobierać dane.
+
+```tsx
+const parseResponse = (response: RequestResponse)=>{
+    if('data' in response){
+        return JSON.parse(response.data);
+    }
+}
+```
+
+Jest to najprostszy i bardzo skuteczny sposób na `type checking`.
+
+### Type Predicate
+
+Bardziej zaawansowanym sposobem na type checking jest wykorzystanie funkcji, która zwraca tzw. `type predicate`
+
+```tsx
+const isValid = (response: RequestResponse): response is GoodResponse {
+    return 'data' in response
+}
+```
+
+W powyższym przykładzie `response is GoodResponse` jest właśnie `type predicate`. Jest on postaci `<zmienna> is <typ>`, gdzie zmienną jest ta sama zmienna, co została przekazana w funkcji, a typ musi być składowym typem uni.
+
+Jeżeli nasza funkcja zwróci wartość `true`, to TS wie jakiego typu jest zmienna. Dzięki temu mamy jedną funkcję, którą wykorzystamy w wielu miejscach. A jeśli coś się zmieni, to wystarczy, że zmienimy jedną funkcję.

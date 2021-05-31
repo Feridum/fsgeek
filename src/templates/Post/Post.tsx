@@ -54,7 +54,7 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
           <div
             className='post w-full lg:w-3/4 flex lg:flex-col flex-col-reverse'
           >
-            <div className='w-full mb-8 bg-teal-200 p-4 rounded-lg'>
+            {/* <div className='w-full mb-8 bg-teal-200 p-4 rounded-lg'>
               Cześć. Cieszę się, że czytasz mój post. Jeśli podoba ci się to co piszę i chcesz otrzymywać informacje o
               nowych postach to  <a href='https://news.fsgeek.pl/'> dołącz do mojego newslettera </a>.
 
@@ -63,7 +63,7 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
               tym aby tworzyć dla ciebie treści o największej jakości.
               <br/>
               <div className='text-xl text-center w-full my-3'>Dziękuję za pomoc i dołączenie do newslettera - to daje siły do pisania kolejnych postów.</div>
-            </div>
+            </div> */}
 
             <div className='post' dangerouslySetInnerHTML={{ __html: post.html }}/>
 

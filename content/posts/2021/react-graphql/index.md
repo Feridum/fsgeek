@@ -1,5 +1,5 @@
 ---
-title: "Czy wiesz jak dodać GraphQL do aplikacji React"
+title: "Czy wiesz jak dodać GraphQL do aplikacji React?"
 slug: "react-graphql-apollo-client"
 author: "Feridum"
 image: "./logo.png"
@@ -43,7 +43,7 @@ Dodatkowo w React możemy skorzystać z Contextu, by dostarczyć domyślnego kli
 </ApolloProvider>
 ```
 
-Nic nie szkodzi na przeszkodzie, by osobne części systemu korzystały z różnych Provider'ów. Warto zwrócić uwagę, że możemy przekazać tylko jedną instancję klienta. Powoduje to, że w sytuacji, gdy korzystamy z kilku klientów, może to być nieintuicyjne.
+Nic nie stoi na przeszkodzie, by osobne części systemu korzystały z różnych Provider'ów. Warto zwrócić uwagę, że możemy przekazać tylko jedną instancję klienta. Powoduje to, że w sytuacji, gdy korzystamy z kilku klientów, może to być nieintuicyjne.
 
 ## Rodzaje operacji
 
@@ -96,7 +96,7 @@ Ten hook zawsze wykonuje się po zamontowaniu komponentu na stronie. Jeśli chce
 
 To jest rozszerzenie poprzedniego hooka. Różni się tylko tym, że zwraca tablicę zamiast obiektu i nie wykonuje się automatycznie. Za to pierwszy element tablicy jest funkcją, która pozwala na pobranie danych. Wygląda to następująco: 
 
-```yaml
+```jsx
 const [fetchLinks, {loading, error, data}] = useLazyQuery(query, {
 	fetchPolicy: "network-only",
 })
@@ -106,11 +106,11 @@ const fetchLinks = ()=>{
 }
 ```
 
-Reszta elementów jest bez zmian 
+Reszta elementów jest bez zmian. 
 
 ### Mutation
 
-Na sam koniec zostawiłem mutacje. Jeśli chodzi o strukturę, to wygląda podobnie do LazyQuery. Czyli jako rezultat hooka dostajemy tablicę, gdzie pierwszym argumentem jest funkcja, która umożliwia wykonanie mutacji.
+Na sam koniec zostawiłem mutacje. Jeśli chodzi o strukturę, to wygląda podobnie do LazyQuery. Czyli jako rezultat hooka dostajemy tablicę, gdzie pierwszym elementem jest funkcja, która umożliwia wykonanie mutacji.
 
 ```jsx
 const mutation = gql`

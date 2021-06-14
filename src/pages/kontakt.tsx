@@ -8,7 +8,7 @@ import React from "react"
 const Contact = () => {
   return (
     <Layout className='flex flex-col items-center'>
-      <Meta type={MetaTypes.PAGE} url={'/tags'}/>
+      <Meta type={MetaTypes.PAGE} url={'/kontakt'}/>
       <h4 className="text-6xl underline text-center text-blue-700"><a href="https://news.fsgeek.pl/">Dołącz do newslettera</a></h4>
       <h2 className="text-black font-bold text-2xl underline hover:text-teal-600 text-center"><a href='mailto:kontakt@fsgeek.pl'>📧 Lub napisz do mnie maila na kontakt@fsgeek.pl</a></h2>
       <a href='https://socialshub.net/FSGeek'>

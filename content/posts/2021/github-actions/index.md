@@ -53,6 +53,8 @@ jobs:
         run: npm run build
 ```
 
+Plik musisz umieścić w folderze **<twój projekt>/.github/workflows/<nazwa_konfiguracji>.yml**. Jako nazwa pliku możesz dać np.: **main.yml**
+
 Co się dzieje w tej konfiguracji?
 
 Po pierwsze mamy informacje, kiedy będzie się uruchamiała ta automatyzacja - w tym przypadku jest to za każdym razem, gdy zrobimy pull request do gałęzi main.

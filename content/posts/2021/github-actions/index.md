@@ -4,7 +4,7 @@ slug: "ci-github-actions"
 author: "Feridum"
 image: "./logo.png"
 tags: ["ci", "github actions"]
-date: "2021-06-27T08:16:11.953Z"
+date: "2021-06-29T16:00:00.953Z"
 ---
 
 CI/CD potrafi bardzo usprawnić naszą pracę, automatyzując część procesów. Dzięki temu nasz projekt jest "pilnowany" 24/7. A my mamy więcej czasu na ważniejsze sprawy. Jeśli korzystasz z Githuba, to koniecznie sprawdź Github Actions.

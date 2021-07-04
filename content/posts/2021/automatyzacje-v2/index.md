@@ -38,7 +38,7 @@ Dużą pomocą jest tutaj Router, który rozdziela zadania na podstawie filtru.
 Użyte elementy
 
 - Airtable - do pobierania konfiguracji dla aktualnego postu
-- Router by rozdzielać zadania zależnie od statusu
+- Router - do rozdzielania zadań zależnie od statusu
 - [APITemplate.io](http://apitemplate.io) - do tworzenia obrazków
 - Buffer - do planowania postów
 - Todoist - do tworzenia zadania by uzupełnić opis na SM
@@ -62,7 +62,7 @@ Pierwsze 3 elementy są potrzebne do wygenerowania obrazka do Social Media. W mo
 Użyte elementy
 
 - Airtable - do pobierania konfiguracji dla reccenzji
-- Router by rozdzielać zadania zależnie od statusu
+- Router - do rozdzielania zadań zależnie od statusu
 - [APITemplate.io](http://apitemplate.io) - do tworzenia obrazków
 - Buffer - do planowania postów
 
@@ -72,7 +72,7 @@ Ta automatyzacja pozwoliła mi zaoszczędzić sporo czasu przy generowaniu fragm
 
 ![generowanie code snippets](./code-snippets.png)
 
-W tym przypadku wykorzystuję Airtable do zbierania kawałków kodu i potem pozwalam, by wszystko się automatycznie wygenerowało i zostało umieszczone z powrotem w Airtable, gdzie smogę z tego korzystać. 
+W tym przypadku wykorzystuję Airtable do zbierania kawałków kodu i potem pozwalam, by wszystko się automatycznie wygenerowało i zostało umieszczone z powrotem w Airtable, gdzie mogę z tego korzystać. 
 
 Mam tylko jeden problem z aktualnym scenariuszem - wygląda na to, że Airtable nie pozwala na uplaod plików przy pomocy API. Żeby dodać plik, trzeba dać URL do tego pliku. Więc code snippet jest wrzucany do Google Drive i z tego miejsca wrzucany do Airtable. Pracuję nad tym, by to jeszcze zoptymalizować. Jestem otwarty na Twój pomysł. 
 
@@ -86,7 +86,7 @@ Użyte elementy
 
 To jest jedna z automatyzacji, która pozwala mi na śledzenie moich maili i wyciąganie wniosków. Zasada działania jest bardzo prosta. Chcę zbierać opinie o swoich mailach - czy się podobały czy też nie. Na podstawie tego będę w stanie je ulepszać. 
 
-![automatyzacja oceny maili](./ocena-maili)
+![automatyzacja oceny maili](./ocena-maili.png)
 
 Aby to zrobić utworzyłem webhook'a - jest to specjalny link, który Integromat generuje. I teraz jak użytkownik wejdzie na ten link, to mogę uruchomić automatyzację. W mailach umieściłem link takiej postaci: `<webhook>/?ocena=x`. Wszystkie parametry są przekazywane do automatyzacji, więc jestem w stanie w Airtable zbierać te dane. 
 

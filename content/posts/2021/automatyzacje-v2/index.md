@@ -4,7 +4,7 @@ slug: "automatyzacje-integromat-airtable"
 author: "Feridum"
 image: "./logo.png"
 tags: ["automatyzacje", "integromat", "airtable"]
-date: "2021-07-04T11:38:15.274Z"
+date: "2021-07-06T16:00:00.274Z"
 ---
 
 Automatyzacje są uzależniające. Zaczynasz od jednej, potem nagle masz kilka i ciągle rośnie. W tym poście opisuję swoje kolejne automatyzacje, które wprowadziłem ostatnio do swojego bloga.

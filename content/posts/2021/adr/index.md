@@ -4,7 +4,7 @@ slug: "adr-architecture-decision-record"
 author: "Feridum"
 image: "./logo.png"
 tags: ["architektura"]
-date: "2021-07-16T13:31:39.407Z"
+date: "2021-07-20T16:00:00.407Z"
 ---
 
 Mówi ci coś skrót ADR? Jest to sposób dokumentacji projektu, który uwzględnia decyzje architektoniczne, jakie zachodzą w projekcie. Brzmi poważnie, ale da się to prosto wprowadzić i czerpać zyski.

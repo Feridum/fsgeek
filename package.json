@@ -58,7 +58,8 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
-    "add:post": "plop add-post"
+    "add:post": "plop add-post",
+    "add:adr": "plop add-adr"
   },
   "repository": {
     "type": "git",

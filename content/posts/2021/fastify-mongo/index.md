@@ -8,7 +8,7 @@ date: "2021-07-31T13:54:19.526Z"
 ---
 
 
-Aplikacja bez bazy danych nie istnieje. Do wyboru mamy wiele rodzajów - relacyjne, NoSQL, grafowe, klucz-wartość itd. W dzisiejszym wpisie pokazuję jak połączyć projekt w Fastify z MongoDB.
+Ciężko zrobić fajną aplikację bez bazy danych. Do wyboru mamy wiele rodzajów baz- relacyjne, NoSQL, grafowe, klucz-wartość itd. W dzisiejszym wpisie pokazuję jak połączyć projekt w Fastify z MongoDB.
 
 <!--more-->
 
@@ -16,7 +16,7 @@ Aplikacja bez bazy danych nie istnieje. Do wyboru mamy wiele rodzajów - relacyj
 
 MongoDB jest przykładem bazy danych typu NoSQL. W bazach SQL dane są przechowywane w uporządkowanej strukturze zwanej tablicą, gdzie każda z kolumn definiuje jeden rodzaj danych, a w wierszach są kolejne zestawy danych. Dane z różnych tabel są połączone przy pomocy relacji, dzięki czemu można budować skomplikowane modele. W NoSQL mamy większą dowolność w kwestii sposobu przechowywania danych i wszystko zależy od tego, jaką bazę wykorzystujemy. W MongoDB dane są przechowywane za pomocą dokumentów, w których obowiązuje struktura klucz-wartość. Najprościej sobie wyobrazić to jako rodzaj pliku *.json. Taka struktura daje sporo elastyczności i jednocześnie jest prosta do czytania.
 
-Dlaczego zdecydowałem się na bazę NoSQL do klona Linktree? Po pierwsze nie potrzebuję tutaj żadnych relacji - dane chciałem trzymać w jak najprostszej strukturze. Czyli pobieram dane i wrzucam do widoku bez przetwarzania. Po drugie struktura nie jest ostateczna - w Mongo mogę dużo łatwiej zmieniać kolumny i zawartość. No i Mongo daje mi dużo większą elastyczność.
+Dlaczego zdecydowałem się na bazę NoSQL do klona Linktree? Po pierwsze nie potrzebuję tutaj żadnych relacji - dane chciałem trzymać w jak najprostszej strukturze. Czyli pobieram dane i wrzucam do widoku bez przetwarzania. Po drugie struktura nie jest ostateczna - w MongoDB mogę dużo łatwiej zmieniać kolumny i zawartość. MongoDB daje mi dużo większą elastyczność.
 
 Do lokalnych testów polecam skorzystać z Docker'a. Poniżej umieściłem polecenie, które uruchomi taką bazę danych na porcie `27017`, login to `admin` i hasło `test`.  Na potrzeby testów sprawdzi się idealnie.
 
@@ -32,26 +32,26 @@ Konfigurację mongo trzeba zacząć od instalacji wymaganych zależności
 npm i fastify-plugin mongodb fastify-env
 ```
 
-Jest to minimalny zestaw bibliotek jaki jest potrzebny do podpięcia bazy danych do Fastify. 
+Jest to minimalny zestaw bibliotek, jaki jest potrzebny do podpięcia bazy danych w Fastify. 
 
 - `fastify-env` - do obsługi zmiennych środowiskowych (niżej jest to opisane szerzej)
 - `fastify-plugin` - by stworzyć plugin, który doda obsługę bazy danych
 - `mongodb` - biblioteka do połączenia z MongoDB
 
-`mongodb` jest oficjalną biblioteką od twórców tej bazy danych. Dzięki temu będę miał dostęp do wszystkich aktualizacji w momencie jak wyjdą. Oczywiście są inne biblioteki np.: mongoose albo bardziej w TypeORM. Nie będę próbował cię przekonać, że wybór tych bibliotek jest słabym wyborem. Ale do moich zapotrzebować nie potrzebuję tak rozbudowanych rozwiązań. Innym minusem takich rozbudowanych rozwiązań są warstwy abstrakcji - jeśli wyjdzie update do mongodb, to trzeba czekać aż autorzy zaktualizują biblioteki. W przypadku oficjalnego mongodb, aktualizacja jest od razu. 
+`mongodb` jest oficjalną biblioteką od twórców tej bazy danych. Dzięki temu będę miał dostęp do wszystkich aktualizacji, zaraz po tym, jak wyjdą. Oczywiście są inne biblioteki np.: mongoose albo TypeORM. Nie będę próbował cię przekonać, że wybór tych bibliotek jest zły. Ale do moich zapotrzebowań nie potrzebuję tak rozbudowanych rozwiązań. Innym minusem takich rozbudowanych rozwiązań są warstwy abstrakcji - jeśli wyjdzie update do mongodb, to trzeba czekać, aż autorzy zaktualizują biblioteki. W przypadku oficjalnego mongodb aktualizacja jest od razu. 
 
 ## Obsługiwanie zmiennych środowiskowych
 
-Dodawanie bazy danych jest idealnym momentem, by wspomnieć o zmiennych środowiskowych. Do połączenia z bazą danych potrzebujemy wrażliwych informacji takich jak: adres bazy danych, użytkownik, hasło, port. Dla środowiska developerskiego nie jest problemem, by te dane były zaszyte w kodzie (i tak najczęściej to jest docker). Ale co z produkcją. Nie można sobie pozwolić na to, by dowolna osoba poznała dane dostępowe do bazy danych. To grozi wyciekiem danych, awarią aplikacji, prawne konsekwencje itd.
+Dodawanie bazy danych jest idealnym momentem, by wspomnieć o zmiennych środowiskowych. Do połączenia z bazą danych potrzebujemy wrażliwych informacji takich jak: adres bazy danych, użytkownik, hasło, port. Dla środowiska developerskiego nie jest problemem, by te dane były zaszyte w kodzie (i tak najczęściej to jest docker). Ale co z produkcją? Nie można sobie pozwolić na to, by dowolna osoba poznała dane dostępowe do bazy danych. To grozi wyciekiem danych, awarią aplikacji, prawne konsekwencje itd.
 
-Najlepszy sposób by sobie z tym poradzić to tzw.: zmienne środowiskowe. Dzięki temu dla każdego środowiska możemy ustalić inne wartości. Najczęściej są ustawiane podczas deploy'u na środowisku - powoduje to, że nawet developerzy nie znają ustawień produkcyjnych. Podczas developmentu korzysta się z pliku `.env`, by ustawić odpowiednie zmienne. Przykładowy plik wygląda następująco:
+Najlepszy sposób, by sobie z tym poradzić to tzw.: zmienne środowiskowe. Dzięki temu dla każdego środowiska możemy ustalić inne wartości. Najczęściej są ustawiane podczas deploy'u na środowisku - powoduje to, że nawet developerzy nie znają ustawień produkcyjnych. Podczas developmentu korzysta się z pliku `.env`, by ustawić odpowiednie zmienne. Przykładowy plik wygląda następująco:
 
 ```yaml
 MONGO_URL=
 MONGO_DB=
 ```
 
-Biblioteka `fastify-env`, pozwala korzystać z tego pliku jak i zmiennych ustawionych w systemie.
+Biblioteka `fastify-env`, pozwala korzystać z tego pliku, jak i zmiennych ustawionych w systemie.
 
 ```yaml
 const fastifyEnv = require('fastify-env');
@@ -79,7 +79,7 @@ const options = {
 fastify.register(fastifyEnv, options)
 ```
 
-Aby poprawnie skonfigurować fatstify-env potrzebna jest schema. Jest to obiekt, który zawiera klucze o nazwie naszych zmiennych oraz konfiguracji. Dodatkowo w opcjach warto zwróci uwagę na opcję `dotenv` - po ustawieniu na true plugin pobiera zmienne z pliku .env.
+Do poprawnego skonfigurowania fatstify-env potrzebna jest schema. Jest to obiekt, który zawiera klucze o nazwie naszych zmiennych oraz konfiguracji dla nich. Dodatkowo w opcjach warto zwrócić uwagę na opcję `dotenv` - po ustawieniu na true plugin pobiera zmienne z pliku .env.
 
 ## MongoDB + Fastify
 
@@ -104,16 +104,20 @@ module.exports = {
 }
 ```
 
-Do stworzenia własnego pluginu korzystam z biblioteki `fastify-plugin`. Przyjmuje ona jako pierwszy parametr funkcję, w której mieści się cała logika pluginu. Funkcja ta ma dostęp do obiektu `fastify`, który pozwala na dostęp do zmiennych środowiskowych oraz na rejestrację pluginu. Cała logika nie jest skomplikowana, ponieważ nawiązujemy tylko połączenie z bazą danych i rejestrujemy rezultat jako `mongoDb`. Gdybyśmy korzystali z innych baz moglibyśmy nawiązać osobne połączenia i zarejestrować więcej niż jedną wartość. Oprócz tego w bibliotece `fastify-plugin` można przekazać inne parametry np.: minimalna wspierana wersja fastify (tak jak w przykładzie) ale jest to bardziej osób, które tworzą pluginy open-source.
+Do stworzenia własnego pluginu korzystam z biblioteki `fastify-plugin`. Przyjmuje ona jako pierwszy parametr funkcję, w której mieści się cała logika pluginu. Funkcja ta ma dostęp do obiektu `fastify`, który pozwala na dostęp do zmiennych środowiskowych oraz na rejestrację pluginu. 
 
-Dalej trzeba nasz własny plugin zarejestrować
+Cała logika nie jest skomplikowana, ponieważ nawiązujemy tylko połączenie z bazą danych i rejestrujemy rezultat jako zmienna `mongoDb`. Gdybyśmy korzystali z innych baz, moglibyśmy nawiązać osobne połączenia i zarejestrować więcej niż jedną wartość. 
+
+Oprócz tego w bibliotece `fastify-plugin` można przekazać inne parametry np.: minimalna wspierana wersja fastify (tak jak w przykładzie), ale jest to bardziej dla osób, które tworzą pluginy open-source.
+
+Dalej trzeba nasz własny plugin zarejestrować.
 
 ```yaml
 const { mongoPlugin } = require('./mongo.js');
 fastify.register(mongoPlugin)
 ```
 
-I potem można wykorzystywać przy zapytaniach
+I potem można wykorzystywać przy zapytaniach.
 
 ```yaml
 fastify.get('/', async (req, reply) => {

@@ -4,7 +4,7 @@ slug: "fastify-plugin-mongodb"
 author: "Feridum"
 image: "./logo.png"
 tags: ["fastify", "mongodb"]
-date: "2021-07-31T13:54:19.526Z"
+date: "2021-08-03T16:00:00.526Z"
 ---
 
 

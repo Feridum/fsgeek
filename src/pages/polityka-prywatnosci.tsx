@@ -31,7 +31,8 @@ Podmiotami, którym administrator ujawni Twoje dane osobowe będą:
 <ul>
             <li>MyDevil ADMIN.NET.PL Tomasz Rzepka Arkadiusz Nowara S.C. (NIP: 8733250257)</li>
             <li>Facebook Ireland Ltd.: https://www.facebook.com/privacy/explanation</li>
-<li>UAB “MailerLite”, J. Basanavičiaus 15, LT-03108 Vilnius, Lithuania</li>
+<li>MailerLite Limited Ground Floor, 71 Lower Baggot Street, Dublin 2, D02 P593, Ireland. https://www.mailerlite.com/legal/privacy-policy</li>
+<li>Google Poland sp. z o.o mieści się w Warszawie (00-113), ul. Emilii Plater 53.: https://policies.google.com/privacy?hl=pl</li>
 </ul>
 <li>Twoje dane osobowe będą przekazywane do innych państw, niż należące do Europejskiego Obszaru Gospodarczego – tzw. państw trzecich. Jest to niezbędne w celu zapewnienia prawidłowego działania newslettera. Aby przeciwdziałać ewentualnym ryzykom, zawarte zostaly umowy powierzenia przetwarzania zapewniające odpowiedni poziom bezpie-czeństwa Twoich danych. Przekazywane danych poza Europejski Obszar Gospodarczy jest w nich oparte o standardowe klauzule umowne zatwierdzone przez Komisję Europejską. Taki sposób przetwarzania jest w pełni legalny i zgodny z RODO.</li>
 <li>Twoje dane osobowe będą przetwarzane przez czas trwania zgody. W chwili gdy cofniesz zgodę, Twoje dane zostaną bezpowrotnie usunięte i ich przetwarzanie zakończy się. Ze względu na ograniczenia techniczne i organizacyjne proces usuwania trwa do 30 dni.</li>
@@ -76,6 +77,19 @@ Strona nie zbiera w sposób automatycznych żadnych informacji, za wyjątkiem in
   <li>http://www.youronlinechoices.com/pl/twojewybory</li>
   <li>http://optout.aboutads.info/?c=2&lang=EN</li>
 </ul>
+</ol>
+
+§ 5 Social Media
+<ol>
+  <li>Administratorem danych na profilu FB https://www.facebook.com/fsgeekk i Instagram https://instagram.com/fsgeek/ jest Aleksander Patschek</li>
+  <li>Twoje dane są przetwarzane w celu administracji profili na social media, kierowaniu reklam, interakcji i budowania społeczności</li>
+  <li>Obserwując profile wyrażasz zgodę na przetwarzanie danych</li>
+  <li>Możesz cofnać zgodę przestająć obserwować profile</li>
+  <li>Administrator widzi Twoje publiczne dane</li>
+  <li>Dane są przetwarzane przed okres istnienia profili i na podstawie zgody </li>
+  <li>zanonimizowane dane użytkowników wykorzystywane są w celach statystycznych za pośrednictwem Facebooka.</li>
+  <li>przekazywanie danych ograniczone jest tylko do niezbędnych danych, które pozwolą na prawidłowe świadczenie tej usługi</li>
+  <li>Dane mogą być przekazywane do państw trzecich zgodnie z regulaminem i polityką prywatności Facebooka</li>
 </ol>
       </article>
     </Layout>

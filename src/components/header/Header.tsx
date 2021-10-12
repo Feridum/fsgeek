@@ -47,7 +47,7 @@ export const Header = () => {
               Poznaj autora
             </div>
           </Link>
-          <a href='https://news.fsgeek.pl/' title="dołącz do newslettera">
+          <a href='https://ci.fsgeek.pl/' title="dołącz do newslettera">
             <div
               className="block pt-4 pl-6 pb-4 lg:pt-0 lg:pb-0  text-gray-200 hover:text-white mr-4 bg-teal-900 w-4/5 lg:w-auto h-" >
               &#128231; Dołącz do newslettera
@@ -63,7 +63,7 @@ export const Header = () => {
                target="_blank" title="Otwórz fanpage" rel="noreferrer">
               <FacebookIcon size={20} className='ml-3'/>
             </a>
-            <a href="https://twitter.com/FSGeekk"
+            <a href="https://twitter.com/fsgeek_pl"
                target="_blank" title="Otwórz profil na Twitter" rel="noreferrer">
               <TwitterIcon size={20} className='ml-3'/>
             </a>

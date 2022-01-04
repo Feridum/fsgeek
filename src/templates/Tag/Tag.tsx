@@ -6,7 +6,7 @@ import { TagProps } from "./Tag.types"
 import { PostCard } from "../../components/postCard/PostCard"
 import { PageNavigation } from "../../components/pageNavigation/PageNavigation"
 
-const Tag = ({ data, pathContext:{nextPage, previousPage} }: TagProps) => {
+const Tag = ({ data, pageContext:{nextPage, previousPage} }: TagProps) => {
   const { edges: posts } = data.allMarkdownRemark
 
   return (
@@ -45,9 +45,7 @@ export const postQuery = graphql`
           url
           image {
             childImageSharp {
-              fluid(maxWidth: 800) {
-                ...GatsbyImageSharpFluid
-              }
+              gatsbyImageData(width: 400, layout: CONSTRAINED, quality: 100)
             }
           }
         }

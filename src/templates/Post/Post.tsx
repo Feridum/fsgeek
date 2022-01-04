@@ -2,9 +2,6 @@ import React, { useEffect, useRef } from "react"
 import { Layout } from "../../components/layout/Layout"
 import { graphql, Link } from "gatsby"
 import { PostProps } from "./Post.types"
-// @ts-ignore
-import { Disqus } from "gatsby-plugin-disqus"
-
 import "./Post.styles.css"
 import { PostTitle } from "../../components/postTitle/PostTitle"
 import url from "url"
@@ -12,15 +9,11 @@ import { Meta } from "../../components/Meta/Meta"
 import { MetaTypes } from "../../components/Meta/Meta.types"
 import { parseISO } from "date-fns"
 import { Helmet } from "react-helmet"
+import { FacebookIcon, InstagramIcon, TwitterIcon } from "../../icons"
 
 const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: PostProps) => {
   const mailerLite = useRef();
   const postUrl = url.resolve(site.siteMetadata.siteUrl, pathname)
-  const disqusConfig = {
-    url: postUrl,
-    identifier: pathname,
-    title: post.frontmatter.title
-  }
 
   return (
     <>
@@ -32,7 +25,6 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
               description: post.excerpt,
               publishedAt: post.frontmatter.date
             }}/>
-      <div id="fb-root"/>
       <Layout className='lg:w-full'>
         {/* <div className='rounded-lg bg-orange-500 w-full p-4 text-white flex justify-between items-center mb-6 lg:text-lg font-bold lg:flex-row flex-col'>
           Cześć, stworzyłem newsletter by móc dać ci jeszcze więcej wartości w 2021
@@ -68,28 +60,42 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
             <div className='post' dangerouslySetInnerHTML={{ __html: post.html }}/>
 
             <div className='post '>
-             Jeśli podobał ci się ten artykuł to dołącz do newslettera. Dostaniesz dodatkowe treści do każdego postu oraz eksluzywne materiały, które pomogą ci pisac lepszy kod&nbsp;
-              <a href='https://news.fsgeek.pl/'>
-                Chcę uzyskać dostęp do bonusów </a>
+             Jeśli podoba ci się to co tworzę to dołącz do newslettera WebDev News. Jeszcze więcej wiedzy i ciekawych artykułów, które pomogą ci w karierze. &nbsp;
+              <a href='https://webdevnews.pl/'>
+                WebDev News - newsletter tworzony przez programistę dla programistów </a>
             </div>
           </div>
           <div className="lg:w-1/5">
-            <div className="fb-page w-full" data-href="https://www.facebook.com/fsgeekk/" data-tabs=""
-                data-width=""
-                data-height=""
-                data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
-                data-show-facepile="true"
-                style={{minHeight: 130}}
-            >
-              <blockquote cite="https://www.facebook.com/fsgeekk/" className="fb-xfbml-parse-ignore"><a
-                href="https://www.facebook.com/fsgeekk/" rel="noreferrer">Full Stack Geek</a></blockquote>
-            </div>
+
+            <h3 className="text-lg mb-5">Dołącz do mnie w Social Media</h3>
+            <a href="https://www.instagram.com/fsgeek/"
+               target="_blank" title="Otwórz fanpage" rel="noreferrer">
+              <div className="flex items-center mb-4">
+                  <InstagramIcon size={20}/>
+                  <span className="ml-3 ">Instagram</span>
+              </div>
+            </a>
+            <a href="https://www.facebook.com/fsgeekk"
+               target="_blank" title="Otwórz fanpage" rel="noreferrer">
+              <div className="flex items-center mb-4">
+                  <FacebookIcon size={20}/>
+                  <span className="ml-3 ">Facebook</span>
+              </div>
+              
+            </a>
+            <a href="https://twitter.com/fsgeek_pl"
+               target="_blank" title="Otwórz profil na Twitter" rel="noreferrer">
+              <div className="flex items-center mb-4">
+                  <TwitterIcon size={20}/>
+                  <span className="ml-3 ">Twitter</span>
+              </div>
+            </a>
+            
             <div className="ml-form-embed mt-10 w-full"
               data-account="2669557:d1b7k0h4n3"
               data-form="3393565:m9y0q9"
               ref={mailerLite}
-              >
-            </div>
+              />
           </div>
         </div>
         <div className="py-4">
@@ -102,7 +108,6 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
             )
           })}
         </div>
-        <Disqus config={disqusConfig}/>
       </Layout>
     </>
   )

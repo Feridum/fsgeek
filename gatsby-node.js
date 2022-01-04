@@ -38,7 +38,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   Array.from({ length: numPages }).forEach((_, i) => {
     const currentPage = i + 1;
-    const previousPage = currentPage === 2 ? '/post' : `/post/page/${i-1}/`
+    const previousPage = currentPage === 2 ? '/post' : `/post/page/${i}/`
 
     createPage({
       path: i === 0 ? `/post` : `/post/page/${i + 1}/`,

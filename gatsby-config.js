@@ -20,6 +20,7 @@ module.exports = {
         path: `${__dirname}/src/images`
       }
     },
+    'gatsby-plugin-image',
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
@@ -38,11 +39,12 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         gfm: true,
-        commonmark: true,
         footnotes: true,
-        pedantic: true,
         excerpt_separator: `<!--more-->`,
         plugins: [
+          {
+            resolve: "gatsby-remark-prismjs"
+          },
           {
             resolve: "gatsby-remark-embed-video",
             options: {
@@ -51,9 +53,6 @@ module.exports = {
               noIframeBorder: true,
               containerClass: 'embedVideo-container',
             }
-          },
-          {
-            resolve: "gatsby-remark-prismjs"
           },
           {
             resolve: `gatsby-remark-images`,
@@ -116,16 +115,10 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-disqus`,
-      options: {
-        shortname: `fsgeek`
-      }
-    },
-    {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        output: `/sitemap.xml`,
-        exclude: [`/polityka-prywatnosci`],
+        output: `/sitemap`,
+        excludes: [`/polityka-prywatnosci`],
         query: `
         {
           site {
@@ -139,24 +132,29 @@ module.exports = {
           allSitePage {
             nodes {
               path
-              context {
-                dateCreated
-              }
+              pageContext
             }
           }
-      }`,
-        serialize: ({ site, allSitePage }) =>
-          allSitePage.nodes.map(node => {
-            const date = node.context.dateCreated ? node.context.dateCreated : (new Date()).toISOString();
-            return {
-              lastmodrealtime: true,
-              url: `${site.siteMetadata.siteUrl}${node.path}`,
-              lastmod: date.replace('T', ' '),
-              priority: node.path.indexOf('post') === -1 ? 0.5 : 0.8,
-              changefreq: `daily`,
-            }
-          })
-      }
+        }`,
+        resolveSiteUrl: ({site}) => site.siteMetadata.siteUrl,
+        resolvePages: ({ site, allSitePage }) => allSitePage.nodes.map(node => {
+              const date = node.pageContext.dateCreated ? node.pageContext.dateCreated : (new Date()).toISOString();
+              return {
+                date,
+                ...node,
+                siteUrl: site.siteMetadata.siteUrl
+              }
+            }),
+        serialize: (page) => {
+          return {
+            lastmodrealtime: true,
+            url: `${page.siteUrl}${page.path}`,
+            lastmod: page.date.replace('T', ' '),
+            priority: page.path.indexOf('post') === -1 ? 0.5 : 0.8,
+            changefreq: `daily`,
+          }
+        }
+      },
     },
     {
       resolve: `gatsby-plugin-feed`,

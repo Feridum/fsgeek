@@ -9,7 +9,7 @@ import { LeftIcon, RightIcon } from "../../icons"
 import { PageNavigation } from "../../components/pageNavigation/PageNavigation"
 
 
-const MainList = ({ data, pathContext: { previousPage, nextPage } }: MainListProps) => {
+const MainList = ({ data, pageContext: { previousPage, nextPage },  }: MainListProps) => {
   const { edges: posts } = data.posts
 
   return (
@@ -46,10 +46,8 @@ export const pageQuery = graphql`
           url
           image {
               childImageSharp {
-                  fluid(maxWidth: 400) {
-                    ...GatsbyImageSharpFluid_withWebp_noBase64
-                  }
-                }
+                gatsbyImageData(width: 400, layout: CONSTRAINED, quality: 100)
+              }
             }
         }
       }

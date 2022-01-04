@@ -1,4 +1,4 @@
-import { FluidObject } from "gatsby-image"
+import { IGatsbyImageData } from "gatsby-plugin-image"
 
 export type PostList = {
   id: string;
@@ -9,7 +9,7 @@ export type PostList = {
     title: string,
     image: {
       childImageSharp: {
-        fluid: FluidObject;
+        gatsbyImageData: IGatsbyImageData;
       }
     }
   }

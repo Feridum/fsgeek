@@ -2,7 +2,7 @@ import { PostCardProps } from "./PostCard.types"
 import { Link } from "gatsby"
 import React from "react"
 import clsx from "clsx"
-import Img from "gatsby-image"
+import { GatsbyImage } from "gatsby-plugin-image"
 
 export const PostCard = ({ post, className }: PostCardProps) => {
 
@@ -13,10 +13,9 @@ export const PostCard = ({ post, className }: PostCardProps) => {
       <div className="lg:max-w-sm rounded-lg overflow-hidden shadow-lg flex-col flex h-full">
         <Link to={url}
               className="lg:max-w-sm overflow-hidden flex-row lg:flex-col flex h-full z-10">
-          {post.frontmatter.image && <Img fluid={post.frontmatter.image.childImageSharp.fluid}
+          {post.frontmatter.image?.childImageSharp?.gatsbyImageData && <GatsbyImage image={post.frontmatter.image.childImageSharp.gatsbyImageData}
                                           className="hidden sm:flex flex-shrink-0 w-1/4 lg:w-auto pointer-events-none"
-                                          fadeIn={false}
-                                          loading="eager"/>}
+                                          loading="eager" alt=""/>}
 
           <div className="px-6 py-4 flex flex-initial flex-col">
             <div className="font-bold text-xl mb-2">{post.frontmatter.title}</div>

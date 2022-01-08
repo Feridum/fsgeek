@@ -15,6 +15,6 @@ W aplikacjach musimy gdzieś trzymać nasze dane. Możemy trzymać dane bezpośr
 
 W filmie poruszyłem dziś kwestię połączenia naszej aplikacji z Airtable i jakie korzyści może nam to dawać. Obejrzyj i napisz, co sądzisz.
 
-`youtube: 0LAlhZZCaQo`
+`youtube: https://www.youtube.com/watch?v=0LAlhZZCaQo`
 
 Dodatkowo zachęcam do subskrybowania kanału ([subskrybuj](https://www.youtube.com/channel/UCooPcxqwzgbQUpnh4FAoZpw?sub_confirmation=1)) i włączenia powiadomień o filmach. Jeśli chcesz otrzymywać informacje o nowych filmach, to obserwuj mnie na FB ([Polub fanpage](https://www.facebook.com/fsgeekk)) i na Twitterze ([Obserwuj](https://twitter.com/fsgeek_pl))

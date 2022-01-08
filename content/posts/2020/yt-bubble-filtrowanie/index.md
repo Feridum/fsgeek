@@ -15,6 +15,6 @@ Ostatnio pokazałem, jak można stworzyć, w krótkim czasie, prostą aplikację
 
 W filmie poruszyłem dziś kwestię operacji na liście danych takich jak filtrowanie, sortowanie oraz warunkowe wyświetlanie elementów.
 
-`youtube: F_EAPNWdeJg`
+`youtube: https://www.youtube.com/watch?v=F_EAPNWdeJg`
 
 Dodatkowo zachęcam do subskrybowania kanału ([subskrybuj](https://www.youtube.com/channel/UCooPcxqwzgbQUpnh4FAoZpw?sub_confirmation=1)) i włączenia powiadomień o filmach. Jeśli chcesz otrzymywać informacje o nowych filmach, to obserwuj mnie na FB ([Polub fanpage](https://www.facebook.com/fsgeekk)) i na Twitterze ([Obserwuj](https://twitter.com/fsgeek_pl))

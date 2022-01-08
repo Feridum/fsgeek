@@ -13,7 +13,7 @@ date: 2020-09-16T13:00:00+02:00
 
 ## Zobacz video na YouTube
 
-`youtube: vUixaotMNGM`
+`youtube: https://www.youtube.com/watch?v=vUixaotMNGM`
 
 ## Buuble.io
 

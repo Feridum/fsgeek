@@ -15,6 +15,6 @@ W aplikacji oprócz funkcjonalności biznesowej potrzebujemy również dobry UX,
 
 W filmie poruszyłem dziś kwestię responsywności i jakie narzędzia daje nam Bubble by ją zapewnić. Obejrzyj i napisz, co sądzisz.
 
-`youtube: PUXRGVxkEYU`
+`youtube: https://www.youtube.com/watch?v=PUXRGVxkEYU`
 
 Dodatkowo zachęcam do subskrybowania kanału ([subskrybuj](https://www.youtube.com/channel/UCooPcxqwzgbQUpnh4FAoZpw?sub_confirmation=1)) i włączenia powiadomień o filmach. Jeśli chcesz otrzymywać informacje o nowych filmach, to obserwuj mnie na FB ([Polub fanpage](https://www.facebook.com/fsgeekk)) i na Twitterze ([Obserwuj](https://twitter.com/fsgeek_pl))

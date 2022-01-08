@@ -43,9 +43,6 @@ module.exports = {
         excerpt_separator: `<!--more-->`,
         plugins: [
           {
-            resolve: "gatsby-remark-prismjs"
-          },
-          {
             resolve: "gatsby-remark-embed-video",
             options: {
               width: 800,
@@ -53,6 +50,9 @@ module.exports = {
               noIframeBorder: true,
               containerClass: 'embedVideo-container',
             }
+          },
+          {
+            resolve: "gatsby-remark-prismjs"
           },
           {
             resolve: `gatsby-remark-images`,

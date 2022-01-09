@@ -1,0 +1,129 @@
+---
+title: "To będzie popularne w 2022 w JS"
+slug: "trendy-javascript-2022"
+author: "Feridum"
+image: "./logo.png"
+tags: ["trendy"]
+date: "2022-01-13T09:00:00.988Z"
+---
+
+2022 zaczął się już na dobre. Teraz jest dobry moment, by sprawdzić co będzie trendy w tym roku i zainteresować się tym już teraz. Niżej przedstawiam moje przypuszczenia na trendy w tym roku.
+
+<!--more-->
+
+## Web3
+
+Może to nie jest zaskoczenie (zależy, w jakiej bańce siedzisz). W 2021 o web3 zaczęło być coraz głośniej ze względu na NFT i ilości pieniędzy, jakie tam się pojawiły. Ale Web3 to nie tylko drogie obrazki i w tym roku mam nadzieję, że będzie to bardziej widoczne. 
+
+Dzięki NFT możemy przydzielać dostęp do cyfrowych dóbr. Szybki przykład - kiedyś jak kupowałeś grę w pudełku, to mogłeś ją odsprzedać dalej. W przypadku gier cyfrowych nie możesz tego zrobić. Jednak gdyby gry były wypuszczane jako token NFT z dostępem do gry, to mógłbyś odsprzedać ten token.  I takie przykłady można mnożyć - dostęp do kursów, platformy membership licencje itd.
+
+> UWAGA - nie zachęcam do inwestowania swoich oszczędności w to
+
+Można zacząć się bawić tym już dzisaj - istnieją różne darmowe sieci testowe, gdzie można tworzyć tokeny NFT, aplikacje o to oparte itd. Sprawdź poniższe linki jeśli chcesz wiedzieć więcej: 
+
+- [buildspace](https://buildspace.so/)
+- [DAO Masters](https://www.daomasters.xyz/)
+- [Web3 University - Your Guide to Blockchain Development](https://www.web3.university/)
+- [Portal | thirdweb](https://thirdweb.com/portal)
+
+## SSR & SSG
+
+Chyba możemy powoli ogłaszać powrót do starego, dobrego SSR. Skończyły się czasy, gdy na każdy problem klienta było proponowane SPA i zastanawialiśmy się nad wyborem biblioteki (albo i nie ;p).
+
+Dlaczego SSR i SSG jest takie fajne?
+
+- dostajemy z serwera już gotowe treści
+- dużo lepsze SEO
+- lepszy UX
+
+Dodatkowo dzisiaj SSR pozwala również na wszystkie bajery UI’owe, z czym był problem wcześniej. Według mnie SSR będzie rosło w siłę i może nawet stanie się domyślnym sposobem tworzenia aplikacji?
+
+Czym warto się zainteresować?
+
+- [Next.js](https://nextjs.org/)
+- [Remix](https://remix.run/)
+
+## Rust
+
+W 2021 można było zauważyć początek trendu większego dbania o DX - developer experience. Czyli już nie tylko co tworzymy, ale również jak. Liczy się szybkość narzędzi i to jak się z nich korzysta. I wiele projektów zaczęło już korzystać z Rusta. Warto wspomnieć o:
+
+- [SWC](https://swc.rs/)
+- [Rome jest przepisywany na Rust](https://rome.tools/blog/2021/09/21/rome-will-be-rewritten-in-rust)
+- [Nowy kompiler w Next 12](https://nextjs.org/blog/next-12#faster-builds-and-fast-refresh-with-rust-compiler)
+
+W tym roku to będzie coraz mocniejszy trend według mnie. No i jeszcze wsparcie dla WebAssembly czynią Rust dobrym kandydatem na drugi język.
+
+## WebAssembly
+
+Kolejnym nietypowym trendem może być WebAssembly. Prawdopodobnie, jeśli piszesz zwykłe widoki do CRUD’ów, to WebAssembly nie ma wartości dla Ciebie. Ale WASM pozwala na tworzenie dużo wydajniejszych aplikacji, gdy wykonujemy dużo obliczeń po stronie klienta. 
+
+Dzięki wykorzystaniu WASM’a można tworzyć aplikacje, które do tej pory były niemożliwe do stworzenia. 
+
+Przykładem może być Photoshop, który będzie działał w przeglądarce - [https://web.dev/ps-on-the-web/](https://web.dev/ps-on-the-web/)
+
+Jeśli chcesz zacząć z WebAssembly, to zajrzyj tutaj:
+
+- [Webassembly - jak zaczać](https://fsgeek.pl/post/webassembly-jak-zaczac/)
+- [Assembly Script, czyli WebAssembly dla programistów Typescript](https://fsgeek.pl/post/assembly-script-czyli-webassembly-dla-programistow-typescripta/)
+
+## No-code, low-code, AI
+
+To jest trend raczej biznesowy niż programistyczny. Zastosowanie narzędzi no-code, low-code daje dużo zalet biznesowi: 
+
+- szybki TTM (time to market) - dużo szybciej da się wyklikać prostą apkę niż zatrudniać programistów
+- tańsze - subskrypcja narzędzia na pewno jest tańsza od zespołu programistów
+- umożliwia szybkie zmiany w biznesie
+- idealne dla MVP
+
+Podobnie jest z AI - coraz więcej możemy wygenerować i jest to bardzo dobrej jakości - fragmenty kodu, teksty na stronę, całe aplikacje itd.
+
+Czy dla nas, programistów, to źle?
+
+Na pewno stracimy część potencjalnych klientów, ale są to raczej te słabsze projekty, gdzie:
+
+- codziennie są jakieś zmiany w głównej logice,
+- albo brak tej logiki,
+- trzeba robić szybko, na wczoraj i kod na tym traci,
+- po pół roku kod leci do kosza, bo klient nie ma już kasy.
+
+Za to możemy za parę lat dostać projekty, gdzie klient zaczynał z low-code, no-code i teraz potrzebuje dedykowanego oprogramowania, by usprawnić biznes. Więcej o tym pisałem tutaj - [Czym jest low-code, no-code i czy zagraża programistom](https://fsgeek.pl/post/czym-jest-low-code-no-code/)
+
+A jeśli chcesz zacząć z low-code, no-code to zajrzyj tutaj:
+
+- [18 narzędzi nocode do tworzenia aplikacji](https://fsgeek.pl/post/18-narzedzi-nocode-do-stworzenia-aplikacji/)
+- [Aplikacja w 15 minut z wykorzystaniem Bubble](https://fsgeek.pl/post/jak-15-minut-zrobic-todo-app/)
+- [Integracje z wykorzystaniem Integromat i Airtable](https://fsgeek.pl/post/automatyzacje-integromat-airtable/)
+- [Automatyzacje dla bloga](https://fsgeek.pl/post/automatyzacje-dla-bloga-integromat-airtable/)
+- [AI w Web Dev](https://fsgeek.pl/post/przyszlosc-ai-w-web-development/)
+
+## Microfrontendy
+
+Na sam koniec temat mocno techniczny - mikrofrontendy. Od jakiegoś czasu słychać głosy o tym rozwiązaniu, ale teraz może być coraz popularniejsze. Dlaczego?
+
+Zalety microfrontendów: 
+
+- małe, lepiej utrzymywalne projekty
+- możliwość reużywania części elementów
+- idealne dopełnienie mikroserwisów
+- możliwość wyboru różnych bibliotek
+
+Dlaczego teraz?
+
+Głównym powodem według mnie jest pojawienie się Webpack 5 i Module Federation. To znacząco usprawnia cały proces i pozwala na łączenie ze sobą aplikacji. No i CRA zaczął wspierać Webpack 5, więc jest szansa, że za chwilę będzie też wspierać Module Federation. 
+
+Do poczytania więcej: 
+
+- [https://micro-frontends.org/](https://micro-frontends.org/)
+- [https://martinfowler.com/articles/micro-frontends.html](https://martinfowler.com/articles/micro-frontends.html)
+- [https://webpack.js.org/concepts/module-federation/](https://webpack.js.org/concepts/module-federation/)
+
+## Co jeszcze warto śledzić?
+
+Oczywiście to nie wszystko. Tak naprawdę kogo zapytacie, to poda inną listę. Oprócz tych wymienionych u góry warto śledzić 2 tematy: 
+
+- security
+- a11y
+
+Oba tematy mają ogromny wpływ, na to, jak tworzymy strony i mogą zmienić sposób, w jaki tworzymy aplikacje. 
+
+A ty co o tym sądzisz? Zgadzasz się z moimi trendami czy masz swoich kandydatów? Daj znać w SM lub odezwij się na priv.

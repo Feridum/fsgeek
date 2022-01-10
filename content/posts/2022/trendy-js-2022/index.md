@@ -15,7 +15,7 @@ date: "2022-01-13T09:00:00.988Z"
 
 Może to nie jest zaskoczenie (zależy, w jakiej bańce siedzisz). W 2021 o web3 zaczęło być coraz głośniej ze względu na NFT i ilości pieniędzy, jakie tam się pojawiły. Ale Web3 to nie tylko drogie obrazki i w tym roku mam nadzieję, że będzie to bardziej widoczne. 
 
-Dzięki NFT możemy przydzielać dostęp do cyfrowych dóbr. Szybki przykład - kiedyś jak kupowałeś grę w pudełku, to mogłeś ją odsprzedać dalej. W przypadku gier cyfrowych nie możesz tego zrobić. Jednak gdyby gry były wypuszczane jako token NFT z dostępem do gry, to mógłbyś odsprzedać ten token.  I takie przykłady można mnożyć - dostęp do kursów, platformy membership licencje itd.
+Dzięki NFT możemy przydzielać dostęp do cyfrowych dóbr. Szybki przykład - kiedyś jak kupowałeś grę w pudełku, to mogłeś ją odsprzedać dalej. W przypadku gier cyfrowych nie możesz tego zrobić. Jednak gdyby gry były wypuszczane jako token NFT z dostępem do gry, to mógłbyś odsprzedać ten token.  I takie przykłady można mnożyć - dostęp do kursów, platformy membership, licencje itd.
 
 > UWAGA - nie zachęcam do inwestowania swoich oszczędności w to
 

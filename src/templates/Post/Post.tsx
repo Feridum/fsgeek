@@ -60,7 +60,7 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
             <div className='post' dangerouslySetInnerHTML={{ __html: post.html }}/>
 
             <div className='post '>
-             Jeśli podoba ci się to co tworzę to dołącz do newslettera WebDev News. Jeszcze więcej wiedzy i ciekawych artykułów, które pomogą ci w karierze. &nbsp;
+            Jeśli podoba Ci się moja twórczość, to dołącz do newslettera WebDev News. Znajdziesz tam jeszcze więcej wiedzy i ciekawych artykułów, które pomogą Ci w karierze &nbsp;
               <a href='https://webdevnews.pl/'>
                 WebDev News - newsletter tworzony przez programistę dla programistów </a>
             </div>

@@ -1,5 +1,5 @@
 ---
-title: "Deploy Node.js w CloudHosting - jak zrobić i na co uważać"
+title: "Deploy Node.js w CloudHostingu - jak zrobić i na co uważać"
 slug: "deploy-node-cloudhosting"
 author: "Feridum"
 image: "./logo.png"
@@ -19,7 +19,7 @@ Pierwszą rzeczą, jaką musimy zrobić, jest stworzenie bazy danych. W usłudze
 - MariaDB,
 - MongoDB.
 
-Ja postanowiłem, że na potrzeby mojej aplikacji najlepsza będzie baza danych MongoDB. Aby stworzyć bazę, trzeba wybrać `Bazy danych > Dodaj bazę danych` w Panelu CloudHosting.
+Ja postanowiłem, że na potrzeby mojej aplikacji najlepsza będzie baza danych MongoDB. Aby stworzyć bazę, trzeba wybrać `Bazy danych > Dodaj bazę danych` w  CloudHosting Panelu.
 
 ![dodanie bazy danych](./baza_danych.png)
 
@@ -33,17 +33,17 @@ Dodając bazę, zapamiętaj dane, które wprowadzasz. Będą one potrzebne do po
 W aplikacji będzie się można połączyć z bazą danych przy pomocy tzw. connection string. Wygląda on następująco:
 
 ```yaml
-MONGO_URL=mongodb://<nazwa_bazy>:<hasło_do_bazy>@<adres_twojego_serwer>:<port>
+MONGO_URL=mongodb://<nazwa_bazy>:<hasło_do_bazy>@<adres_twojego_serwera>:<port>
 MONGO_DB=<nazwa_bazy>
 ```
 
 W przypadku CloudHostingu zmienne będą zawierać:
 
 - port - `4021`,
-- adres_twojego_serwer - `mongodb.server<numer>.nazwa.pl`,
+- adres_twojego_serwera - `mongodb.server<numer>.nazwa.pl`,
 - resztę danych wprowadzasz podczas tworzenia bazy danych.
 
-Połączenie z bazą przedstawia się następująco (z wykorzystaniem biblioteki `mongodb`)
+Połączenie z bazą przedstawia się następująco (z wykorzystaniem biblioteki `mongodb`): 
 
 ```yaml
 const {MongoClient} = require('mongodb');
@@ -79,7 +79,7 @@ Wdrożenie aplikacji trzeba zacząć od umieszczenia wszystkich plików na serwe
 
 > Aplikacja musi posiadać plik startowy app.js
 
-Następnym etapem jest zainstalowanie wszystkich zależności na serwerze. Musisz zalogować się na konto FTP, przejść do katalogu z projektem i wpisać w konsoli `npm install`. Jeśli Twoja aplikacja wymaga zbudowania jakichś plików statycznych, jak np. styli, to pamiętaj o zbudowaniu ich.
+Następnym etapem jest zainstalowanie wszystkich zależności na serwerze. Musisz zalogować się na konto FTP, przejść do katalogu z projektem i wpisać w konsoli `npm install`. Jeśli Twoja aplikacja wymaga zbudowania jakichś plików statycznych, jak np. styli, to pamiętaj o zrobieniu tego.
 
 Kolejna rzecz to zmienne środowiskowe. Najprościej jest wykorzystać plik .env i wpisać tam wartości, które wykorzystuje aplikacja. Możesz też ustawić bezpośrednio w systemie przy pomocy polecenia `export NAZWA=WARTOŚĆ`.
 

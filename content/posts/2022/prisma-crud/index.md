@@ -4,7 +4,7 @@ slug: "prisma-fastify-basic-crud"
 author: "Feridum"
 image: "./logo.png"
 tags: ["prisma", "fastify", "crud"]
-date: "2022-01-23T14:48:35.233Z"
+date: "2022-01-27T09:00:00.233Z"
 ---
 
 Prisma jest biblioteką, która ułatwia pracę z bazą danych. Do podstawowych operacji na bazie danych należy tzw.: CRUD - create, read, update i delete. W poście pokazuję, jak wyglądają takie operacje w Prisma i Fastify.
@@ -20,7 +20,7 @@ Na YouTube dodałem film, gdzie pokazuję krok po kroku, jak tworzę takiego CRU
 
 ## Konfiguracja Prisma w projekcie
 
-Na tym etapie zakładam, że masz utworzony projekt Fastify(lub dowolną inną biblioteką backendową). Prisma najprościej jest skonfigurować przy pomocy polecenia
+Na tym etapie zakładam, że masz utworzony projekt Fastify (lub dowolną inną biblioteką backendową). Prisma najprościej jest skonfigurować przy pomocy polecenia:
 
 ```jsx
 npx prisma init
@@ -42,7 +42,7 @@ datasource db {
 }
 ```
 
-Jest to nic innego jak oznaczenie, że korzystamy z klienta js i korzystamy z bazy danych postgressql. Inne bazy danych, z jakich możesz skorzystać to: 
+Jest to nic innego jak oznaczenie, że korzystamy z klienta js i z bazy danych postgressql. Inne bazy danych, z jakich możesz skorzystać to: 
 
 - PostgreSQL
 - MySQL
@@ -65,10 +65,10 @@ model Post {
 }
 ```
 
-Krótkie wyjaśnienie co tu się dzieje. `Int` oraz `String` to typy pól, jakie będą w bazie danych. Dużo ciekawsze są atrybuty `@unique` i `@default`. Dodają one specjalnie zachowanie do kolumn w bazie danych. 
+Krótkie wyjaśnienie co tu się dzieje. `Int` oraz `String` to typy pól, jakie będą w bazie danych. Dużo ciekawsze są atrybuty `@unique` i `@default`. Dodają one specjalne zachowanie do kolumn w bazie danych. 
 
 - `@unique` - wartości w kolumnie muszą być unikalne
-- `@default(autoincrement())` - ta kolumna ma wartości domyślnie w postaci kolejnych liczb.
+- `@default(autoincrement())` - ta kolumna ma wartości domyślne w postaci kolejnych liczb.
 
 > Twoje zmiany są lokalne dopóki nie zrobisz migracji
 
@@ -147,7 +147,7 @@ Jedna z najczęściej wykorzystywanych operacji. W Prisma możemy dane pobierać
 
 - findMany - zwraca listę rekordów
 - findUnique - zwraca jeden rekord wykorzysując id albo unikalny atrybut
-- findFirst - zwraca pierwszy element z listy, która pasuje do kryteriów
+- findFirst - zwraca pierwszy element z listy, który pasuje do kryteriów
 
 Domyślnie parametry zapytania są typu String, a moje ID w bazie istnieje jako Int i dlatego konieczna była konwersja.
 
@@ -198,4 +198,4 @@ Na sam koniec operacja usuwania pojedynczego obiektu. Zgodnie z REST do takiej o
 
 Jako rezultat otrzymamy skasowany obiekt. Jeśli obiekt nie zostanie znaleziony, to w odpowiedzi będzie null.
 
-Co sądzisz o tej bibliotece? Bardzo mi się spodobała i będę z niej korzystał więcej. Daj znać co o tym myślisz na Fb/Inst/Twitter.
+Co sądzisz o tej bibliotece? Bardzo mi się spodobała i będę z niej korzystał więcej. Daj znać co o tym myślisz na Facebook/Instagram/Twitter.

@@ -4,12 +4,14 @@ slug: "deploy-node-cloudhosting"
 author: "Feridum"
 image: "./logo.png"
 tags: ["node", "cloudhosting"]
-date: "2022-01-19T14:45:16.262Z"
+date: "2022-02-01T09:00:00.262Z"
 ---
 
 Jedną z zalet JavaScript jest możliwość wykorzystania tego języka zarówno w przeglądarce, jak i po stronie serwera. Deploy takiej aplikacji może okazać się czasami działaniem skomplikowanym, gdyż musimy zadbać nie tylko o wdrożenie samego oprogramowania, ale również o bazę danych. Całość działań możemy wykonać w wygodny sposób w ramach CloudHostingu [nazwa.pl](http://nazwa.pl/).
 
 <!--more-->
+
+> Post powstał przy współpracy z nazwa.pl
 
 ## Przygotowanie bazy danych MongoDB
 

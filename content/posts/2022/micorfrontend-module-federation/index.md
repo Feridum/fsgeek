@@ -1,5 +1,5 @@
 ---
-title: "Jak stworzyć mikrofrontendy z Module Federation"
+title: "Jak tworzyć mikrofrontendy z Module Federation"
 slug: "microfronends-with-module-federation"
 author: "Feridum"
 image: "./logo.png"

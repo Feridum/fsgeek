@@ -13,17 +13,21 @@ Znasz termin mikrofrontendy? Jest to zyskujący popularność koncept w architek
 
 ## Wolisz Video?
 
-Na YouTube dodałem film, gdzie pokazuję krok po kroku, jak tworzę aplikacje mikrofrontendową, w oparciu o Module Federation. Jeśli wolisz tę formę, to zapraszam. Nie zapomnij polubić film i zasubskrybować.
+Na YouTube dodałem film, gdzie pokazuję krok po kroku, jak tworzę aplikację mikrofrontendową, w oparciu o Module Federation. Jeśli wolisz tę formę, to zapraszam. Nie zapomnij polubić film i zasubskrybować.
 
 `youtube: https://youtu.be/zOSNZKJPwsE`
 
+## Co to za aplikacja?
+
+W poście pokazuję jak stworzyć prostą aplikację do wyświetlania mapy. W moim przypadku komponent Mapy będzie całkiem osobną aplikacją, która będzie ładowana do innej aplikacji. Dzięki temu można współdzielić taki komponent w kilku różnych aplikacjach i wystarczy zmienić kod samego komponentu, by zmiana była widoczna w innych aplikacjach.
+
 ## Co to są mikrofrontendy?
 
-Mikrofrontendy są odpowiednikiem mikroserwisów w świecie frontendu. Czyli zamiast pisać jedną dużą aplikację, jesteśmy w stanie napisac wiele mniejszych i połączyć w całość. I każda z części może być niezależna od reszty - inna technologia, biblioteki itd. To jest ostatni kawałek, by móc budować aplikacje jako osobne serwisy czyli jeden zespół pisze mikroserwis + mikrofrontend, który komunikuje się z nim. I potem wszystko łączymy w jedną aplikację. Brzmi pięknie i może kiedyś się uda. 
+Mikrofrontendy są odpowiednikiem mikroserwisów w świecie frontendu. Czyli zamiast pisać jedną dużą aplikację, jesteśmy w stanie napisać wiele mniejszych i połączyć je w całość. Każda z części może być niezależna od reszty - inna technologia, biblioteki itd. Mikrofrontendy to ostatni kawałek, by móc budować aplikacje jako osobne serwisy czyli jeden zespół pisze mikroserwis + mikrofrontend, który komunikuje się z nim. I potem wszystko łączymy w jedną aplikację. Brzmi pięknie i może kiedyś się uda. 
 
-## Co to jest ModuleFederation?
+## Co to jest Module Federation?
 
-Module Federation nie jest 1:1 równe mikrofrontendom. Module Federation jest pluginem do webpacka, który umożliwia współdzielenie kodu między aplikacjami. Dzięki temu da się zbudować mikrofrontendy ale nie trzeba się ograniczać tylko do tego.
+Module Federation nie jest 1:1 równe mikrofrontendom. Module Federation jest pluginem do Webpacka, który umożliwia współdzielenie kodu między aplikacjami. Dzięki temu da się zbudować mikrofrontendy, ale nie trzeba się ograniczać tylko do tego.
 
 ## Konfiguracja webpack’a
 
@@ -79,9 +83,9 @@ module.exports = {
 };
 ```
 
-Dlaczego tworzę własną konfigurację Webpacka, zamiast wykorzystać CRA? Powód jest prosty. Muszę mieć dostęp do konfiguracji Webpacka, by zmodyfikować konfigurację i dodać plugin do ModuleFederation. To co widzisz powyżej to podstawowa konfiguracja na potrzeby postu - uważaj jeśli chcesz ją wykorzystać produkcyjnie.
+Dlaczego tworzę własną konfigurację Webpacka, zamiast wykorzystać CRA? Powód jest prosty. Muszę mieć dostęp do konfiguracji Webpacka, by zmodyfikować konfigurację i dodać plugin do Module Federation. To co widzisz powyżej to podstawowa konfiguracja na potrzeby postu - uważaj jeśli chcesz ją wykorzystać produkcyjnie.
 
-To na co warto zwrócić uwagę to skorzystanie z `swc` zamiast babela to transpilacji kodu. Działa to lepiej niż się spodziewałem - polecam spróbować.
+To na co warto zwrócić uwagę to skorzystanie z `swc` zamiast babela do transpilacji kodu. Działa to lepiej niż się spodziewałem - polecam spróbować.
 
 Na ten moment jest to wspólna konfiguracja zarówno dla remote’a i hosta. Zmiany będą poniżej.
 
@@ -112,12 +116,12 @@ module.exports = {
 }
 ```
 
-Zacznijmy od aplikacji, która będzie wystawiała komponent. Pierwsza rzecz to zaimportowanie pluginu do ModuleFederation. Dalej mamy poszczególne opcje:
+Zacznijmy od aplikacji, która będzie wystawiała komponent. Pierwsza rzecz to zaimportowanie pluginu do Module Federation. Dalej mamy poszczególne opcje:
 
 - name - nazwa aplikacji - pilnuj, by każda aplikacja miała inną nazwę
 - filename - nazwa pliku skąd będzie pobierany kod przez inne aplikacje
 - exposes - obiekt z konfiguracją udostępnianych komponentów (Uwaga! komponent, który chcesz wystawić musi mieć export domyślny np.: export default Map)
-- shared - lista zależności, które będą współdzielone z innymi aplikacjami. Często będą to wszystkie biblioteki ale nie zawsze. W przypadku React dodajemy opcję singleton ponieważ chcemy by w aplikacji była obecna tylko jedna biblioteka React.
+- shared - lista zależności, które będą współdzielone z innymi aplikacjami. Często będą to wszystkie biblioteki, ale nie zawsze. W przypadku React dodajemy opcję singleton, ponieważ chcemy by w aplikacji była obecna tylko jedna biblioteka React.
 
 ## Konfiguracja dla hosta
 
@@ -146,7 +150,7 @@ module.exports = {
 }
 ```
 
-Konfiguracja dla hosta jest podobna. To co się nie zmienia to opcje name i shared. Nie ma opcji filename ponieważ host nic nie wystawia. Zamiast exposes mamy remotes, gdzie określamy skąd bierzemy komponenty. Musimy podać adres utl i nazwę pliku (z filename). Zauważ również, że przed utl jest nazwa aplikacji remote.
+Konfiguracja dla hosta jest podobna. To co się nie zmienia to opcje name i shared. Nie ma opcji filename, ponieważ host nic nie wystawia. Zamiast exposes mamy remotes, gdzie określamy skąd bierzemy komponenty. Musimy podać adres url i nazwę pliku (z filename). Zauważ również, że przed url jest nazwa aplikacji remote.
 
 ## Konfiguracja dla hosta w kodzie
 
@@ -183,4 +187,4 @@ Zostało to co najważniejsze, czyli konfiguracja w kodzie. Po pierwsze standard
 
 Jest to związane z koniecznością pobrania komponentów z remote’a. Przy takim imporcie Webpack jest w stanie wstrzymać ładowanie naszej aplikacji do momentu pobrania wszystkich komponentów.
 
-Następnie możemy w naszym komponencie zaimportować komponent z remote’a. Korzystam do tego z React.lazy. Zwróć uwagę na nazwę - musi się zgadzać z kluczem w obiekcie remotes. No i wyświetlam komponent wewnątrz React.Suspense - uwaga, to nie jest jeszcze gotowe w wersji produkcyjnej więc należy uważać.
+Następnie możemy w naszym komponencie zaimportować komponent z remote’a. Korzystam do tego z React.lazy. Zwróć uwagę na nazwę - musi się zgadzać z kluczem w obiekcie remotes. No i wyświetlam komponent wewnątrz React.Suspense - uwaga, to nie jest jeszcze gotowe w wersji produkcyjnej, więc należy uważać.

@@ -11,6 +11,11 @@ Znasz termin mikrofrontendy? Jest to zyskujący popularność koncept w architek
 
 <!--more-->
 
+## Wolisz Video?
+
+Na YouTube dodałem film, gdzie pokazuję krok po kroku, jak tworzę aplikacje mikrofrontendową, w oparciu o Module Federation. Jeśli wolisz tę formę, to zapraszam. Nie zapomnij polubić film i zasubskrybować.
+
+`youtube: https://youtu.be/zOSNZKJPwsE`
 
 ## Co to są mikrofrontendy?
 

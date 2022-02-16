@@ -4,7 +4,7 @@ slug: "microfronends-with-module-federation"
 author: "Feridum"
 image: "./logo.png"
 tags: ["microfrontend", "Module Federation"]
-date: "2022-02-02T16:19:47.884Z"
+date: "2022-02-17T09:00:00.884Z"
 ---
 
 Znasz termin mikrofrontendy? Jest to zyskujący popularność koncept w architekturze aplikacji. Jednym ze sposobów tworzenia takiej architektury jest Module Federation. W poście pokazuję jak zacząć pracę z tym.

@@ -4,7 +4,7 @@ slug: "relacje-baza-danych-prisma-fastify"
 author: "Feridum"
 image: "./logo.png"
 tags: ["prisma", "fastify", "bazy danych"]
-date: "2022-03-13T12:28:21.585Z"
+date: "2022-03-17T09:00:00.585Z"
 ---
 
 Relacje leżą u podstaw baz relacyjnych. Bez nich nie bylibyśmy w stanie tworzyć tak zaawansowanych modeli. W dzisiejszym poście pokazuję, jak można dodać relacje do bazy danych w Prisma.

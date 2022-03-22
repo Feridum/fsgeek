@@ -25,7 +25,7 @@ const Post = ({ data: { markdownRemark: post, site }, location: { pathname } }: 
               description: post.excerpt,
               publishedAt: post.frontmatter.date
             }}/>
-      <Layout className='lg:w-full'>
+      <Layout className='content'>
         {/* <div className='rounded-lg bg-orange-500 w-full p-4 text-white flex justify-between items-center mb-6 lg:text-lg font-bold lg:flex-row flex-col'>
           Cześć, stworzyłem newsletter by móc dać ci jeszcze więcej wartości w 2021
           <a href='https://news.fsgeek.pl/'>

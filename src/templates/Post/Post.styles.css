@@ -37,3 +37,7 @@ code[class*="language-"] {
         padding-left: 15px;
     }
 }
+
+.content {
+    max-width: 1500px;
+}

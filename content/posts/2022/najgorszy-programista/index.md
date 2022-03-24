@@ -1,5 +1,5 @@
 ---
-title: "10 sposóbów, by zostać najgorszym deweloperem"
+title: "10 sposóbów, by zostać złym deweloperem"
 slug: "antywzorce-pisania-dobrego-kodu"
 author: "Feridum"
 image: "./logo.png"

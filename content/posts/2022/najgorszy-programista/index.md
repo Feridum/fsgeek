@@ -1,5 +1,5 @@
 ---
-title: "10 sposóbów, by zostać złym deweloperem"
+title: "10 sposobów, by zostać złym deweloperem"
 slug: "antywzorce-pisania-dobrego-kodu"
 author: "Feridum"
 image: "./logo.png"
@@ -7,7 +7,7 @@ tags: ["dobre praktyki"]
 date: "2022-03-24T09:00:00.463Z"
 ---
 
-Wszyscy piszą artykuł o tym jak być super deweloperem. A co jeśli ty nie chcesz taki być? Chcesz być inny. Zobacz jak zostać najgorszym deweloperem roku.
+Wszyscy piszą artykuł o tym jak być super deweloperem. Ale bycie ZŁYM programistą też nie jest proste. Trzeba się starać i łamać wszystkie dobre praktyki. Zobacz co musisz zrobić, by stać się naprawdę złym deweloperem.
 
 <!--more-->
 

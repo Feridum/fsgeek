@@ -1,0 +1,106 @@
+---
+title: "Feature flags - twój przyjaciel czy wróg?"
+slug: "czym-sa-feature-flags"
+author: "Feridum"
+image: "./logo.png"
+tags: ["dobre praktyki"]
+date: "2022-03-31T09:00:00.530Z"
+---
+
+Jak wypuszczamy zmiany na proda, to muszą działać. A co jeśli znajdziemy poważny błąd? Trzeba go szybko naprawić albo cofnąć zmiany. Z Feature Flag możesz ukryć te zmiany w ciągu sekundy. Zobacz, czym są Feature Flags, jakie są zalety, wady i jak z nimi pracować.
+
+<!--more-->
+
+## Co to są Feature Flag?
+Jest to technika, która umożliwia modyfikację systemu bez zmiany kodu. Sprowadza się to do umieszczenia w kodzie specjalnych zmiennych (flag), które są sterowane z innego miejsca, aplikacji. Ja to zacząłem określać ostatnio jako `Ifs as a service`. 
+
+```
+if(fetaureFlagSerivce.someFlag){
+	return ...
+}else{
+	return ...
+}
+
+```
+
+
+## Zalety Feature Flag
+Zacznę od zalet, bo feature flag ma ich naprawdę sporo. I do wielu fajnych rzeczy da się je wykorzystać.
+
+### Wypuść na produkcję teraz, aktywuj później 
+Główna zaleta Feature Flag to możliwość mergowania nowych funkcjonalności do głównego brancha i aktywowanie, dopiero gdy są gotowe. Dzięki temu nie trzymasz zmian za długo na osobnym branchu i nie musisz się martwić mergowaniem i rozwiązywaniem konfliktów. Dodatkowo wszystkie zmiany są małe i wprowadzane stopniowo co ułatwia proces Code Review.  
+### Guzik bezpieczeństwa 
+Jeśli nowa funkcjonalność nie działa, to można szybko ją wyłączyć i spokojnie pracować nad poprawką. Nie musisz robić na szybko hotfixa, wycofywać zmian itd. 
+### Warunkowy dostęp 
+Korzystając z feature flags, możemy konfigurować dostęp do danej funkcjonalności np.: na bazie języka, kraju, dat itd.  Jest to wygodne, gdy aplikacja jest dostępna w różnych krajach i dostępność opcji jest różna dla każdego. 
+### Zdalna konfiguracja 
+Bardzo często feature flag to nie tylko flaga typu true/false, ale również inne wartości, które możesz wykorzystać do konfiguracji aplikacji. Dzięki temu możemy wprowadzać drobne zmiany w zachowaniu aplikacji. Jednak nie polecam tak robić, bo zwiększa to stopień skomplikowania kodu.
+### Canary deployments 
+Z feature flags możesz zdefiniować, ilu użytkowników ma widzieć nową funkcjonalność i jeśli wszystko działa to stopniowo zwiększać do 100%. Na początek możesz zacząć z małą ilością klientów i sprawdzić, czy wszystko działa. Albo dać dostęp do early features i wypuszczać tylko dla tej grupy na początku.
+### Testy A/B 
+Podobnie jak w przypadku Canary Deployments można zdefiniować, ile procent użytkowników ma widzieć nową funkcjonalność i potem zdecydować, która wersja jest lepsza. Dzięki temu można na szybko sprawdzić, czy dana zmiana wprowadzi zysk do aplikacji. Trzeba pamiętać o usuwaniu takich flag po eksperymencie (i nie prowadzić go wiecznie).
+
+
+## Wady Feature Flag
+Jednak nie jest to idealne rozwiązanie. Wprowadzenie go do kodu wiąże się z problemami, które musimy zaakceptować. 
+
+### Uzależniające
+Korzystanie z flag jest bardzo uzależniające. Szczególnie dla klienta, który może włączać i wyłączać funkcjonalności bez pytania programisty o zdanie. Bardzo trzeba uważać na wprowadzanie flag, wszędzie gdzie się da. Klient nie wie, że to komplikuje kod - my musimy mu to uświadomić.
+
+### Wprowadza dług do kodu 
+Wprowadzenie flagi do kodu, powoduje powstanie długu. I ten dług rośnie wraz z czasem, gdy zapominamy, od czego jest ta flaga. Wtedy usunięcie flagi jest mniej bezpieczne i niechętnie się do tego zabierzesz.  Powoduje to lawinowe powstawanie kolejnych flag i zaśmiecanie kodu dużą ilością if'ów.
+
+### Nieoczekiwane zależności 
+Przy jednej fladze nie ma tego problemu. Gdy jest więcej flag, to może się okazać, że przy niektórych kombinacjach flagi powodują błędy albo ślepe zaułki. Również dotarcie do jednej flagi może wymagać poprawnych wartości na kilku poprzednich. A to prowadzi do...
+
+### Trudności w debugowaniu 
+Dużo trudniej debuguje się błędy z produkcji, ponieważ trzeba znać wszystkie informacje o flagach, by móc odtworzyć błąd. I bardzo dobra znajomość ścieżek w aplikacji, by odtworzyć tą od użytkownika. Jeśli chcesz mieć flagi w aplikacji, najpierw zainwestuj w dobre logowanie błędów i informacje o użytkowniku.
+
+
+## Dobre praktyki dla feature flag
+
+### Dobrze nazywaj
+Ta rada sprawdza się, w każdym aspekcie programowania. Przy flagach ma kolosalne znaczenia. Większość informacji o fladze jest w zewnętrznym systemie. I poruszając się po kodzie, musisz na podstawie samej nazwy określić, do czego służy ta flaga. 
+
+### Opisuj co flaga robi
+Jeżeli system w którym tworzysz flagi, pozwala ci na dodatkowy opis, to koniecznie go zrób. Po co jest ta flaga, gdzie będzie głównie wykorzystywana, czy ma być tymczasowa, czy na stałe itd. Wszystkie informacje, które tutaj umieścić uproszczą ci życie za miesiąc, pół roku czy rok, gdy będziesz musiał coś zmodyfikować lub usunąć. 
+
+A jeśli system nie pozwala na opisy, to stwórz osobne miejsce do trzymania tych informacji.
+
+### Nie stosuj konwencji disable/hide
+Miej litość dla siebie i innych i nie twórz flag negatywnych. O co mi chodzi? Zerknij na przykład:
+
+```
+if(someFlagDisabled && !someFlag2Disabled){
+
+}
+
+```
+
+Czy jesteś w stanie powiedzieć co zrobić, żeby wejść do if'a? Czy musisz się jednak zastanowić? A co gdyby warunków było więcej?
+
+A co gdybyśmy zmienili w ten sposób?
+
+```
+if(someFlagEnabled && !someFlag2Enabled){
+
+}
+```
+
+Tu już dużo łatwiej podać warunki, by wejść do if'a.
+
+Negatywne warunki są nielogiczne - musi być false, aby funkcjonalność była aktywowana. Niech twoje flagi będą logiczne i nie wymagały wysiłku, do określenia czy coś jest włączone, czy nie. 
+
+
+### Regularnie rób audyt
+
+Flagi mają to do siebie, że łatwo o nich zapominamy. Szczególnie te, które były nam potrzebne przy wypuszczaniu nowej funkcjonalności. Po wypuszczeniu, jeśli wszystko działa to mamy opuszczoną flagę, która zwiększa złożoność kodu. Dlatego raz na jakiś czas przejrzyj flagi i wyrzuć te, które już nie są używane. Podziękujesz sobie w przyszłości. Uwierz mi, usuwanie ponad rocznej flagi nie jest przyjemne.
+
+### Stwórz dokument z opisem flag i zależności między nimi
+
+Jest to rozwinięcie opisu flagi. Gdy mamy w systemie dużo, różnych flag to zaczynają się pojawiać związki pomiędzy nimi. I nie są one oczywiste, jeśli właśnie nad tym nie pracujesz. Chodzi mi o sytuacje gdy, żeby dotrzeć do jednej flagi, musisz mieć odpowiednie warunki w jednej lub więcej innych. I warto zapisywać te zależności, bo przydają się do:
+- debuggowania,
+- usuwania w przyszłości,
+- zarządzaniem dodawaniem kolejnych flag. 
+
+Mając taką dokumentację, możemy powiedzieć w pewnym momencie STOP, gdy logika robi się zbyt skomplikowana.

@@ -4,7 +4,7 @@ slug: "recenzja-mikrus-tani-vps"
 author: "Feridum"
 image: "./logo.png"
 tags: ["recenzja", "vps", "mikrus"]
-date: "2022-04-12T12:55:58.440Z"
+date: "2022-04-14T09:00:00.440Z"
 ---
 
 Od kiedy programuję, zawsze chciałem jakiegoś małego VPS'a do zabaw. Ostatnio testowałem Mikr.us, czyli tanie VPS'y dla pasjonatów. Zobacz, co sądzę o tej usłudze. I czy ta usługa jest dla ciebie. 

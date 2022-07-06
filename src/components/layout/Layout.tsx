@@ -7,7 +7,6 @@ import { Header } from "../header/Header"
 import CookieConsent, { Cookies } from "react-cookie-consent"
 import clsx from "clsx"
 import { useLocation } from "@reach/router" // this helps tracking the location
-import { initializeAndTrack } from 'gatsby-plugin-gdpr-cookies'
 
 export const Layout = ({ children, className }: LayoutProps) => {
   const location = useLocation();
@@ -45,11 +44,8 @@ export const Layout = ({ children, className }: LayoutProps) => {
           contentClasses='w-5/6'
           expires={150}
           onAccept={() => {
-            Cookies.set("gatsby-gdpr-google-tagmanager", true);
-            initializeAndTrack(location)
           }}
           onDecline={() => {
-            Cookies.set("gatsby-gdpr-google-tagmanager", false)
           }}
           flipButtons
           style={{

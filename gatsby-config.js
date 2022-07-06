@@ -104,17 +104,6 @@ module.exports = {
     },
     `gatsby-plugin-twitter`,
     {
-      resolve: `gatsby-plugin-gdpr-cookies`,
-      options: {
-        googleTagManager: {
-          trackingId: 'GTM-PBG24GD',
-          cookieName: 'gatsby-gdpr-google-tagmanager',
-          dataLayerName: 'dataLayer',
-        },
-        environments: ['production']
-      }
-    },
-    {
       resolve: `gatsby-plugin-sitemap`,
       options: {
         output: `/sitemap`,

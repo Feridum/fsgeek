@@ -1,0 +1,244 @@
+---
+title: "Layouts w Next.js 13 - pierwsze wrażenia"
+slug: "vercel-nextjs-layouts"
+author: "Feridum"
+image: "./logo.png"
+tags: ["javascript"]
+date: "2022-10-26T16:00:00.569Z"
+---
+
+Layouts, które pojawiło się w Next 13 znacząco zmieni sposób w jaki tworzymy aplikacje. Jeśli chcesz się dowiedzieć dlaczego to zostało wprowadzone, jakie rozwiązuje problemy i jak z tego skorzystać, to czytaj dalej.
+
+<!--more-->
+
+## Po co Layouts zostało wprowadzone?
+
+Do tej pory routing w aplikacjach next.js, był oparty o pliki. Każdy plik był osobną ścieżką w aplikacji. Przypominało to trochę sposób w jaki tworzyliśmy strony html, czyli jeden adres jest rozwiązywany do jednego pliku. Powodowało to, że jeśli mieliśmy jakieś wspólne elementy pomiędzy stronami, to musieliśmy to albo duplikować albo wynosić do zewnętrznego kodu. Było to dosyć niewygodne gdy mieliśmy zagnieżdżone elementy np. w aplikacji typu dashboard gdzie bardzo często mamy menu z lewej strony i zmienia się tylko treść po prawej.
+
+## Jak działają Layouts w next.js
+
+Layouts działają w sposób jaki znamy od lat np. w React jeśli korzystamy z react-router, czyli możliwość zagnieżdżania widoków w sobie. Oznacza to że przechodząc między stronami nie renderuje się cała strona od nowa, tylko część która się aktualnie zmieniła. W ten sam sposób działa również Remix.
+
+Co warto wiedzieć:
+- nowa architektura korzysta z Server Components,
+- mamy dostęp do stremingu, czyli opcji renderowania części aplikacji niezależnie od siebie,
+- getStaticProps i getServerSideProps zostały zastąpione hookiem use i rozszerzoną metodą fetch,
+- stara architektura z pages jest ciągle dostępna i można z niej korzystać.
+
+## Next.js 13 Layouts 101
+
+Żeby zacząć korzystać z nowej funkcjonalności musimy skorzystać z folderu app. Folder pages cały czas zostaje dzięki czemu możemy stopniowo przechodzić do Layouts.
+
+Wewnątrz app:
+- foldery definiują routing, folder app odpowiada ścieżce /, app/settings adresowi /settings itd.
+- pliki wewnątrz folderów definiują logikę i widok dla poszczególnych ścieżek.
+
+Specjalne pliki:
+- page.tsx - wymagany plik, definiuje logikę i unikalny UI,
+- layout.tsx - definiuje UI, który jest zachowywany podczas nawigacji, dla root'a jest wymagany i musi zawierać znacznik html,
+- loading - do definiowania UI podczas ładowania. Bazuje na React.Suspense. Komponent musi być async by zadziałało,
+- error.tsx - do wyświetlania błędów, opiera się o ErrorBoundary. Musi to być komponent po stronie klienta (dyrektywa `'use client';` na górze komponentu),
+- head.tsx - do zdefiniowana zawartości head dla strony,
+- template.tsx - podobny do layouts ale podczas nawigacji nowa instancja jest montowana.
+
+
+## Praktyczny przykład
+
+Cały kod znajdziesz na [Github](https://github.com/Feridum/next-layouts-poc/tree/main/app/dashboard), a poniżej masz krótkie demo.
+
+<div style="position: relative; width: 100%; height: 0; padding-top: 50.0000%;
+padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+border-radius: 8px; will-change: transform;">
+<iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+src="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAFQIGjSlL0&#x2F;watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+</iframe>
+</div>
+
+
+### Przygotowanie
+
+To jest ciągle funkcjonalność w wersji beta i trzeba mieć to na uwadze. Żeby aktywować tę funkcjonalność musisz w pliku next.config.js dodać poniższą konfigurację.
+
+```js
+const nextConfig = {
+    // reszta konfiguracji
+    experimental:{
+        appDir: true
+    }
+}
+```
+
+Ja też usunąłem folder pages ponieważ były konflikty pomiędzy starym a nowym routingiem.
+
+### Ścieżka /
+
+Tutaj postawiłem na minimalizm i mam tylko wymagane pliki.
+
+```tsx
+// app/pages.tsx
+import Link from "next/link";
+
+export default function Page() {
+    return (<>
+        <h1>Hello, Next.js 13!</h1>
+        <Link href={`dashboard`}>Go to dashboard</Link>
+    </>);
+}
+```
+
+
+```tsx
+// app/layout.tsx
+
+/* eslint-disable @next/next/no-head-element */
+
+export default function RootLayout({children}: {children: React.ReactNode}) {
+    return (
+        <html>
+            <head></head>
+            <body>{children}</body>
+        </html>
+    );
+}
+```
+
+Jak wspomniałem wyżej plik layout dla roota jest obowiązkowy i Next sam mi wygenerował ten plik, gdy o tym zapomniałem.
+
+### Ścieżka /dashboard
+
+Tutaj najciekawszy jest plik layout.
+```tsx
+// app/dashboard/layout.tsx
+
+export default function DashboardLayout({ children}: {children: React.ReactNode;}) {
+
+    const fields = [
+        { name: "Long", slug: "long" },
+        { name: "Quick", slug: "quick" },
+        { name: "Parallel", slug: "parallel" },
+    ];
+
+    return (
+        <>
+            <div className="menu">
+                {fields.map((f) => (
+                    <Link href={`dashboard/${f.slug}`} style={{ margin: 16 }}>
+                        {f.name}
+                    </Link>
+                 ))}
+            </div>
+            <section>{children}</section>
+        </>
+    );
+}
+
+```
+
+Mam tutaj typowy przykład dashboardu, czyli sytuacji gdzie z lewej strony mamy statyczne menu a po prawej zmieniającą się treść. Dzięki wykorzystaniu Layouts to się nie będzie renderować.
+
+### Ścieżka /dashboard/long
+
+```tsx
+// app/dashboard/long/page.tsx
+
+async function getData() {
+    await new Promise((r) => setTimeout(r, 5 * 1000));
+
+return "long";
+}
+
+export default async function Page() {
+    const data = await getData();
+
+return (
+<>
+    <h1>Hello, {data}</h1>
+</>);
+}
+```
+
+Jako ścieżkę long dałem sztuczny promise. Warto zwrócić uwagę na to, że jest to komponent asynchroniczny. Dzięki temu można dodać loading.
+
+```tsx
+// app/dashboard/long/loading.tsx
+
+export default function Loading() {
+    return <h2>loading long</h2>
+}
+```
+
+
+### Ścieżka /dashboard/parallel
+
+Z fajnych rzeczy to jeszcze jest możliwość ładowania komponentów niezależnie. Mamy tę możliwość dzięki wykorzystaniu React.Suspense.
+
+```tsx
+import { Suspense } from "react";
+
+async function getData1() {
+    await new Promise((r) => setTimeout(r, 4 * 1000));
+
+return 1;
+}
+
+async function getData2() {
+    await new Promise((r) => setTimeout(r, 1 * 1000));
+
+return 2;
+}
+
+async function getData3() {
+    await new Promise((r) => setTimeout(r, 3 * 1000));
+
+return 3;
+}
+
+async function LongFetch({ promise }) {
+    const data = await promise;
+
+return <h2>Loaded long fetch {data}</h2>;
+}
+
+export default async function Page() {
+    const fields1 = getData1();
+    const fields2 = getData2();
+    const fields3 = getData3();
+
+return (
+<>
+    <h1>It work parallel</h1>
+
+    <Suspense fallback={<div>Loading section 1....</div>}>
+        <LongFetch promise={fields1} />
+    </Suspense>
+    <Suspense fallback={<div>Loading section 2....</div>}>
+        <LongFetch promise={fields2} />
+    </Suspense>
+    <Suspense fallback={<div>Loading section 3....</div>}>
+        <LongFetch promise={fields3} />
+    </Suspense>
+</>);
+}
+```
+
+
+Mamy 3 komponenty, które pokazują się w różnym czasie. Każdy z nich ma niezależny loader co widać na gifie na początku.
+
+## Co o tym myślę?
+
+- To zmieni sposób w jaki tworzymy aplikacje Next.js i sprawi, że Next.js stanie się niekwestionowanym liderem.
+- Nowa architektura daje nam spore możliwości.
+- Na razie nie jest to gotowe, aby wejść na produkcję (napotkałem różne błędy, problemy z build jak korzystałem z error.tsx, nie udało mi się tego postawić na vercel, błędy typowania dla asynchronicznych komponentów).
+- turbopack może być super narzędziem w przyszłości. Wypróbowałem go i aplikacja wstawała dużo szybciej ale miałem problemy potem przy odświeżaniu i nie do końca działały te komponenty asynchroniczne.
+- Na razie warto się pobawić i za pół roku jak będzie stabilne to nie wyobrażam sobie, by nie korzystać z tego.
+
+## Inne ciekawe zmiany w Next.js 13
+
+Layouts nie są jedyną zmianą którą wprowadza Next13. Z tych ciekawszych warto wymienić:
+
+- Wersja alpha Turbopack, czyli następca Webpacka napisany w Rust. Jest to o tyle ciekawe, że jest to kolejne narzędzie napisane w Rust, które Vercel umieszcza w Next.js. Obstawiam, że Rust stanie się głównym językiem do pisania różnych narzędzi deweloperskich.
+- Aktualizacja next/image. Mniej JS'a, szybsze i lepsza dostępność przez wymuszenie alt.
+- Nowy @next/font, czyli system czcionek, który ma zastąpić Google fonts.
+- next/link nie potrzebuje już elementu `<a>` jako dziecka.
+- @vercel/og do generowania obrazków open graphs dla social media.
+- Usprawnienia do Middleware API.

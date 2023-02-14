@@ -1,0 +1,64 @@
+---
+title: "Jak mockować dane na frontendzie?"
+slug: "jak-mockowac-dane-na-frontendzie"
+author: "Feridum"
+image: "/assets/images/mockowanie-danych/logo.jpg"
+tags: ["mockowanie danych", "javascript", "apiary", "express"]
+date: 2019-03-14T07:35:00+01:00
+draft: false
+---
+
+Frontend pozwala nam na wyświetlenie danych w uporządkowany i co najważniejsze użyteczny sposób. Jednak podczas powstawania aplikacji ciężko jest zgrać zespoły, które tworzą i wyświetlają te dane. Nie ma problemu jeśli to backend pracuje szybciej i jest do przodu z dostarczaniem danych. Jednak co robić gdy to frontend pracuje szybciej i nie ma danych, które mógłby wyświetlić? Rozwiązanie to mockowanie danych. Jednak jak to zrobić by było to szybkie i nie wymagało zbyt dużej ilości zmian w przyszłości?
+
+
+
+## Mockowanie danych w komponentach 
+
+Najprostsze rozwiązanie to umieszczenie danych bezpośrednio w miejscu gdzie chcemy je wykorzystać. Podczas pisania poszczególnych komponentów możemy się zastanawiać czy dane umieścić bezpośrednio w komponencie czy przekazać je z zewnątrz. Dzięki drugiemu rozwiązaniu pozbywamy się danych umieszczonych trwale w kodzie elementu nad którym pracujemy. Jest to bardzo szybkie szybkie rozwiązanie, które sprawdza się idealnie na samym początku pisania kodu. 
+
+Niestety na tym plusy się kończą i zaczynają problemy mockowania danych w plikach. Po pierwsze w momencie gdy backend będzie gotowy to będziemy musieli usunąć wpisane na sztywno dane. Kolejny problem to brak wykorzystania komunikacji między komponentami - to możemy w pewien sposób usunąć umieszczając dane jak najwyżej się da. Pozwalamy wtedy aby komponenty mogły przekazywać poprawnie dany między sobą. Kolejny problem na jaki możemy natrafić to ten związany z komunikacją z serwerem i trzymaniem danych np.: w Reduxie. Trzymając dane w komponentach nie jesteśmy w stanie sprawdzić całej ścieżki czyli od pobrania danych do ich wyświetlania co może spowodować problemy podczas łączenia się z backendem. 
+
+
+Plusy:
+
++ dobry na początkowym etapie tworzenia komponentu by szybko zobaczyć efekty
+
+Minusy:
+
+- dodatkowy kod, który będzie do usunięcia 
+- ciężko przetestować pełną ścieżkę komunikacji od pobrania danych do wyświetlenia
+
+## Prosty serwer z danymi 
+
+Rozwiązaniem problemu związanego z testowaniem pełnej ścieżki pomiędzy serwerem, który udostępnia dane a wyświetleniem ich jest stworzenie własnego prostego serwera, który będzie nam takie statyczne dane serwował. Stworzenie własnego serwera express.js nie jest trudne i wystarczy kilkanaście minut by móc wysyłać i odbierać zapytania. Daje nam to dużą swobodę i pozwala całkiem sprawnie symulować zachowanie systemu. Oczywiście nie możemy przesadzać - nie mamy tutaj tworzyć funkcjonalnego backendu tylko maksymalnie okrojoną wersję na czas developmentu.
+
+Oczywiście najlepiej jeśli na tym etapie dogadamy się z backendem jak będą wyglądały odpowiedzi dla danych zapytań. Jeżeli coś zawiedzie na tym etapie to nasz serwer będzie bezużyteczny a my będziemy skazani na poprawę frontowej części kodu - a w przypadku dużych różnic poprawki mogą zająć dużo czasu i wymagać przepisania części widoku lub logiki. Kolejnym minusem jest konieczność przeznaczenia czasu na stworzenie i utrzymywanie zastępczego serwera - nawet jeśli nie chcemy go umieszczać gdzieś publicznie to musimy dbać o to by każdy developer był w stanie go uruchomić.
+
+Plusy:
+
++ możliwość przetestowanie pełnej ścieżki komunikacji 
++ elastyczność przy tworzeniu endpointów
++ jeśli dogadaliśmy się z zespołem backendowym to przepięcie na prawdziwy serwer będzie wymagał tylko zmiany adresu URL
+
+Minusy:
+
+- ale jeśli się nie dogadaliśmy to zmiany mogą być kosztowne
+- konieczność tworzenia i utrzymywania serwera
+
+## Apiary
+
+Częściowym rozwiązaniem problemów z własnym serwerem są zewnętrzne serwisy, które tworzą nam taki serwer na podstawie pliku json (lub jakiegoś innego formatu). Tutaj chciałbym polecić [Apiary](https://apiary.io/), które idealnie sprawdziło się w kilku moich projektach. Opisujemy tam nasze endpointy wykorzystując API Blueprint. Jeśli będziecie mieć okazję spróbujcie sobie wersji PRO - w przypadku dużych projektów potrafi to ułatwić pracę. Jesteśmy wtedy w stanie połączyć nasz projekt w Apiary z Githubem i każde nowe endpointy tworzyć jako osobne Pull Requesty. W ten sposób zespoły frontendowe i backendowe mogą dyskutować o konkretnych endpointach zanim zacznie się ich implementacja. 
+
+Wykorzystując Apiary możemy  po pierwsze stworzyć serwer, który będzie serwował dane dla frontendu a po drugie dostajemy dokumentację wszytskich dostępnych endpointów w systemie. Dodatkowo gdy backend będzie gotowy ze wszystkimi endpointami wystarczy zmienić pojedynczy URL w aplikacji frontendowej. Do minusów należy zaliczyć, że trzeba przyzwyczaić się do API Blueprint i wypracować odpowiedni sposób pracy z Apiary dla całego zespołu - w pierwszym projekcie razem z zespołem potrzebowaliśmy 3 podejść zanim udało nam się wypracować schemat działania, który zaczął się sprawdzać. Ale początkowy wysiłek jest wart zainwestowania i późniejszego wykorzystywania w kolejnych projektach.
+
+Plusy:
+
++ możliwość przetestowanie pełnej ścieżki komunikacji 
++ łatwość tworzenia nowych endpointów
++ jeśli dogadaliśmy się z zespołem backendowym to przepięcie na prawdziwy serwer będzie wymagał tylko zmiany adresu URL
+
+Minusy:
+
+- ale jeśli się nie dogadaliśmy to zmiany mogą być kosztowne
+
+A wy macie jakieś swoje sposoby na mockowanie danych na frontendzie? Może korzystacie z czegoś o czym nie wspomniałem a sprawdza się idealnie w waszym projekcie? Chętnie poczytam jakie wy macie doświadczenie z tym tematem :) 

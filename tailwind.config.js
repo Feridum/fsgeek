@@ -1,8 +1,11 @@
+/* eslint-disable import/no-extraneous-dependencies, global-require */
 module.exports = {
-  content: ["./src/**/*.js", "./src/**/*.jsx", "./src/**/*.ts", "./src/**/*.tsx"],
+  content: ['./src/**/*.{astro,html,js,jsx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {},
   },
-  variants: {},
-  plugins: [],
-}
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    require('@tailwindcss/typography'),
+  ],
+};

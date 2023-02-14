@@ -1,0 +1,144 @@
+---
+title: "3 podstawowe operacje na tablicach w dwóch odsłonach"
+slug: "podstawowe-operacje-na-tablicach-javascript-mutation-non-mutating"
+author: "Feridum"
+image: "/assets/post/2021/array-methods/logo.png"
+tags: ["javascript",]
+date: "2021-05-18T16:00:00.084Z"
+---
+
+W Javascript tablice są jednym z najbardziej popularnych i wykorzystywanych obiektów. Możemy na nich operować na dwa sposoby - mutując oryginalną tablicę lub tworząc nowy obiekt za każdym razem. W poście pokazuję jak wykonać podstawowe operacje na tablicach w tych dwóch podejściach.
+
+
+
+## Mutating vs non-mutating
+
+W przypadku JS'a możemy decydować, jak chcemy wykonywać operacje na obiektach. Mutując obiekty, zmieniamy ich wartość. Jest to na pewno wygodne, ale może powodować niechciane efekty uboczne np.: przypadkowe nadpisanie danych. Jest to też trudne w debugowaniu. Dużo lepsze jest wykorzystanie podejścia, gdzie nie mutujemy obiekty. Zamiast tego za każdym razem jest zwracany nowy obiekt, który można wykorzystać.
+
+## Dodawanie elementu
+
+### Mutating
+
+Tutaj mamy do wyboru dwie funkcje, które wstawiają nowy element do tablicy. 
+
+- `.push()` wstawia element na koniec tablicy,
+- `.unshift()` wstawia element na początek tablicy.
+
+```jsx
+const arr = [1,2,3]
+arr.push(4)
+console.log(arr) // [1,2,3,4]
+arr.unshift(0)
+console.log(arr) // [0,1,2,3,4]
+```
+
+### Non mutating
+
+Przy podejściu bez mutowania obiektu nie będę korzystać z żadnej funkcji. Wystarczy operator `spread (...)`
+
+```jsx
+const arr = [1,2,3]
+const arr2 = [...arr, 4];
+console.log(arr2) // [1,2,3,4]
+const arr3 = [0, ...arr];
+console.log(arr3) // [0,1,2,3]
+```
+
+Jestem ciekawy Twojej opinii na temat dodawania. Jak dla mnie drugi sposób zapisu jest bardziej czytelny i nie muszę się zastanawiać nad tym jakiej metody użyć, jakie ma argumenty itd.
+
+## Usuwanie elementu
+
+### Mutating
+
+Do usuwanie elementów można wykorzystać aż 3 funkcje:
+
+- `.pop()` - usuwa ostatni element,
+- `.shift()` - usuwa pierwszy element,
+- `.splice(m, n)`- usuwa n elementów zaczynając od indeksu m.
+
+```jsx
+const arr = [1, 2, 3, 4, 5]
+
+arr.pop();
+console.log(arr) // [1, 2, 3, 4]
+arr.shift()
+console.log(arr) // [2, 3, 4]
+arr.splice(1,2)
+console.log(arr) // [2]
+```
+
+### Non-mutating
+
+Tutaj możemy korzystać z dwóch podejść. Pierwsze z nich polega na użyciu funkcji `.filter()`, by zwrócić z tablicy tylko część elementów.
+
+```jsx
+//filtrowanie na bazie wartości elementu
+[1,2,3,4].filter(a=>a>2) // [3,4]
+
+// można też filtrować na bazie indeksu tablicy
+[4,3,2,1].filter((_,i)=>i<2) // [4,3]
+```
+
+Można również skorzystać z funkcji `.slice`, by wydobyć część tablicy i zwrócić jako nową tablicę. 
+
+```jsx
+[1,2,3,4,5].slice(2) //[3,4,5]
+[1,2,3,4,5].slice(2,4) // [3,4]
+[1,2,3,4,5].slice(-2,4) // [4]
+```
+
+Problemem z wykorzystaniem tej funkcji jest trudność w usunięciu elementu w środku tablicy. Ale da się to obejść z wykorzystaniem operatora spread.
+
+```jsx
+const arr = [1,2,3,4,5]
+const newArray = [...arr.slice(0,2), ...arr.slice(3)]
+console.log(newArray) // [1, 2, 4, 5]
+```
+
+## Zamiana elementu
+
+### Mutating
+
+Tutaj mamy do wyboru dwa podejścia. Pierwsze, najprostsze, wykorzystuje znajomość indeksu w tablicy. 
+
+```jsx
+const arr = [1,2,3,4,5]
+arr[2] = 30
+console.log(arr) //[1, 2, 30, 4, 5]
+```
+
+Natomiast drugie podejście wykorzystuje metodę `.splice`
+
+```jsx
+const arr = [1,2,3,4,5]
+arr.splice(2,1,30)
+console.log(arr) //[1, 2, 30, 4, 5]
+```
+
+Można też zrobić więcej i podmienić jednocześnie kilka elementów.
+
+```jsx
+const arr = [1,2,3,4,5]
+arr.splice(2,2,30, 40)
+console.log(arr) //[1, 2, 30, 40, 5]
+```
+
+### Non mutating
+
+Tutaj można wykorzystać metodę `.map()` do tego, by przekształcić tablicę. 
+
+```jsx
+const arr = [1,2,3,4,5]
+const newArray = arr.map((a, i)=> i === 2 || i === 3 ? a * 10 : a);
+console.log(newArray) //[1, 2, 30, 40, 5]
+```
+
+Inny sposób to wykorzystanie metody `.slice()`
+
+```jsx
+const arr = [1,2,3,4,5]
+const newArray = [...a.slice(0,2), 30, 40, ...a.slice(4)]
+console.log(newArray) //[1, 2, 30, 40, 5]
+```
+
+A Ty co o tym sądzisz? Jakie metody najczęściej wykorzystujesz? Wolisz podejście mutating czy non-mutating? Daj znać w komentarzu albo prywatnej wiadomości.

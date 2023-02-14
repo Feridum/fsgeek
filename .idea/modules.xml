@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/fsgeek.iml" filepath="$PROJECT_DIR$/.idea/fsgeek.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Astro-boilerplate.iml" filepath="$PROJECT_DIR$/.idea/Astro-boilerplate.iml" />
     </modules>
   </component>
 </project>

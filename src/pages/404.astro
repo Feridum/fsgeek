@@ -1,0 +1,25 @@
+---
+import { CTA } from '@/partials/CTA';
+import { Hero } from '@/partials/Hero';
+import { ProjectList } from '@/partials/ProjectList';
+import { Page404 } from '@/partials/404';
+import { RecentPosts } from '@/partials/RecentPosts';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('post')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const lastThreePosts = posts.slice(0, 3);
+
+const { title } = AppConfig;
+const { description } = AppConfig;
+---
+
+<Base head={{ title, description }}>
+<Page404 />
+  <RecentPosts postList={lastThreePosts} />
+  <CTA />
+</Base>

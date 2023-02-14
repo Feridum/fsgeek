@@ -1,0 +1,90 @@
+---
+title: "Angular pipes - czyli jak przekształcać zmienne na widoku"
+slug: "angular-pipes-czyli-jak-przeksztalcac-zmienne-na-widoku"
+author: "Feridum"
+image: "/assets/images/angular-pipes/logo.jpg"
+tags: ["Angular pipes", "transformacja obiektow", "Angular", "przeksztalcanie zmiennych"]
+date: 2018-07-27T07:05:00+02:00
+draft: false
+---
+
+Każda aplikacja internetowa operuje na dużych ilościach danych, które musi w jakiś sposób wyświetlić. Rzadko kiedy są to dane proste takie jak tekst czy liczba - dużo częściej mamy do czynienia z obiektami, które trzeba jakoś zaprezentować. Czasami też proste dane musimy przekształcić do odpowiedniego formatu, ponieważ wymaga tego od nas biznes. Żeby wykonać takie transformacje możemy wykorzystać Angular `pipes` o których dziś piszę.
+
+
+
+## Angular pipes
+
+Jeśli pisaliście coś  w Angularze to  prawdopodobnie często korzystaliście z tej funkcjonalości nawet o tym nie wiedząc. Używamy ich w plikach html by zmienić sposób wyświetlania naszej zmiennej bez modyfikacji jej w kontrolerze. Pipe'y mają następującą składnię: 
+
+```ts
+zmienna | pipe:argument1:argument2
+```
+
+W tym momencie powinno wam już się przypomnieć parę przykładów gdzie mieliście taką składnię. Zresztą taką składnie spotkacie również w szablonach Twiga, który jest wykorzystywany np.: w frameworku Symfony. Działa on identycznie tylko tam funkcjonalność nazywa się `filters`. Zarówno w Twigu jak i w Angularze typowym przykładem zastosowania pipe'ów jest wyświetlanie daty.  Data nie jest prostym stringiem który wygląda tak jak użytkownik tego chce - jest to obiekt, który zawiera dużą ilość danych więc gdy chcemy to jakoś wyświetlić musimy wyciagnąć potrzebne informacje, co jest proste gdy wykorzystujemy pipe'y
+
+```ts
+zmienna | date: 'd-m-Y'
+```
+
+Zazwyczaj jak tworzymy pipe chcemy by były jak najbardziej uniwersalne, dlatego mamy tez możliwość przekazywania parametrów - w naszym przykładzie był to format daty, który możemy dowolnie definiować dla każdego wykorzystania.
+
+## Tworzenie własnych pipe'ow
+
+Oczywiście ta funkcjonalność nie byłaby taka świetna jeśli nie mielibyśmy możliwości tworzenia własnych pipe'ów. Jako przykład pokażę jak można stworzyć pipe do prostego filtrowania tabeli po długości słowa - zostaną przepuszczone tylko te wyrazy, które mają minimalną długość podaną jako argument. Żeby go stworzyć możemy skorzystać z dwóch metod: jedna to wykorzystanie Angular CLI lub stworzenie pliku samodzielnie ale wtedy musimy pamiętać o zarejestrowaniu go w pliku `app.module.ts`. Jeśli wybierzemy pierwszy sposób, co oczywiście polecam to wystarczy, że w konsoli wpiszemy coś takiego i powstanie plik wraz z wymaganą konfiguracją:
+
+```console
+ng g pipe arrayLengthFilter
+```
+
+Powstały plik wygląda następująco: 
+
+```ts
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'arrayLengthFilter'
+})
+export class ArrayLengthFilterPipe implements PipeTransform {
+
+  transform(value: any, args?: any): any {
+    return null;
+  }
+
+}
+```
+
+Pierwsza rzecz jaka rzuca się w oczy to to, że nasza klasa implementuje interfejs `PipeTransform` i jest on obowiązkowy dla tej funkcjonalności. Interfejs wymaga od nas zaimplementowania jednej metody `transform`, która przyjmuje dwa argumenty: wartość, która ulegnie transformacji oraz opcjonalnie argumenty, które można wykorzystać do tworzenia różnych wariantów transformacji. Teraz możemy przejść do implementacji naszej funkcjonalności. 
+
+```ts
+transform(array: string[], length: number = 5): any {
+    return array.filter((elem:string)=>elem.length>=length)
+}
+```
+
+Teraz żeby to wykorzystać wystarczy, zrobimy coś takiego: 
+
+```ts
+pureArray | arrayLengthFilter:5
+```
+
+
+Jak widać nie ma tutaj nic skomplikowanego a potrafi ułatwić życie. Jeśli chcecie zobaczyć jak to działa to wejdzie [tutaj](https://stackblitz.com/edit/fsgeek-angular-pipes) 
+
+## Czyste i nieczyste pipe'y
+
+Jeśli weszliście na podany przeze mnie link to mogliście zauważyć dziwną sytuację. Pomimo tego że wpisywaliśmy nowe rzeczy do tablicy to w jednym miejscu nie pojawiały się nowe elementy. Dlaczego? Ma to związek z ze sposobem w jaki są wykrywane zmiany.  Czyste pipe'y, czyli takie które tworzymy domyślnie, wykrywają tylko następujace zmiany:
+
+- Jeśli zmienna jest typu prostego (String, Number, Boolean, Symbol) to wystarczy zmiana wartości 
+- W przypadku zmiennych złożonych (Object, Array, Function, Date) musi nastąpić zmiana referencji
+
+Jak teraz zerkniecie do kodu komponentu to zauważycie, że w pierwszym przypadku tworzymy nową tablicę z nowo dodanym elementem - czyli zmieniamy referencje,  natomiast w drugim mutujemy oryginalną tablicę dodając do niej element. Oczywiście możemy zmienić domyślne zachowanie i zmienić nasz pipe na impure edytując dekorator nad klasą
+
+```ts
+@Pipe({
+  name: 'arrayLengthImpureFilter',
+  pure: false
+})
+```
+
+Jednak zanim to zrobimy musimy się zastanowić. A najlepiej dwa razy. Nieczysty pipe będzie powodował ze nasza funkcja będzie dużo częściej wywoływana niż przy domyślnej strategii. Jeżeli w naszej funkcji wykonujemy dużo obliczeń lub są one kosztowne może się okazać że strona znacząco zwolni lub całkowicie przestanie działać
+

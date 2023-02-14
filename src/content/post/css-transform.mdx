@@ -1,0 +1,146 @@
+---
+title: "CSS Transform"
+slug: "css-transform"
+author: "Feridum"
+image: "/assets/images/css-transform/logo.jpg"
+tags: ["CSS Transform", "CSS", "translate", "scale", "skew", "matrix", "rotate"]
+date: 2018-05-16T07:10:00+02:00
+draft: false
+---
+
+Jak wspominałem we wpisie dotyczącym animacji (jeśli go nie czytaliscie to zapraszam [tutaj](https://fsgeek.pl/post/animacje-w-css/)) podczas tworzenia poszczególnych klatek możemy swobodnie przekształcać animowany obiekt. Poruszać go, zmieniać rozmiar, kształt czy też obracać go.  Nie potrzebujemy do tego doatkowych biblotek czy też JS'a. Wszytsko to możemy osiągnąć przy pomocy właśności `transform`  w CSS.
+
+
+
+## CSS transform
+
+Oczywiście sama właściwosć sama nic nie zrobi. Wszystko zależy od tego jakie podamy wartości a do wyboru mamy 5 grup przekształceń: 
+
+- Translate
+- Scale
+- Rotate
+- Skew
+- Matrix
+
+Wszystkie przekształcenia mają swoją wersję zarówno dla prostego 2D, gdzie mamy tylko dwie osie X i Y oraz 3D gdzie dochodzi oś Z. Dodatkowo każda grupa ma wersje, gdzie możemy modyfikować element w wybranej osi lub we wszystkich naraz. Pierwsze 4 wartości są proste i sama nazwa wskazuje co robią, natomiast przy wartości `matrix`, którą omówię na końcu, warto znać podstawową matematykę.
+
+## Transform translate
+
+Transpozycja elementu jest najbardziej podstawowym przekształceniem w graficie. Polega na zmianie pozycji obiektu w przestrzeni. Tutaj warto wspomnieć jak jest skonstruowany układ odniesienia ponieważ wygląda trochę inaczej od tego co znamy ze szkoły a mianowicie jest odwrócony - punkt (0,0) jest w lewym górnym rogu, oś X rośnie od lewej do prawej, natomiast Y rośnie od góry do doły. Mając to na uwadze możemy przesuwać nasz element przy pomocy kilku własności: 
+
+- Translate(x,y) - przesuwa obiekt o x w osi poziomej i y w osi pionowej, za x i y trzeba podać wartość razem z jednostką
+- Translate3d(x,y,z) - przesuwamy obiekt nie tylko wzdłuż osi X i Y ale również Z, która prowadzi w naszą stronę
+- translateX(x), translateY(y), translateZ(z)  - tutaj przesuwamy tylko wzdłuż jednej wybranej osi, pozostałe osie nie zmieniają wartości
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="OZZYLa" data-default-tab="result" data-user="Feridum" data-embed-version="2" data-pen-title="Transform - translate" class="codepen">See the Pen <a href="https://codepen.io/Feridum/pen/OZZYLa/">Transform - translate</a> by Aleksander (<a href="https://codepen.io/Feridum">@Feridum</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+Warty zauważenia jest mały kwadrat po prawej stronie. Ma on dokładnie takie same wymiary jak pozostałe ale dzięki wykorzystaniu `perspective(500px)` została utworzona perspektywa a sam kwadrat został przesuniety 300 pikseli do tyłu co sprawia wrażenie mniejszego.
+
+## Scale 
+
+Tutaj też sytuacja jest prosta ponieważ `scale` służy nam do zmiany wymiarów naszego elementu.  Podobnie jak poprzednio mamy 5 dostępnych własności: 
+
+- Scale(x,y) - zmienia wymiary w dwóch osiach X i Y, za x i y musimy podać liczbę
+- Scale3d(x,y,z) - skalowanie odbywa się również w osi Z
+- scaleX(x), scaleY(y), scaleZ(z) - możemy ustawić skalowanie tylko w jednej osi
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="aGGrOJ" data-default-tab="result" data-user="Feridum" data-embed-version="2" data-pen-title="Transform - scale" class="codepen">See the Pen <a href="https://codepen.io/Feridum/pen/aGGrOJ/">Transform - scale</a> by Aleksander (<a href="https://codepen.io/Feridum">@Feridum</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+W przypadku `scaleZ` ma wpływ na położenie obiektu na osi Z. Położenie na tej osi jest wyliczane na podstawie `translateZ` przemnożonego przez `scaleZ`. Należy tylko pamiętać, że skala musi być zdefiniowana przed transpozycją by zadziałała. 
+
+```css
+	transform: perspective(500px) translateZ(10px) scaleZ(-30); //nie zadziała
+	transform: perspective(500px) scaleZ(-30) translateZ(10px); //zadziała
+```
+
+## Rotate
+
+Pierwsza właściwość, która zmienia sposób prezentacji obiektu. Do tej pory, dla widoku 2D byliśmy w stanie osiągnąć powyższe własności w inny sposób, jednak dla obrotu musimy już z tego skorzystać. Aby obrócić obiekt możemy wykorzystać jedną z następujących funkcji: 
+
+- rotate(x) - jedyna właściwość dostępna w przypadku korzystania z widoku 2D, obraca obiekt o zadany kąt np.: `20deg`  - w przypadku pozytywnej wartości obrót będzie zgodnie ze wskazówkami zegara przy wartości negatywnej na odwrót
+- rotateX(x), rotateY(y), rotateZ(z) - definiujemy obrót wokół danej osi o dany kąt. Warto wspomnieć, że obrót wokół osi Z daje taki sam efekt jak `rotate` w widoku 2D 
+- rotate3d(x,y,z,angle) - najciekawsza funkcja pozwala wybrać wzdłuż jakich osi ma następować obrót obiektu, dzięki czemu można osiągnąć ciekawe efekty. 
+	
+Warto wspomnieć że `rotate3d` może być stosowany jako alternatywa dla obrotu wokół pojedynczych osi: 
+
+- rotateX(angle) === rotate3d(1,0,0,angle)
+- rotateY(angle) === rotate3d(0,1,0,angle)
+- rotateZ(angle) === rotate3d(0,0,1,angle)
+
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="VxdPro" data-default-tab="result" data-user="Feridum" data-embed-version="2" data-pen-title="Transform - rotate" class="codepen">See the Pen <a href="https://codepen.io/Feridum/pen/VxdPro/">Transform - rotate</a> by Aleksander (<a href="https://codepen.io/Feridum">@Feridum</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+Na przykładach z codepen warto zwrócić uwagę na zielone kwadraty a szczególnie na dwa pierwsze. Każdy z nich jest obrócony o dokładnie taką samą wartość ale zmienił się punkt wokół którego jest obracany. W pierwszym przypadku jest ustawiony domyślnie w środku kwadratu, natomiast w lekko zielonym ustawiłem go przy pomocy właściwości `transform-origin: 0 0` na jego lewy górny róg.
+
+Dodatkowo w przypadku obrotu widać jak ważne jest w przypadku obiektów 3d perspektywa. Oba niebieskie kwadraty ją obrócone wokół osi X o ten sam kąt ale w drugi kwadrat został pozbawiony perspektywy co spowodowało utworzenie tak naprawdę jego rzutu prostokątnego na płaszczyznę.
+
+# Skew
+
+Do tej pory właściwości pozwalały na zmianę parametrów kształtu - czyli rozmiar, obrót czy umiejscowienie w przestrzeni. `Skew` natomiast pozwala na zmianę kształtu obiektu poprzez przechylenie go o dany kąt wzdłuż danej osi. Jest to także wyjątkowa właściwość ponieważ działa tylko dla dwóch osi - X i Y: 
+
+- Skew(x,y) - pochylamy kształt wzdłuż osi X i Y o podany wartość, która musi być kątem np.: `20deg`
+- skewX(x), skew(y) - pochylamy wzdłuż jednej wybranej osi
+
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="YLvNEK" data-default-tab="result" data-user="Feridum" data-embed-version="2" data-pen-title="Transform - skew" class="codepen">See the Pen <a href="https://codepen.io/Feridum/pen/YLvNEK/">Transform - skew</a> by Aleksander (<a href="https://codepen.io/Feridum">@Feridum</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+## Matrix 
+
+No i na koniec zostawiłem coś co graficy lubią najbardziej czyli macierz transformacji. W CSS mamy do dyspozycji dwie macierze: 
+
+- Matrix - dla przekształceń 2D
+- Matrix3d - dla przekształceń 3D
+
+Zasadę działania postaram się opisać dla widoku 2D ale będzie to można łatwo przenieść na widok 3D. Oczywiście by to zrozumieć warto mieć podstawowe pojęcie o matematyce a szczególnie o operacjach na macierzy. Własność `matrix` ma następującą postać `matrix(a,b,c,d,tx,ty)` co można przestawić w formie macierzy w następujący sposób 
+
+```
+\begin{vmatrix}
+    a & c & tx \newline
+    b & d & ty \newline
+ \end{vmatrix}
+```
+	
+Wpisując odpowiednie wartości pod zmienne możemy zmieniać sposób wyświetlania naszego obiektu. Zaraz pokażę parę podstawowych wartości dla macierzy w przykładach ale warto wiedzieć jak są obliczane wartości dla nowego obiektu. 
+
+Załóżmy, że mamy kwadrat o szerokości 80px, wysokości 80px i jest umieszczony w lewym górnym rogu ekranu.  W związku z tym jego wierzchołki mają następujące współrzędne: (0,0) (80,0) (80, 80) i (0,80). Oczywiście stanie się tak jeśli dodatkowo dodamy `transform-origin: 0 0` . Inaczej nasze wierzchołki mają inne współrzędne i obiekt po transformacji będzie wyglądał inaczej.
+
+
+Zaaplikowanie macierzy spowoduje zmianę tych wartości, dzięki czemu powstanie obiekt o innych wymiarach, położeniu lub kształcie. Próbując zmienić obiekt możemy na ślepo próbować wpisywać wartości albo mniej więcej to sobie obliczyć ponieważ nie jest to ciężkie i opiera się na wymnożeniu dwóch macierzy
+
+```
+$$
+\begin{equation}
+\begin{aligned}
+\begin{vmatrix}
+  a & c & tx \newline
+  b & d & ty \newline
+  0 & 0 & 1  \newline
+\end{vmatrix} \\
+\times \\
+\begin{vmatrix}
+  x & \newline
+  y & \newline
+  1 & \newline
+\end{vmatrix} \\ 
+ \ = \  \\
+\begin{vmatrix}
+  new \ x = a*x + c*y +tx & \newline
+  new \ y = b*x + d*y +ty & \newline
+  1  \newline
+\end{vmatrix}
+\end{aligned}
+\end{equation}
+$$
+```
+
+Takie obliczenia musimy zrobić dla każdego wierzchołka osobno. Widząc jak to działa możemy zrobić wszystko to co definiowaliśmy wcześniej: 
+
+<p data-height="369" data-theme-id="dark" data-slug-hash="VxxNVz" data-default-tab="result" data-user="Feridum" data-embed-version="2" data-pen-title="Transform - matrix" class="codepen">See the Pen <a href="https://codepen.io/Feridum/pen/VxxNVz/">Transform - matrix</a> by Aleksander (<a href="https://codepen.io/Feridum">@Feridum</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+Oczywiście nie musimy się w to zagłębiać tylko stosować odpowiednie [macierze transformacji](https://pl.wikipedia.org/wiki/Elementarne_macierze_transformacji) ale warto czasami wiedzieć jak coś działa pod spodem.

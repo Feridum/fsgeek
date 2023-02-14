@@ -1,0 +1,35 @@
+---
+title: "Firebase - backend dla frontendu"
+slug: "firebase-backend-dla-frontendu"
+author: "Feridum"
+image: "/assets/images/firebase/logo.jpg"
+tags: ["firebase", "javascript", "backend"]
+date: 2019-10-15T17:00:00+02:00
+draft: false
+---
+
+Podczas tworzenia aplikacji internetowej zespół składa się z osób, specjalizujących się w konkretnych językach, bibliotekach i warstwach (frontend, backend). A może czasami nie potrzebujemy backendu. Co jeśli chcemy stworzyć na szybko MVP lub nasz pomysł nie wymaga osobnego zespołu backendowego bo robimy prostego CRUD'a? Może warto wtedy skorzystać z rozwiązań BaaS - na przykład Firebase'a?
+
+
+
+## BaaS - Backed as a Service
+
+Backend as a Service czyli BaaS jest rozwiązaniem chmurowym, które dostarcza nam najczęściej bazę danych, system autoryzacji i wystawia API do którego możemy się łączyć z poziomu naszego klienta - aplikacji webowej, urządzenia mobilnego czy nawet gier. Dzięki takiemu rozwiązaniu nie potrzebujemy sami tworzyć aplikacji backendowej, spinać jej z bazą danych, hostować ją jakimś serwerze (nie zapominając oczywiście o poprawnym skonfigurowaniu). Patrząc na to ile może to zająć czasu (szczególnie jeśli nie pracujemy na co dzień na backedzie) i ilość problemów jaka może wyskoczyć,  BaaS jest idealnym rozwiązaniem dla programistów frontendu kiedy nie mają pod ręką osoby od backendu
+
+## Firebase
+
+Firebase jest rozwiązaniem BaaS od Google'a i oferuje następujące funkcjonalności: 
+
+- System uwierzytelniania użytkowników
+- Baza danych NoSQL
+- Storage do przechowywania plików
+- Hosting
+- ML Kit 
+- Cloud functions
+
+Warto wspomnieć, że darmowy plan Firebase'a pozwala na skorzystanie ze wszystkich tych usług - są one ograniczone ale pozwala nam to przetestować istniejące tam rozwiązania. Dzięki temu możemy testować własne pomysły oraz uruchamiać je dla małej ilości użytkowników. Jeśli rozwiązanie się sprawdzi możemy stworzyć własne rozwiązania lub zapłacić za lepszy plan i dalej korzystać z Firebase'a - korzystają z niego np.: Duolingo czy Trivago. 
+
+Kolejny atut Firebase'a to możliwość wykorzystania go na różnych platformach. Platforma posiada odpowiednie biblioteki dla Androida, iOS'a (wersje dla Swift'a i Objective-C), aplikacji webowych, Unity czy nawet dla języka C++. W ten sposób możemy tworzyć rozwiązania, które łączą ze sobą wiele urządzeń np.: sensor, który wysyła dane do Firebase'a wraz z aplikacją i panelem internetowych do odczytywania tych danych i nawet sterowania urządzeniem. 
+
+Osobiście rozwiązanie to bardzo mi się podoba i pobawię się nim trochę więcej. Jestem również ciekawy czy wy korzystaliście z Firebase'a lub z innych odpowiedników tego serwisu? Stosujecie to na produkcji czy tylko do prototypowania? Jak się z tym pracuje? I najważniejsze na jakiej platformie z tego korzystacie: urządzenia mobilne, web czy są też tacy co implementowali to w C++?
+

@@ -1,0 +1,53 @@
+---
+author : "feridum"
+comments : true
+date : "2017-07-17T17:06:00+02:00"
+description : "Jeśli zastanawiacie się czym sa testy i czy warto je stosować to dobrze trafiliście, ponieważ ten post odpowie na wasze pytania"
+draft : false
+featured : false
+image : "/assets/images/testy/logo.jpg"
+menu : ""
+share : true
+slug : "czym-sa-testy-w-programowaniu"
+tags : ["czym","są","testy","programowanie"]
+title : "Czym są testy w programowaniu?"
+
+---
+
+Jako, że ostatnio w pracy zająłem się tematem testów w projekcie to przy okazji uznałem, że opiszę ten potrzebny proces w wytwarzaniu oprogramowania. Jeśli chcecie się dowiedzieć co to są testy, po co je stosujemy, na jakie kategorie się dzielą i czego możemy użyć by je przeprowadzić to zapraszam do wpisu.
+
+## Czym są testy i jak je dzielimy?
+
+Testy są(według mnie) jednym z najważniejszych etapów podczas tworzenia oprogramowania. Bez nich nie wiemy czy to co zostało przez nas stworzone działa. Program możne napisać każdy w dowolnym czasie. Sztuką jest napisać takie oprogramowanie, które będzie wypełniało wymagania klienta jednocześnie będąc wydajnie. A testy są procesem który tylko nam w tym pomaga. W książkach dotyczących inżynierii oprogramowania widnieje wiele kryteriów wedle których można dzielić testowanie jednak ja się skupię  na tym który jest najczęściej wykorzystywany w codziennie pracy czyli podział na testy manualne i automatyczne.
+
+## Testy manualne 
+
+<div style="width:100%;position:relative;"><iframe src="https://giphy.com/embed/7MZ0v9KynmiSA" width="100%" style="height:25vw;margin-bottom:0;" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/test-testing-expected-7MZ0v9KynmiSA"></a></p>
+
+Czyli manualne przeprowadzane przez osobą zwaną testerem. Coraz więcej firm posiada własne zespoły testerskie (tzw. dział QA), którego zadaniem jest sprawdzanie wytwarzanego oprogramowania pod względem błędów. Dobry tester powinien cechować się cierpliwością, być dociekliwy oraz dokładny. Przydaje się również kreatywność, ponieważ czasami błędy nie są widocznie na pierwszy rzut oka. Zadaniem takiego testera jest nie tylko znajdowanie błędów ale również opisanie (między innymi jak je powtórzyć) tak by programiści mogli go naprawić. Testy manualne pozwalają wykrywać błędy jakie mogą się pojawić podczas użytkowania a więc na przykład błędne wyświetlanie się pewnych elementów, brak tłumaczeń, pewnych elementów designu oraz co najważniejsze nieprzewidywalnego działania systemu na pewne zestawy danych.
+
+
+## Testy automatyczne
+
+<div style="width:100%;position:relative;"><iframe src="https://giphy.com/embed/yoJC2o71OtZLQGO6JO" width="100%" style="height:25vw; margin-bottom:0;"  frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/tinder-automation-automator-yoJC2o71OtZLQGO6JO"></a></p>
+
+Czyli to co programiści powinni lubić najbardziej. Testy automatyczne powinny być naturalną konsekwencją pisania kodu. Po to zostały wymyślone odpowiednie narzędzia by z nich korzystać i czerpać korzyści z nich płynące. Można się spytać jakie są korzyści. Po pierwsze jesteśmy chronieni podczas pisania aplikacji, że kod w trakcie tworzenia spełnia wymagania. Jest to cecha TDD gdzie test jest pisany przed samym kodem. W TDD najpierw określamy wymagania jakie powinien spełnić kod a dopiero potem go piszemy. Oprócz tego mając testy zmniejszamy strach przed zmianami. Mamy świadomość, że nawet jeśli coś zepsujemy to jest duża szansa, że testy to wychwycą. Eliminujemy w ten sposób regresję czyli psucie funkcjonalności, które działały poprawnie. Jest to naprawę sporo korzyści a im bardziej rozbudowany jest system tym bardziej testy będą nam pomagać. 
+
+## Piramida testów
+
+Wspominając o testach automatycznych nie sposób nie wspomnieć o piramidzie testów. 
+
+![piramida_testow](/assets/images/testy/piramida_testow.jpeg)
+
+Obrazuje ona jaki powinien być rozkład testów w naszym systemie.  Na samym dole są testy jednostkowe, których powinno być jak najwięcej w naszym systemie. Sprawdzają one działanie pojedynczego komponentu. Podczas takiego testu komponent jest odizolowany od innych części systemu tak bardzo jak tylko się da wykorzystując tzw. zaślepki(mocks).
+
+Następne są testy integracyjne, które pozwalają sprawdzić czy nasze komponenty poprawnie ze sobą współpracują.  Tutaj komponenty nie są już izolowane tylko łączone między sobą w celu sprawdzenia interakcji. Również tutaj są sprawdzane integracje z zewnętrznymi częściami systemu. 
+
+No i na samym końcu testy e2e (end-to-end). Jest ich najmniej ponieważ zajmują najwięcej czasu. Ich celem jest przetestowanie funkcjonalności od początku do końca od strony użytkownika. Można tutaj wykorzystać narzędzia, które na żywo klikają na stronie symulując zachowanie użytkownika jednocześnie sprawdzając istnienie elementów UI na stronie
+
+## Narzędzia do testowania
+
+Jako, że testowanie zaczyna być coraz bardziej popularne to i istnieją biblioteki i narzędzia, które wspomagają ten proces. W przypadku testerów manualnych nie potrzeba wiele ale przyda się system do zgłaszania błędów np.: JIRA ale wystarczy również zwykły excel lub inny arkusz gdzie będą wypisane błędy. W przypadku testów automatycznych mamy wiele dostępnych narzędzi PHPSpec i PHPUnit dla PHP oraz Mocha, Karma lub Jest dla Javascript'u dla testów jednostkowych, Behat dla integracyjnych czy też Protractor lub Selenium do e2e. Są to tylko przykładowe biblioteki o których słyszałem i w niektórych pisałem. Jednak na pewno jest ich o wiele więcej. Również inne języki między innymi takie jak Java, Go posiadają swoje biblioteki do testowania.
+
+
+A jak to wygląda u was? Piszecie testy w swoich projektach? Jeśli tak to w czym? Z jakich bibliotek korzystacie? A może uważacie, że jest to niepotrzebne? Zapraszam do dyskusji w komentarzach.

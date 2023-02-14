@@ -1,0 +1,85 @@
+---
+title: "Koa.js - pierwsze kroki"
+slug: "koa-pierwsze-kroki"
+author: "Feridum"
+image: "/assets/images/koa-pierwsze-kroki/logo.jpg"
+tags: ["koa.js", "node.js", "javascript"]
+date: 2019-08-19T16:15:00+02:00
+draft: false
+---
+
+Najcześciej jeśli mówi się o frameworku dla Node.js to myślmy o Express.js. Jest najpopularniejszy, znajdziemy bardzo dużo informacji o nim oraz powstało na jego postawie wiele aplikacji. Jednak Express.js to nie wszystko - istnieją inne równie dobre frameworki. Jednym z nich jest Koa, który osobiście bardzo mi się spodobał. 
+
+
+
+## Inne wpisy o Koa
+
+- [Koa.js - middlewares](/post/koa-middlewares)
+- [Koa.js - obsługa błędów](/post/koa-obsluga-bledow)
+
+## Koa.js
+
+Framework Koa jest dziełem twórców frameworka Express. Został stworzony z myślą by dostarczał minimalny interfejs do budowania aplikacji z wykorzystaniem Node.js.  Jeśli zerkniecie do kodu na [Github](https://github.com/koajs/koa) to zauważycie, że kodu jest naprawdę mało - tylko to co jest wykorzystywane przy każdym zapytaniu (czyli jest najbardziej potrzebne) znajduje się w głównej bibliotece.  Koa polega na `middlewares`, które rozszerzają możliwości biblioteki o dodatkowe możliwości. Dzięki temu jesteśmy w stanie uzyskać minimalny rozmiar biblioteki budując naszą aplikację tylko z potrzebnych elementów.  Kolejny element, który odróżnia Koa od Express to rezygnacja z korzystania `callbacks` na rzecz wprowadzonych do JS'a nowości w postaci async/await. Dzięki temu kod wygląda dużo czyściej co wie każdy kto spotkał się kiedyś z `callback hell`
+
+## Wymagania oraz instalacja Koa
+
+Z racji tego że korzystamy z async to Node musi być w wersji przynajmniej `v7.6.0`. Jednak nie powinien to być problem skoro za chwilę wyjdzie wersja 12 LTS - zachęcam do aktualizowania i korzystania z nowości, które się pojawiają w każdej wersji. Aby teraz zacząć korzystać z tego frameworka musimy go zainstalować tym poleceniem: 
+
+```console
+npm install koa
+```
+
+## Hello World
+
+Skoro wszystko co potrzebne mamy zainstalowane to możemy napisać pierwszą aplikację, którą będziemy standardowo Hello World. Jak będzie wyglądał taki kod?
+```js
+const Koa = require('koa');
+const app = new Koa();
+
+
+app.use(ctx=>{
+    ctx.body = "Hello World"
+    ctx.status = 200;
+})
+
+app.listen(3000);
+```
+
+Jeśli pisaliście coś kiedyś w Expressie to kod będzie wyglądał dla was znajomo. 
+
+```js
+const Koa = require('koa');
+const app = new Koa();
+
+//... 
+
+app.listen(3000);
+```
+
+Na samym początku mamy import samej biblioteki oraz inicjalizację aplikacji.  Dodatkowo też każdą aplikację chcemy uruchomić do czego służy polecenie `app.listen()`. Możemy podać tam dwa parametry:
+
+- Pierwszy określa numer portu pod jakim uruchomimy aplikację 
+- Drugi parametr jest opcjonalny i możemy tam przekazać funkcję, która zostanie wywołana jeśli aplikacja się poprawnie uruchomi
+
+
+```js
+app.use(ctx=>{
+    ctx.body = "Hello World"
+	ctx.status = 200;
+})
+```
+
+Wszystko to co jest pomiędzy to jest właściwa część aplikacji. Tym razem korzystamy z tylko jednego middleware'a - za każdym razem gdy korzystamy z funkcji `app.use` to rejestrujemy nowy middleware, z którego będziemy korzystać. Dokładnie o middlewarach będę pisać w kolejnym poście - tutaj tylko wspominam o tym na potrzeby tego przykładu. 
+
+Za każdym razem gdy wykonamy zapytanie na serwer to zostają wywołane wszystkie middleware'y - każdy z nich może w pewien sposób modyfikować odpowiedź. W pierwszym `Hello World` zwracamy w odpowiedzi nasz tekst oraz ustawiamy status odpowiedzi na 200 - Koa automatycznie ustawia status jako 404.
+
+Teraz żeby to uruchomić musimy wrócić do konsoli i wpisać 
+
+```console
+node scieżka/do/pliku
+```
+
+I tyle - aplikacja działa. Jedyny problem to, że jeśli zrobimy jakieś zmiany w kodzie to musimy ręcznie przeładować naszą aplikację. Tak samo w przypadku błędów - będziemy musieli uruchomić aplikację na nowo. To jak sobie z tym poradzić i jak sobie ułatwić pracę będzie w innym poście. 
+
+Dziś to wszystko. Chciałbym te posty były krótkie, konkretne i dotyczyły zagadnienia. W następnym poście napiszę więcej na temat samych middlewares, ponieważ to na nich będzie opierała się cała logika. No i pytanie do was - pracowaliście kiedyś z Koa produkcyjnie, czy tylko Express? Jeśli tak to jak się wam z tym pracowało i jak się sprawdzało w praktyce? 
+

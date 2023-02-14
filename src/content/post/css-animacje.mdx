@@ -1,0 +1,82 @@
+---
+title: "Animacje w CSS"
+slug: "animacje-w-css"
+author: "Feridum"
+image: "/assets/images/css-animacje/logo.jpg"
+tags: ["CSS", "animacje", "animation", "keyrames", "kaskadowe" ,"arkusze", "styli"]
+date: 2018-03-19T07:25:01+01:00
+draft: false
+---
+
+CSS już dawno przestał być tylko językiem do kolorowania naszej strony czy formatowaniu tekstu. Kolejne wersje dodają coraz bardziej zaawansowane elementy do niego co powoduje, że niektóre czynności, do których wcześniej potrzebowaliśmy skryptów i zewnętrznych bibliotek, jesteśmy w stanie ograć samym CSS'em. Dziś chciałbym omówić jedną z nich czyli animacje.
+
+
+
+## Czym są animacje?
+
+Jednak zanim przejdę bezpośrednio do animacji w CSS warto powiedzieć czym są one tak naprawdę. Według Wikipedii animacja jest to ożywianie martwych kształtów poprzez dokonanie wielu fotografii, rysunków a potem wyświetlanie ich w sposób ciągły. Każdy rysunek różni się od poprzedniego w niewielkim stopniu co  powoduje, że powstaje wrażenie ruchu. I za chwilę zobaczycie, że w CSS zasada działania jest identyczna.
+
+## Właściwość `animation`
+
+W CSS mamy grupę właściwości, które zaczynają się od słówka `animation` i kontrolują różne aspekty naszej własnej animacji. Mamy 8 następujących właściwości: 
+	
+- `animation-delay` - czas pomiędzy załadowaniem elementu a rozpoczęciem jego animacji. Czas możemy definiować zarówno w sekundach jak i milisekundach np.: `2s`, `300ms`
+- `animation-direction` - kierunek w jakim odtwarza się nasza animacja czyli sposób w jaki są odtwarzane kolejne klatki naszej animacji. Mamy tutaj 4 wartości: `normal` - klatki są odtwarzane w kolejności w jakiej zostały zadeklarowane, jest to wartość domyślna; `reverse` - klatki są odtwarzane od tyłu; `alternate` - w momencie jak animacja dojdzie do ostatniej klatki zaczyna odtwarzać je w przeciwnej kolejności, daje to efekt takiego wahadła; `alternate-reverse` - podobnie jak poprzednio tylko pierwszy cykl animacji jest wykonywany od tyłu
+- `animation-duration` - czas jaki będzie trwał jeden cykl animacji, podobnie jak w przypadku delay możemy dać wartości w sekundach i milisekundach
+- `animation-iteration-count` - ilość cykli animacji jaka ma się wykonać np.: `animation-iteration-count: 2` oznacza, że animacja wykona się dwa razy; możemy tutaj również dać wartości ułamkowe co spowoduje, że animacja zatrzyma się w trakcie wykonywania; również jeśli chcemy by animacja wykonywała się ciągle możemy użyć słówka `infinite`
+- `animation-name` - nazwa zestawu klatek, które zostaną przypisane do naszej animacji
+- `animation-play-state` - określenie czy nasza animacja się wykonuje czy nie: `paused` - nie wykonuje się, `running` - wykonuje się
+- `animation-timing-function` - określa w jaki sposób następują zmiany w naszym animowanym elemencie tak by z wyglądu początkowego przekształcił się w końcowy np.: kolejne klatki pojawiają się liniowo w czasie albo na początku animacja przebiega szybciej a potem zwalnia. Typowe wartości to na przykład: `easeIn`, `easeOut`,`linear` ale również możemy zdefiniować własny sposób przechodzenia od startu do końca
+- `animation-fill-mode` - określa sposób w jaki ma się zachować nasz animowany komponent, jakie ma przypisane style przed i po animacji. Może przyjąć 4 wartości: `none`- wartość domyślna czyli element ma tylko przypisane do niego style bez tych zdefiniowanych w klatkach; `forwards` - po zakończeniu animacji element zachowa style z ostatniej klatki; `backwards`- przed rozpoczęciem animacji element ma style z pierwszej klatki;`both`- połączenie backwards i forwards
+
+## Klatki animacji
+
+Parę razy przy opisie właściwości użyłem słowa klatka. Tak jak wspominałem mechanizm w CSS jest podobny do tego co znamy z kina. Definiujemy jak ma wyglądać nasz animowany element w poszczególnych punktach animacji pozwalając przy przeglądarka sama zdecydowała jak przejść pomiędzy punktami. Jest to ważne ze względów wydajnościowych ponieważ silnik przeglądarki jest w stanie zoptymalizować te zmiany tak by były jak najmniej obciążające dla niego. 
+
+Aby zdefiniować własne kroki musimy wykorzystać specjalną konstrukcję `@keyframes`, która ma następującą strukturę: 
+
+```
+@keyframes name {
+  from {
+    margin-left: 0%; 
+   background-color: yellow
+  } 
+
+  to {
+    margin-left: 90%;
+    background-color: green;
+  }
+}
+
+
+```
+
+`name` jest to nazwa naszego zbioru klatek i to właśnie ja wpisujemy we własności `animation-name`. Następnie mamy definicję naszych kroków przy pomocy dwóch słów kluczowych: `from` i `to`. W nich określamy jak ma wyglądać nasz element na początku oraz na końcu animacji. To co dzieje się pomiędzy wylicza sama przeglądarka. Nie jesteśmy ograniczeniu tylko do dwóch punktów. Możemy określić punkty w których chcemy by element przyjął konkretne wartości przy pomocy procentów gdzie `0%` to odpowiednik `from` a `100%`  odpowiada `to`.
+
+```
+@keyframes name {
+  0% {
+    margin-left: 0%; 
+    background-color: yellow
+  }
+
+  50%{
+    margin-top: 100px;  
+  }
+  
+  100% {
+    margin-left: 90%;
+    background-color: green;
+  }
+}
+
+```
+
+A jakie właściwości dać w naszych wybranych punktach? Odpowiedź brzmi każdą jaka jest poprawna w CSS czyli marginesy, kolor oraz transformacje o których opowiem trochę w jednym z następnych postów.
+
+<p data-height="334" data-theme-id="0" data-slug-hash="EEgbeM" data-default-tab="result" data-user="Feridum" data-embed-version="2" data-pen-title="CSS Animations " class="codepen">See the Pen <a href="https://codepen.io/Feridum/pen/EEgbeM/">CSS Animations </a> by Aleksander (<a href="https://codepen.io/Feridum">@Feridum</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+No i na sam koniec jeszcze mały przykład animacji wahadła. Warto tutaj zauważyć jak wiele potrafi zrobić przeglądarka by animacja była płynna. Kolor został ustalony tylko dla pierwszej i ostatniej klatki natomiast na animacji płynnie zmienia się z jednej w drugą. Warto również zobaczyć do kodu gdzie kostki mają uustawiony kolor czerwony jako domyślny, ale dzięki wykorzystaniu `animation-fill-mode: backwards;` tuż przed rozpoczęciem animacji mają kolor zółty. No i przy definicji klatek możemy mieszać określanie klatek przy pomocy słów `from` i `to` z wartościami procentowymi. 
+
+Samo tworzenie animacji nie jest trudne i pozwala osiągnąć ładne efekty przy minimalnym wysiłku. Więc jeśli potrzebujecie coś takiego zrobić i jesteście w stanie to osiągnąć w CSS to wykorzystajcie to zamiast ściągać kolejną bibliotekę Javascript. No i do usłyszenia wkrótce :)

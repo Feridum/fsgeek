@@ -1,0 +1,64 @@
+---
+title: "Wywróż sobie estymacje"
+slug: "wywroz-sobie-estymacje"
+author: "Feridum"
+image: "/assets/images/estymaty/logo.jpg"
+tags: ["estymacja", "szacowanie","zadań", "agile"]
+date: 2018-03-06T07:50:00+01:00
+draft: false
+---
+
+Jedynym z elementów pracy w metodach zwinnych jest planowanie i co za tym idzie estymacja zadań. Jest to o tyle ważne, że na ich podstawie planujemy naszą pracę na kolejne sprinty oraz informujemy klienta kiedy może się spodziewać kolejnych funkcjonalności. Wszyscy co już parę razy to robili wiedzą, że momentami jest to jak wróżenie z kart. Dziś chciałbym opisać jak do tego można przysiąść dla osób, które nigdy tego jeszcze nie robiły.
+
+
+
+## Rodzaje estymat
+
+<div style="width:100%;position:relative;"><iframe src="https://giphy.com/embed/BZUXTEvJSPsUo" width="100%" style="height:25vw; margin-bottom:0;"   frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/oil-prices-commodities-BZUXTEvJSPsUo"></a></p>
+
+Głównym zadaniem estymowania jest określenie ile czasu zajmie nam realizacja pewnego zadania lub grupy zadań. Dzięki temu możemy zaplanować pracę i mniej więcej określić termin kolejnych kamieni milowych projektu. Jednak należy pamiętać, że nie są to szacunki wiążące. W zależności od poziomu który szacujemy będą one mniej lub bardziej dokładne ale nigdy idealne. Estymację możemy podzielić ze względu na typ oraz na wielkość zadania. Jeśli chodzi o typ to mamy dwa rodzaje: 
+
+- czasowa
+- relatywna
+
+Pierwszy jest w momencie gdy określamy godzinowo ile zajmie nam realizacja celów czyli na przykład strona logowania zajmie 16h. Drugi typ jest ciekawszy ponieważ dodaje pewną warstwę abstrakcji. Nie określamy tam ile zajmie nam realizacja ale stopień trudności zadania według określonej przez nas skali. Tak naprawdę skala może być dowolna byleby wszyscy w projekcie ją respektowali. Najczęściej się spotyka system punktowy gdzie im więcej punktów dostanie zadanie tym więcej czasu jest potrzebne na jego zrealizowanie. Jednak jak określić złożoność pojedynczego zadania a jak całej funkcjonalności?
+
+## Estymacja pojedynczych zadań
+
+Pojedyncze zadania jest nam łatwiej oszacować ponieważ możemy się skupić na konkretnej rzeczy i nie zastanawiać nad ogółem. Prostym przykładem może być czas potrzebny na umycie naczyń po obiedzie. Prawdopodobie wszyscy bez trudu byliby w stanie to oszczacować.  
+Podobnie jest z programowanie jednak tutaj bardzo dużą rolę odgrywa doświadczenie. Inne czasy będzie podawała osoba doświadczona w danej technologii i domenie biznesowej projektu niż świeżo upieczony programisat, który jest pierwszy dzień w projekcie. Jednak proces podejmowania decyzji w obu przypadkach będzie podobny. Załóżmy, że musimy oszacować stworzenie strony logowania. Jak poprawnie oszacować to zadanie: 
+
+1. Czy już kiedyś robiłeś taki widok? Jeśli tak sprawdź ile ci to zajęło i podaj taki czas.
+2. Jeśli nie robiłeś dokładnie tego to czy robiłeś coś podobnego np.: prosty formularz. Zobacz ile ci to zajęło i pomnóż czas przez 1,5
+3. Jeśli doszedłeś do tego punktu to znaczy, że możesz już zgadywać ile ci to zajmie. Jeśli masz już jakieś doświadczenie spróbuj pomyśleć chwilę ile ci to może zająć. Cokolwiek byś nie podał pomnóż ten czas przez 2 lub 3. 
+
+Doświadczenie ogrywa dużą rolę przy szacowaniu pojedynczych zadań. Im więcej go mamy, im więcej rzeczy w życiu robiliśmy tym jesteśmy w stanie lepiej oszacować nakład pracy jaki musi być wykonany do ukończenia zadania. A taka umiejętnośc jest konieczna by dobrze wyestymować całe funkcjonalności.
+	
+
+## Estymacja całych funkcjonalności
+
+Najczęściej w metodach zwinnych mamy do czynienia z sytuacją gdzie musimy określić jaki czas potrzebujemy by dostarczyć całą gotową funkcjonalność. Nie jest to prosty proces ponieważ wile czynników ma na to wpływ, o wielu można zapomnieć, część pominąć co powoduje, że nam się rozjeżdżają szacunki. Nie ma gotowego przepisu jak sobie radzić z tą sytuacją ale można spróbować stworzyć listę rzeczy na które należy zwrócić uwagę. Jak mogłaby wyglądać taka lista?
+
+1. Czy są wszystkie wymagania biznesowe od klienta?
+2. Czy są dostępne wszystkie potrzebne designy?
+3. Czy można podzielić pracę pomiędzy programistów i pracować równolegle?
+4. Podzielić zadanie na mniejsze części (osobno front i backend), które można osobno oszacować
+5. Jeśli frontend i backend wykonywali swoją pracę osobno to należy dodać czas na integracje pomiędzy nimi
+6. Dodać czas na testy całej funkcjonalności
+7. Dodaj do siebie punkty 3-6 i pomnóż przez 1,5
+
+Pierwsze 3 punkty są przygotowaniem do części właściwej estymacji. Jednak bez ich przeprowadzenia nie jesteśmy w stanie poprawnie podzielić funkcjonalność na zadania. W zależności od wymagań biznesowych zadanie może być zarówno proste jak i trudne np.: to ma być proste logowanie czyli wygenerowanie tokenu i zwrócenie do frontendy - proste lub oprócz wygenerowania tokenu, wygenerujcie użytkownikowi jakiś obrazek, wpiszcie go do statystyk itd. - już jest więcej pracy. To samo dotyczy frontu gdzie ekran logowania może być prostym widokiem z dwoma inputami albo jakimś mega innowacyjnym widokiem, który przyśnił się grafikowi podczas pełni księżyca.
+
+Warto poświęcić chwilę czasu podczas estymacji na zebranie odpowiednich wiadomości, dopytanie o szczegóły czy też rozpisanie sobie pewnych elementów systemu. Im bardziej dokładnie to zrobimy tym nasze szacunki będą bliżej prawdy.
+
+## Dlaczego estymacje w większości przypadków nie działają?
+
+Część z was pewnie się zastanawia dlaczego mówię o mnożeniu czasów przez pewne liczby. Jest to związane z niedoszacowaniem zadań. Dużo początkujących (w tym i ja także) ma tendencję do przeceniania swoich możliwości: `O takie fajne małe zadanie - skończę je w 2h` a potem 2h mijają a ty dopiero na początku drogi. Dlaczego tak się dzieje? Ponieważ przy estymacji zapominamy o takich rzeczach jak: wyjście na kawę, spotkanie w pracy, pójście do łazienki, zjedzenie drugiego śniadania, wypełnienie jiry itd. Może się okazać, że w 2 godzinach zegarowych popracowaliśmy godzinkę, może półtorej. Ale nie można też przesadzić - nie możemy podać, że prosty widok będziemy robić miesiąc bo nikt nie będzie chciał z nami pracować. Ogólnie można przyjąć założenie, że im bardziej ogólne zadanie to możemy przez większy współczynnik pomnożyć. Jednak dla konkretnych i szczegółowo opisanych powinniśmy z niego zrezygnować i podać w miarę konkretne szacunki
+
+Z estymacją są również związane dwa prawa: 
+
+- [Prawo Parkinsona](https://pl.wikipedia.org/wiki/Prawo_Parkinsona)
+- [Prawo Hofstadtera](https://en.wikipedia.org/wiki/Hofstadter%27s_law)
+
+Są trochę humorystyczne ale jak się dłużej zastanowić to jest w tym jakaś logika ;)
+

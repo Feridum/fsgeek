@@ -1,0 +1,86 @@
+---
+title: "Cypress - proste testy e2e"
+slug: "cypress-proste-testy-e2e"
+author: "Feridum"
+image: "/assets/images/cypress/logo.jpg"
+tags: ["cypress", "javascript", "testowanie", "e2e", "testy"]
+date: 2020-02-13T16:55:00+01:00
+draft: false
+---
+
+Testy są integralną częścią tworzenia oprogramowania, pomagając nam nie tylko w pisaniu dobrego kodu ale również zabezpieczają nas przed błędami w przyszłości. Zazwyczaj na frontendzie piszemy testy jednostkowe testując logikę pojedynczego komponentu. A może moglibyśmy też pisać testy e2e?
+
+
+
+##  Testy e2e
+
+Testy piszemy coraz częściej  - mam wrażenie, że powoli staje się to standardem, co jest pozytywną zmianą. Tak jak na backendzie korzystają z pełnej gamy testów tak na frontendzie najczęściej spotykam się z testami jednostkowymi. A czasami niektóre rzeczy, szczególnie w przypadku skomplikowanych systemów, łatwiej jest sprawdzić przy pomocy e2e. Do tej pory spotykałem się z opinią, że testy e2e piszą testerzy automatyczni. Uważam, że również jako programiści frontendu powinniśmy zacząć je pisać. Po pierwsze niektóre elementy będzie nam łatwiej przetestować, po drugie wprowadzamy dodatkowe zabezpieczenie czy główne ścieżki aplikacji działają, po trzecie jesteśmy w stanie to podpiąć do CI i sprawdzać zawsze gdy merdżujemy do mastera. Potrzeba więcej powodów by zacząć pisać te testy? Myślę, że nie. A idealnie do tego sprawdzi się Cypress.
+
+## Pierwsze kroki
+
+Zanim zaczniemy pisać pierwsze testy e2e musimy zainstalować i przygotować nasze środowisko. Instalacja polega na wpisaniu w konsoli polecenia 
+
+```js
+npm i cypress --save-dev
+```
+
+Teraz musimy chwilę poczekać ponieważ oprócz biblioteki instaluje się też aplikacja desktopowa, która będzie odpowiedzialna za uruchamianie naszych testów. Warto jeszcze wpisać do pliku `package.json` polecenie, które będzie uruchamiało cypressa
+
+```js
+  "scripts": {
+    "cypress:open": "cypress open"
+  },
+```
+
+Jeśli teraz uruchomimy polecenie to oprócz tego, że uruchomi okno to stworzy nam również całą strukturę folderów wraz z przykładowymi testami. Możemy sobie to zostawić by zerkać na to gdy nie będziemy wiedzieć jak wykorzystać polecenia z cypressa lub też usunąć ponieważ identyczny opis jest na [przykładowej stronie](https://example.cypress.io/). Domyślne foldery prezentują się następująco: 
+
+```text
+/cypress
+  /fixtures
+  /integration
+    /examples
+    /login
+    /order
+  /plugins
+  /support
+```
+
+- Fixtures - tutaj możemy umieścić statyczne dane, których będziemy używali podczas testów
+- Integration - domyślnie Cypress szuka tutaj testów, możemy tutaj umieszczać kolejne katalogi by rodzielić pliki
+- Plugins - służą do zmiany zachownia Cypressa, uruchamiane są przed każdym plikiem testowym
+- Support - służą do definiowania zachowania, które jest wspólne dla wszystkich testów i powinno być uruchomiane przed testami np.: ładowanie fixtur 
+
+## Pierwszy test w Cypress
+
+Jak mamy projekt to nie ma problemu co można testować. Jednak do nauki nie ma potrzeby tworzenia całej aplikacji tylko można wykorzystać jakąś istniejącą. Ja tutaj wykorzystałem przykładową stronę od Cypressa. No to napiszmy pierwszy test.  Ogólny szablon jest prosty i jeśli kiedykolwiek pisaliście jakieś testy na frontendzie to będzie wam znany
+
+```js
+describe('description for set of tests', ()=>{
+    it('what test do', ()=>{
+    })
+})
+```
+
+W każdym pliku będziemy mieli sekcję `description` wraz pewną ilością sekcji `it`. Teraz zostaje jeszcze do uzupełnienia zawartość sekcji `it`
+
+```js
+it('check if click redirect to correct url', ()=>{
+        //Given
+        cy.visit('https://example.cypress.io');
+        //when
+        cy.contains('a','click').click();
+        //then
+        cy.url().should('include', '/commands/actions')
+    })
+```
+
+Ogólny schemat będzie zawsze taki sam: 
+
+- Given - przygotowujemy wartości początkowe np.: udajemy się na docelową stronę
+- When - wykonujemy akcję, którą chcemy sprawdzić np.: kliknięcie na przycisk wyloguj
+- Then - sprawdzamy czy wynik przeprowadzonej akcji jest zgodny z oczekiwaniem np.: użytkownik został przekierowany na odpowiednią stronę, zobaczył komunikat itd.
+
+W naszym przypadku chcemy sprawdzić czy po kliknięciu na link przeniesie nas na odpowiednią stronę. Żeby to przetestować musimy najpierw wejść na odpowiednią stronę (`cy.visit`). Następnie szukamy elementu `a`, który ma w sobie tekst `click`. Jeśli wszystko działa poprawnie to zostaniemy przeniesieni na nową stronę. Warte zauważenia jest, że nigdzie nie musiałem robić dodatkowych importów by móc korzystać z obiektu `cy`, który zawiera zestaw przydatnych funkcji z których będziemy korzystać przy pisaniu testów. Schemat jaki tutaj zastosowałem może się bardzo często się powtarzać - to co się zmieni to element którego szukamy i wynik jaki ma być na końcu.
+
+Jak widać w teorii to nie jest ciężkie. Jednak przy prawdziwych projektach może nie być tak prosto - zdarzają się scenariusze przy których trzeba pogłówkować, przynajmniej na początku. Ale z czasem jak będziemy pisać regularnie testy to pisanie ich będzie prostsze i przyjemniejsze. A wy piszecie testy e2e lub integracyjne na frontendzie? Korzystacie z Cypressa czy czegoś innego?
+

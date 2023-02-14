@@ -1,0 +1,47 @@
+---
+title: "Kto jest kim, czyli role w WebDevelopmencie"
+slug: "kto-jest-kim-czyli-role-webdevelopment"
+author: "Feridum"
+image: "/assets/images/role-w-webdev/logo.jpg"
+tags: ["podstawy aplikacji webowych", "tworzenie aplikacji internetowych", "DevOps", "frontend", "QA", "backend"]
+date: 2019-07-10T07:05:00+02:00
+draft: false
+---
+
+Podczas tworzenia aplikacji można rozróżnić wiele różnych ról, z których każda jest odpowiedzialana za inną część aplikacji i posiada inne umiejętności. Jeśli jesteś początkującym programistą, lub twój partner/ka jest programistą/ką to te magiczne nazwy mogą nic nie mówić i powodować niezrozumienie. A warto wiedzieć kto jest kim i za co jest odpowiedzialny. 
+
+
+## Design, czyli artyści
+
+Dział designu i pracujący w nim ludzie (zwani często grafikami) pracują nad wyglądem aplikacji internetowej. To oni najczęściej współpracują na początku projektu z klientem tworząc wszystkie wizualne elementy na stronie dbając o to by były spójne między sobą i odpowiadały wizji klienta. Zawsze przy projektowaniu takich aplikacji należy mieć na uwadze dla jakiej grupy końcowej tworzymy oprogramowanie - niektórzy mogą nie docenić innowacyjnych pomysłów. Design najczęściej pracuje w swoich ulubionych programach graficznych przy czym w Web Developmencie najczęściej się spotyka Photoshop oraz Sketch. 
+
+## Frontend, czyli po co komu tyle przeglądarek 
+
+Programiści frontendu realizują wizję grafików i klienta w aplikacji. Efektem prac programisty frontendu jest aplikacja internetowa, a dokładniej wszystkie elementy wizualne, które się tam znajdują i które mogą używać użytkownicy końcowi - wszystko to co widzi użytkownik końcowy było stworzone przez tę grupę programistów. Frontend oraz design powinni bardzo ściśle ze sobą współpracować aby dostarczyć jak najlepszy UI (czyli wygląd aplikacji) oraz UX (czyli całość wrażeń jakie użytkownik ma podczas korzystania z systemu np.: czy jest intuicyjny, czy elementy są spójne, czy potrzebne rzeczy są pod ręką itd.). 
+
+W swojej pracy frontend może tylko korzystac z trzech języków: HTML, JS i CSS. Na szczęście dużo większy wybór jest w bibliotekach i frameworkach, które można wykorzystać by uzyskać końcowy efekt. Największy problem pisania aplikacji frontendowych to różnorodność przeglądarek i systemów operacyjnych - różnice są czasami tak duże, że aplikacja działająca w jednej przeglądarce ma problemy w innej. 
+
+## Backend, czyli szare eminencje
+
+Dla użytkowników końcowych backend nie istnieje pomimo, że efekt ich prac jest jednym z ważniejszych podczas tworzenia aplikacji internetowych. Backend odpowiada za całą logikę biznesową aplikacji, zapisywanie danych w bazie danych  oraz komunikacje z innymi częściami systemu. Na backendzie ciąży duża odpowiedzialność ponieważ muszą oni pilnować najważniejszych aspektów aplikacji np.: żeby wszystkie operacje w banku były liczone poprawnie, żeby zamówienia były poprawnie obsługiwane, żeby wiadomości trafiały do właściwych odbiorców itd. 
+
+W kwestii doboru języka programiści backendu mają dużą swobodę ponieważ w prawie każdym języku da się stworzyć odpowiednią aplikację. Jednak oprócz samego języka trzeba wybrać wiele innych elementów infrastruktury z których będzie się korzystało: baza danych, kolejki, sposoby uwierzytelniania itd. Tutaj też powinno się zwracać największą uwagę na testowanie kodu aby ustrzec się przed błędami w przyszłości.
+
+## QA, czyli znalazłem błąd w aplikacji
+
+QA (od ang. quality assurance) potocznie nazywany również testerem jest osobą, która jest odpowiedzialna za przetestowanie aplikacji oraz znalezenie możliwie jak najwięcej błędów w aplikacji zanim pójdzie ona na produkcję.
+ QA można podzielić ze względu na rodzaj testowania jakie jest wykonywane: 
+
+- Manualne - ręczne przeklikanie aplikacji, czyli próba naśladowania zachowań użytkowników w szczególności tych skrajnych sytuacji
+- Automatyczne - pisanie kodu, którego zadaniem jest udawanie użytkownika oraz automatyczne klikanie po aplikacji. Najczęściej testy automatyczne starają się pokryć najbardziej krytyczne ścieżki w aplikacji (czyli te najczęściej wykorzystywane oraz najważniejsze dla danej aplikcji) tak aby uchronić się przed regresją (psucie już zaimplementowanych funkcjonalności podczas wprowadzania nowych).
+
+Tak naprawdę każdy programista powinien też w pewien sposób być również QA. Po pierwsze zanim wypuścimy nową funkcjonalność powinniśmy ją przetestować lokalnie (po co wypuszczać coś co nie działa w żaden sposób). Po drugie powinniśmy pisać testy, które będą sprawdzały czy nasz kod działa poprawnie i zabezpieczały go na przyszłość. 
+
+Kolejna rzecz jaka jest istotna w kontekście QA to, że osoby w tym dziale nie są odpowiedzialne tylko za testowanie. Jak sama nazwa wskazuje osoby na tym stanowisku mają zapewnić o jakości wytworzonego oprogramowania. Tak więc oprócz samego zgłaszania problemów QA proponuje często rozwiązania, które mają poprawić UX aplikacji, jej odbiór przez użytkowników. Dodatkowo pracują wewnątrz projektu nad jego dokumentacją, administracją JIRY, opisywaniem zadań, ustalaniem priorytetów razem z klientem i project managerem - tak naprawdę zakres obowiązków będzie się różnił w zależności od firmy i projektu.
+
+## DevOps, czyli magicy od infrastruktury
+
+Dział DevOps dba o to by części aplikacji stworzone przez frontend oraz backend poprawnie się komunikowały z innymi elementami infrastruktury np.: bazą danych, zewnętrznymi serwisami oraz komunikacją pomiędzy pojedynczymi serwisami stworzonymi przez backend. Problemem przy tworzeniu infrastruktury jest unikalność każdej aplikacji. Oczywiście można sobie tworzyć przykładowe konfiguracje serwera i Dockera ale i tak każdy projekt będzie wymagał większej lub mniejszej ilości poprawek i dostosowania do wymagań danej aplikacji. 
+
+Tutaj podobnie jak backend wymagana jest szeroka wiedza z zakresu sposobów tworzenia infrastruktury, o systemach operacyjnych na którym jest uruchomiona aplikacja, o wymaganiach jej poszczególnych elementów oraz sposobów na zarządzanie tym w przyszłości. DevOps również dba o odpowiednie monitorowanie zasobów w systemie i reagowanie w sytuacjach kryzysowych np.: zaczęła się wyprzedaż na Allegro i nagle pół Polski w jednym momencie próbuje się dostać i coś kupić. Z racji zarządzania infrastrukturą programiści DevOps mają najczęściej największe uprawnienia i dostęp tam gdzie nawet programiści nie mają dostępu np.: baza danych na produkcji - przez to ciąży na nich również większa odpowiedzialność.
+

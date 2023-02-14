@@ -1,0 +1,56 @@
+---
+title: "4 zasady, którymi należy się kierować przy tworzeniu struktury projektu"
+slug: "jak-stworzyc-strukture-projektu-javascript"
+author: "Feridum"
+image: "/assets/post/2020/struktura-projektu-js/logo.jpg"
+tags: ["javascript", "asynchronicznosc", "Promise"]
+date: 2020-11-10T16:00:00+01:00
+---
+
+Też tak czasami macie, że zastanawiacie się jaką strukturę projektu zaproponować? Jaka struktura sprawi, że rozwijanie kodu nie będzie sprawiało problemów i każdy się odnajdzie? I ile razy nasze wysiłki nic nie dały? W tym wpisie chcę się z wami podzielić moją filozofią dotyczącą tworzenia struktury projektu. 
+
+
+
+## 1. Prostota jest piękna
+
+**Naczelna zasada, jaką się kieruję to prostota**. Jestem przeciwnikiem tworzenia bardzo zagnieżdżonych struktur katalogów. Im struktura jest bardziej płaska, mamy mniej folderów zagnieżdżonych w sobie, tym jest lepiej dla całego projektu. Najlepiej pokaże to przykład czegoś, co staram się unikać: 
+
+```
+app
+| -- shared
+		 | -- assets
+		 | -- components
+```
+
+Bardzo nie lubię katalogów `shared`. Jak dla mnie powodują one tylko zwiększenie ścieżki dostępu, a nie dają widocznych zalet. Dużo lepiej według mnie zrobić to w ten sposób
+
+```
+app
+| -- assets
+| -- components
+```
+
+Dzięki temu od razu widać, jakie mamy katalogi i możemy się spodziewać, od razu co tam znajdziemy. A i tak w obrębie danej aplikacji wszystko jest współdzielone.
+
+## 2. Zidentyfikuj warstwy
+
+**Podczas pisania aplikacji postaraj się zidentyfikować warstwy w aplikacji. Pomoże ci to w dzieleniu kodu na foldery i utrzymanie porządku**. Przykładowymi warstwami w aplikacji SPA mogą być: 
+
+- dostęp do danych (np.: kod odpowiedzialny za pobieranie/aktualizację danych)
+- przechowywanie danych (np.: redux albo contexty)
+- komponenty biznesowe (np.: strona logowania)
+- komponenty bazowe (np.: przyciski)
+
+Dzięki takiemu podziałowi w strukturze plików i folderów zaczyna panować porządek i widać zależności między elementami. Osobiście polecam taki sposób dzielenia plików i zachęcam do spróbowania tej metody w swoim projekcie
+
+## 3. Trzymaj rzeczy, które często się zmieniają obok siebie
+
+**Pliki, które są bardzo od siebie zależne, powinny być blisko siebie**. Mam tu na myśli na przykład plik komponentu wraz z testami, stylowaniem, typowaniem itd. W momencie, gdy główny plik jest edytowany (w tym przypadku komponent), to istnieje duża szansa, że pozostałe pliki też się zmienią. Trzymanie ich blisko siebie powoduje, że nie tracimy czasu na znalezienie pliku. Same pliki wtedy można dać w jeden katalog, który będzie w pełni opisywał dany komponent i wszystkie jego zależności. Dlatego też nie jestem fanem trzymania testów jednostkowych w osobnym folderze niż testowany plik.
+
+## 4. Nie bój się modyfikować struktury
+
+Najważniejsze na koniec. Nie bój się zmieniać struktury. Baw się nią. Niech struktura kodu ewoluuje wraz z rozwojem projektu. **Najlepiej od razu się pozbyć nadziei, że początkowa struktura będzie optymalna pod koniec projektu**. Dużo lepszym pomysłem jest pozwolenie na to by struktura plików i katalogów wyłoniła się sama z kodu. Fajnie to określił Dan Abramov: 
+
+> "move files around until it feels right" ([źródło](https://react-file-structure.surge.sh/))
+
+W sytuacji, gdy widzisz, że aktualna struktura jest niewygodna w korzystaniu, warto ją zmienić. Oczywiście trzeba się liczyć z tym, że w niektórych projektach będzie to trudne/niemożliwe do zrobienia, ze względu na wielkość i poziom skomplikowania. I tu wchodzi dodatkowy czynnik, jakim jest doświadczenie. Wraz z jego wzrostem będziemy coraz lepiej porządkować nasze pliki i foldery, ponieważ wiemy, co działa a co nie. **Co więc ma zrobić junior? Jeśli robi własne projekty, niech eksperymentuje**. Nie brałbym od razu gotowych struktur, jeśli nie wiemy, jakie szły za nią intencje. A co w przypadku projektów komercyjnych? Tutaj mam nadzieję, że każdy junior ma dostęp do seniora, który podpowie co i jak zrobić by projekt dało się bezproblemowo rozwijać. Jeśli nie to możecie do mnie napisać, to spróbuję wam coś doradzić :)

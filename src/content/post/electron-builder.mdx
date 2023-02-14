@@ -1,0 +1,71 @@
+---
+title: "Budowanie aplikacji w Electronie"
+slug: "budowanie-aplikacji-w-electronie"
+author: "Feridum"
+image: "/assets/images/electron-builder/logo.jpg"
+tags:  ["Electron", "Electronjs", "Electron-builder", "Javascript", "React"]
+date: 2019-04-30T14:25:00+02:00
+draft: false
+---
+
+Mając napisaną naszą aplikację w Electronie potrzebujemy ją jeszcze zbudować tak aby można ją było łatwo rozprowadzać wśród użytkowników. Nie możemy w końcu im kazać samemu uruchamiać aplikacji w konsoli ;). Jak to zrobić w prosty sposób, który zadowoli nas oraz naszych użytkowników?
+
+
+
+## Poprzednie wpisy o Electronie
+
+- [Co to jest Electron](https://fsgeek.pl/post/electron-czyli-javascript-w-aplikacjach-desktopowych/)
+- [Komunikacja w Electronie](https://fsgeek.pl/post/komunikacja-miedzy-widokiem-a-glownym-watkiem-w-electronie/)
+
+
+## Budowanie aplikacji w Electronie
+
+Budowanie aplikacji nigdy nie jest prostą sprawą. Po pierwsze jeśli chcemy by aplikacja miała jak największy zasięg to powinniśmy budować na wszystkie 3 platformy czyli Windows, MacOs i Linux. Kolejna przeszkoda to różnice w architekturze jakie spotkamy na przykład w komputerach z systemem Windows - mamy tutaj architekturę 32 i 64 bitową. Warto wiedzieć jakie docelowe platformy nas interesują jeszcze przed samym budowaniem. 
+
+Ważniejsze jest jednak żeby wiedzieć jak przygotować nasz kod do budowania. Dużo tutaj zależy od  tego jak tworzyliśmy aplikację. Jeśli korzystaliśmy ze zwykłych plików HTML i ładowaliśmy je przy pomocy funkcji `loadFile` to dla nas nic się nie zmieni. Jednak jeśli budowaliśmy aplikacje przy pomocy React'a to musimy dokonać pewnych zmian w kodzie. Do tej pory podczas tworzenia aplikacji ładowaliśmy kod html przy pomocy `loadUrl` i to musimy zmienić przed budowaniem. 
+
+Oczywiście chcemy ciagle zachować możliwość prostego pisania i rozwijania aplikacji. Aby to zachować musimy wykorzystać wartość `app.isPackaged`,  która zawiera wartość `true` jeśli nasza aplikacja jest spakowana - oznacza to, że jest to produkcyjna wersja aplikacji czyli to o co nam chodziło. Nasz kod będzie wyglądał teraz mniej więcej w ten sposób:
+
+```ts
+if(app.isPackaged){
+    win.loadFile('build/index.html')
+  }else {
+    win.loadURL("http://localhost:3000");
+  }
+```
+
+Jeżeli aplikacja jest uruchomiona produkcyjnie to będzie nas interesował plik `index.html` ze zbudowanej aplikacji. Musimy tylko pamiętać o tym by przed każdym zbudowaniem aplikacji najpierw zbudować nasz kod React'a do postaci produkcyjnej. 
+
+## electron-builder
+
+Budowanie bez wykorzystania zewnętrznych bibliotek nie jest proste i wymaga wykorzystania dużej ilości komend w konsoli lub napisania plików Makefile. Na szczęście ciągle jesteśmy w świecie JavaScriptu i mamy odpowiednie biblioteki które robią to za nas. Do celów budowania aplikacji napisanej w Electronie najpopularniejsza i chyba najlepsza jest biblioteka o wiele mówiącej nazwie `electron-builder`. Aby zacząć musimy standardowo zainstalować bibliotekę przy pomocy yarn'a lub npm'a
+
+```console
+yarn add electron-builder --dev
+```
+
+Teraz została nam tylko odpowiednia konfiguracja. Konfigurację możemy wykonać na wiele sposobów ale ja pokażę dzisiaj tą z wykorzystaniem pliku `package.json`. Pierwsze co musimy zrobić to ustawić parametr `"homepage": "./",` - jest on potrzebny podczas budowania aplikacji React aby poprawnie się utworzyły ścieżki do plików JavaScript. Następnie musimy dodać parametr `build` - jest to obiekt w którym będziemy ustawiać parametry budowania naszej aplikacji Electron. Przykładowa konfiguracja może wyglądać następująco: 
+
+```json
+{
+"build": {
+    "extends": null,
+    "files": [
+      "build/**/*",
+      "./main.js"
+    ]
+  }
+}
+```
+
+Określiłem tutaj jakie pliki powinny wchodzić w skład ostatecznej aplikacji - jest tutaj po pierwsze plik głównego wątku z Electrona oraz folder ze zbudowaną aplikacją z Reacta. Taka konfiguracja wystarczy aby uruchomić budowanie przy pomocy polecenia `electron-builder`. Jeżeli nie dodamy żadnych przełączników to zostanie wykryty system oraz architektura waszej maszyny i dla takiej konfiguracji zostanie zbudowana aplikacja. Oczywiście możemy sterować dla jakiego systemu chcemy budować: 
+
+- --mac, -m, -o, --macos 
+- --linux, -l
+- --win, -w, --windows
+
+Tutaj ważna uwaga - jeśli chcemy budować dla systemu MacOS potrzebujemy sprzętu z takim systemem (czytałem również, że istnieje możliwość budowania w Travis CI ale tutaj muszę sam to jeszcze sprawdzić i wrócę z nowym postem o tym).
+
+Możemy wybrać również czy chcemy budować dla architektury 32 bitowej, 64 bitowej czy dla obydwu. Tutaj jednak ciekawostka, która mnie zdziwiła a warto o niej wiedzieć. Jeśli budujemy aplikacje dla obydwu architektur to wynikowa aplikacja będzie miała dwukrotnie większy rozmiar. Osobiście bym sugerował by puścić osobno budowanie dla każdej z architektury dzięki czemu rozmiar aplikacji będzie wyraźnie mniejszy. 
+
+Ostatnia rzecz to co otrzymujemy w wyniku budowania. Bez przełączników dla systemu Windows dostajemy instalator dla aplikacji. Wykorzystując plik konfiguracyjny lub odpowiednie przełączniki jesteśmy w stanie albo skonfigurować zachowanie instalatora lub też ustawić budowanie do wersji portable jeśli nie chcemy zmuszać użytkowników do instalacji.

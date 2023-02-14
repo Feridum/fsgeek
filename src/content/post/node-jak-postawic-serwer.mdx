@@ -1,0 +1,93 @@
+---
+author : "feridum"
+comments : true
+date : "2017-11-07T08:00:00+01:00"
+description : "Node.js jest wykorzystywany do tworzenia serwerów, które mają odpowiadać na zapytania użytkownika. Nie jest to trudne i możemy sami w parę minut taki stworzyć"
+draft : false
+featured : false
+image : "/assets/images/nodejs-serwer/logo.jpg"
+menu : ""
+share : true
+slug : "node-jak-postawic-serwer"
+tags : ["node","Node.js", "wlasny", "serwer"]
+title : "Node.js - jak postawić własny serwer HTTP"
+
+---
+
+W ostatnim poście(jeśli go ominęliście to znajdziecie go [tutaj](https://fsgeek.pl/post/nodejs-pierwsze-kroki/)) powiedziałem parę słów na temat Node'a i uruchomiłem kod w konsoli. Możliwości tej platformy na tym się nie kończą a wręcz dopiero zaczynają. Większość kojarzy go z serwerem i słusznie. Dziś pokażę jak można stworzyć prosty serwer HTTP przy wykorzystaniu tylko i wyłacznie Node'a.
+
+## Hello World na serwerze Node'a
+
+W całym dzisiejszym poście będziemy korzystać z biblioteki `http`, która należy do Node'a więc nie musimy jej osobno instalować, jest od razu dla nas dostępna. Wykorzystując ją jesteśmy w stanie stworzyć prosty serwer HTTP w zaledwie paru linijkach i następnie rozbudować względem naszych potrzeb.
+
+```javascript
+const http=require('http');
+
+const server=http.createServer((request,response)=>{
+response.end('Hello World');
+})
+
+server.listen(3000);
+
+console.log('Server listening at port 3000')
+
+```
+
+Po uruchomieniu pliku w konsoli i wejściu na stronę `http://localhost:3000/` powinno nam się ukazać taki widok(u mnie w powiększeniu by było lepiej widać na zdjęciu)
+
+![node-server-hello-world](/assets/images/nodejs-serwer/hello-world.png)
+
+Pierwsza linijka to jest to co wspomniałem na początku czyli zaimportowanie biblioteki, która za chwilę będzie nam potrzebna. Jedną z metod tej biblioteki jest `createServer` która zwraca nową instancję klasy `http.Server`. Metoda ta przyjmuje jeden argument - funkcję, która będzie obsługiwała każde zapytanie. Składa się z dwóch parametrów: 
+
+- pierwszy parametr jest klasy `http.IncomingMessage` najczęściej nazywany `request` lub  w skrócie `req`
+- drugi parametr jest klasy `http.ServerResponse`, który często jest nazwany `response` lub `res`
+
+Wewnątrz tej funkcji jesteśmy w stanie reagować na każde zapytanie jakie jest generowane do naszego serwera. Jedyny warunek jaki trzeba przestrzegać to wymóg wywołania metody `end()` dla każdej generowanej przez nas odpowiedzi. Metoda ta sygnalizuje, że wszystko co miało być przekazane (wiadomość, nagłówki itd) zostało przekazane i zapytanie można uznać za zakończone. Ja wykorzystuję metodę `end()` również do przesłania wiadomości ale można to również zapisać w trochę inny sposób:
+
+```javascript
+response.write('Hello World');
+response.end();
+```
+
+Na sam koniec musimy określić na jakim porcie możemy wysyłać zapytania i otrzymywać odpowiedzi. W tym przypadku aby móc otrzymać napis `Hello World` musimy podać taki adres w przeglądarce `http://localhost:3000`. Jeśli chcemy podawać tylko coś takiego `http://localhost/` jako port musimy ustawić coś takiego:
+
+```javascript
+server.listen(80);
+```
+
+## Request
+
+Teraz mając działającą bazę jesteśmy w stanie to rozwijać i dostosowywać nasz serwer pod nasze potrzeby. A będą nam tutaj pomagać metody, które możemy wywołać dla wyżej wymienionych zmiennych. Zacznę od tego co jesteśmy w stanie wyciągnąć z zapytania przy pomocy zmiennej request. Możemy między innymi pozyskać informacje dotyczące nagłówków przesłanych w zapytaniu, na jaki adres zostało wykonane zapytanie czy też w sumie najważniejsze jaki typ zapytania został wykonany (w końcu to różnica czy wykonujemy PUT czy DELETE ;)).  Oto co można zobaczyć dla przykładowego zapytania:
+
+![node-server-request](/assets/images/nodejs-serwer/request.png)
+
+## Response
+
+Dużo ciekawiej wygląda z odpowiedzią serwera. Jako, że to jest to co my tworzymy mamy tutaj spory wybór opcji jakie możemy wykorzystać by przekazać jak najwięcej treści podczas jednej odpowiedzi. Pierwsze co przychodzi do głowy i co jest możliwe to dodawanie nagłówków do naszej odpowiedzi. Możemy nie tylko modyfikować ogólnie znane np.: takie jak `Content-Type` ale również tworzyć własne, skrojone pod konkretne potrzeby np.:
+
+```javascript
+response.setHeader('Content-Type','text/html');
+response.setHeader('Jesli-Podoba-sie','Polajkujcie FSGeek na Fb');
+```
+![node-server-response-header](/assets/images/nodejs-serwer/response-header.png)
+
+Oprócz tego jesteśmy w stanie własnoręcznie ustalić (wymusić) kod odpowiedzi, co może być przydatne w niektórych sytuacjach. Taka operacja nie jest trudna i ogranicza się do jednej linijki kodu: 
+
+```javascript
+response.statusCode=404;
+```
+![node-server-response-code](/assets/images/nodejs-serwer/response-code.png)
+
+Możemy również ustalić wiadomość jaka zostanie wyświetlona obok kodu ;) 
+
+```javascript
+response.statusMessage='Tutaj nic nie ma';
+```
+![node-server-response-code-message](/assets/images/nodejs-serwer/response-code-message.png)
+
+
+## A jak to wygląda w praktyce?
+
+No w praktyce korzysta się z gotowych bibliotek, które ułatwiają codzienną pracę, pozwalają uprościć pewne czynności oraz dostarczają gotowe rozwiązania dla innych. Możecie w takim razie zapytać po co taki post skoro wiem, że i tak normalnie wykorzystuje się biblioteki. Odpowiedź jest prosta - według mnie nie wystarczy wiedzieć jak korzystać z biblioteki. Warto (jeśli nie trzeba) wiedzieć co siedzi w środku, co tam się dzieje i dlaczego. Dopiero wtedy będziemy mogli świadomie korzystać z narzędzi jednak nie będziemy do nich przywiązani.
+
+Istniejących bibliotek do Node'a jest naprawdę sporo (co można sprawdzić [tutaj](http://nodeframework.com/)) jednak dla mnie najbardziej znane to na pewno Express.js i Sails.js. I jedną z nich chciałbym się zająć w którymś z przyszłych postów. Póki co jeszcze nie wiem którą, ale chętnie poznam wasze  opinie i oczekiwania o którym wolelibyście poczytać. Również jeśli byście chcieli poczytać o innej bibliotece to śmiało piszcie a może napiszę o niej parę słów ;) 

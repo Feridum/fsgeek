@@ -37,5 +37,5 @@ jobs:
       - name: Zip Folder
         run: cd dist && zip -r public.zip .\
       - name: Deploy to server
-        run: cd public && scp public.zip feridum@s12.mydevil.net:~/domains/fsgeek.pl
+        run: cd dist && scp public.zip feridum@s12.mydevil.net:~/domains/fsgeek.pl
       

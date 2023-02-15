@@ -1,0 +1,37 @@
+---
+import { CollectionEntry, getCollection } from 'astro:content';
+import {
+  BlogGallery,
+  NewerOlderPagination,
+  PaginationHeader,
+  Section,
+} from '@/ui';
+
+import { CTA } from '@/partials/CTA';
+import { BlogPost } from '@/partials/BlogPost';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('post');
+	const tags = [...new Set(posts.map((post) => post.data.tags).flat())];
+
+	return tags.map((tag) => ({
+      params: { tag },
+      props: {posts},
+	}));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+
+const description ='';
+
+const filteredPosts = posts.filter((post) => post.data.tags.includes(tag));
+---
+
+<Base head={{ title: tag, description: description }}>
+  <BlogGallery postList={filteredPosts} />
+  <CTA />
+</Base>

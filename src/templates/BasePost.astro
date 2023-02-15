@@ -1,0 +1,24 @@
+---
+import type { IFrontmatter } from '@/ui';
+
+import { BlogPost } from '@/partials/BlogPost';
+import { CTA } from '@/partials/CTA';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import url from "url"
+
+export interface Props {
+  content: CollectionEntry<"post">['data'];
+}
+
+const { content } = Astro.props as Props;
+const title = `${content.title} - ${AppConfig.site_name}`;
+---
+
+<Base head={{ title, description: content.description}}>
+  <BlogPost frontmatter={content}>
+    <slot></slot>
+  </BlogPost>
+
+  <CTA />
+</Base>

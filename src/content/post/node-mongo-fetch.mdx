@@ -1,0 +1,131 @@
+---
+title: "Node.js i MongoDB - pobieranie danych"
+slug: "nodejs-mongodb-pobieranie-danych"
+author: "Feridum"
+image: "/assets/images/node-mongo-fetch/logo.jpg"
+tags: ["node.js", "mongodb", "bazy danych", "javascript"]
+date: 2020-08-25T14:00:00+02:00
+---
+
+Pobieranie informacji z bazy danych jest chyba jedną z najczęściej wykonywanych operacji. W bazach relacyjnych korzystamy do tego celu z polecenia SELECT. W przypadku MongoDB musimy przygotować odpowiedni obiekt, którym opiszemy jakie dane(dokumenty) chcemy dostać. Jak on wygląda w praktyce i jakie ma opcje?
+
+
+
+W poście korzystam z danych wygenerowanych w MongoDB Atlas. Korzystam z bazy danych `sample_mflix` i kolekcji `movies`. 
+
+## Inne wpisy z tej serii
+
+- [Łączenie z bazą danych](https://fsgeek.pl/post/nodejs-mongodb-laczenie-baza-danych/)
+
+## Pobieranie danych
+
+Dane z kolekcji pobieramy wykorzystując metodę `collection.find(query, options)`. Najprościej zacząć od wywołania tej metody bez przekazywania żadnych parametrów, dzięki czemu pobierzemy wszystkie dokumenty z kolekcji. Oczywiście, jeśli ilość dokumentów jest duża, może to spowolnić pracę systemu. Warte wspomnienia jest, że jako rezultat operacji nie dostajemy tablicy dokumentów tylko pojedynczy obiekt. Aby dostać się do danych musimy skorzystać z udostępnionych przez ten obiekt metod:
+
+```js
+const movies = db.collection('movies').find({year: 2000}, {projection: {year: 1}}).limit(5)
+
+// print a message if no documents were found
+if ((await movies.count()) === 0) {
+    console.log("No documents found!");
+}
+
+while(movies.hasNext()){
+    console.log(movies.next())
+}
+```
+
+## Cursor
+
+Jak już wspomniałem rezultatem operacji `find` nie jest tablica z gotowymi danymi tylko pewien obiekt z którego możemy potem wyciągnąć dane. Ten obiekt nazywa się `Cursor` i będziemy z niego korzystać zawsze, kiedy będziemy operować na danych zwróconych z kolekcji. Część z dostępnych metod poznaliśmy już chwilę temu, czyli: `cursor.count()`, `cursor.hasNext()`, `cursor.next()`, `cursor.limit()`. Inną przydatną metodą jest `cursor.toArray()` dzięki której jesteśmy w stanie przekształcić naszą kolekcję do postaci tablicy i na przykład zwrócić w endpoincie.
+
+```js
+const movies = db.collection('movies').find().limit(5)
+
+if ((await movies.count()) === 0) {
+    console.log("No documents found!");
+}
+
+const array = await movies.toArray();
+console.log(array);
+```
+
+Inne metody możecie sprawdzić [tutaj](http://mongodb.github.io/node-mongodb-native/3.6/api/Cursor.html).
+
+## Filtrowanie danych
+
+Najważniejszym tematem przy pobieraniu danych jest ich filtrowanie. Nie potrzebujemy zawsze pobierać wszystkich dokumentów, a w 90% przypadków będziemy potrzebować tylko konkretnych danych. Aby filtrować dane musimy skorzystać z pierwszego parametru funkcji `find`. Podajemy tam obiekt, w którym przekazujemy jakie dane nas interesują np.: konkretny rok:
+
+```js
+const movies = db.collection('movies').find({year: 2000})
+```
+
+Możemy też filtrować dane w zagnieżdżonych dokumentach. Robimy to przy pomocy tzw.: `dot notation` czyli np.: `awards.win` czyli odwołujemy się do pola `win` wewnątrz dokumentu `awards`.
+
+```js
+const movies = db.collection('movies').find({'awards.wins': 1}).limit(5)
+```
+
+Kolejna funkcjonalność to możliwość korzystania ze specjalnych operatorów. Jednym z przykładów takiego operatora jest `$gt`, który pozwala zwrócić wyniki o wartości większej niż podana przy parametrze. Rozszerzają one możliwości filtrowania i pozwalają na tworzenie zaawansowanych zapytań. Inne przydatne operatory można znaleźć [tutaj](https://docs.mongodb.com/manual/reference/operator/query/).
+
+```js
+const movies = db.collection('movies').find({'awards.wins': {$gt: 1}}).limit(5)
+```
+
+Trzeba uważać w przypadku tabel, ponieważ poniższe wyrażenie spowoduje, że dostaniemy wyniki, które w polu `countries` posiadają dokładnie te dwie wartości w podanej kolejności.
+
+```js
+db.collection('movies').find({countries: ['Hong Kong', 'China']}) // Uwaga
+```
+
+Jeśli chcemy stworzyć bardziej zaawansowane zapytanie dla tablic, musimy skorzystać ze specjalnych [operatorów](https://docs.mongodb.com/manual/reference/operator/query/#array). Ciekawym operatorem jest operator `$size` który pozwala wybrać dokumenty, które mają pole o określonym rozmiarze. Natomiast `$elemMatch` pozwala na tworzenie bardzo zaawansowanych zapytań.
+
+## Projekcja danych
+
+Do tej pory pobieraliśmy wszystkie możliwe pola z dokumentu. Jednak im więcej pól tym większy rozmiar dokumentów, a nie zawsze tego potrzebujemy. Możemy tym sterować przy pomocy mechanizmu projekcji. Aby to zrobić musimy skorzystać z drugiego parametru funkcji `find()` czyli `options`. Jednym z parametrów jest obiekt `projection`. W tym obiekcie podajemy jakie pola chcemy dostać w rezultacie zapytania. Inne przydatne parametry w obiekcie `options` to np.: `limit`, `sort` czy `skip`, a resztę znajdziecie [tutaj](http://mongodb.github.io/node-mongodb-native/3.6/api/Collection.html#find).  
+
+```js
+db.collection('movies').find({}, {projection: {year: 1}})
+```
+
+W tym przykładzie jako rezultat dostaniemy obiekty z polem `year` oraz `_id`. Pole `_id` jest domyślnie dodawane do każdego rezultatu i jeśli go nie potrzebujemy to musimy go wyłączyć.
+
+```js
+db.collection('movies').find({}, {projection: {year: 1, _id: 0}})
+```
+
+W ten sam sposób możemy wyłączyć dowolne pole, jeśli nie chcemy go otrzymać w odpowiedzi.
+
+```js
+db.collection('movies').find({}, {projection: {year: 0}})
+```
+
+Zapytanie tym razem spowoduje, że dostaniemy wszystkie pola oprócz roku. Podobnie jak przy filtrowaniu możemy dokonywać projekcji na zagnieżdżonych dokumentach. Aby to zrobić musimy skorzystać ponownie z zapisu z kropką np.: 
+
+```js
+db.collection('movies').find({}, {projection: {'imdb.rating': 1}})
+```
+
+Zapis spowoduje, że w odpowiedzi dostaniemy pole `imdb` z polem `rating`. Mamy możliwość również operowania na tablicach, dla których zostały zdefiniowane specjalne operatory: `$elemMatch`, `$slice`, i `$`.
+
+```js
+db.collection('movies').fetch({year: 2000}, {projection: { countries: {$slice: -1} }}).limit(5)
+```
+
+Przy pomocy operatora `$slice` możemy ustalić ile pól z tablicy chcemy, żeby zostało zwrócone. W powyższym przykładzie otrzymamy jedno pole licząc od końca. Operator `$` powoduje, że zwrócimy tylko pierwsze wystąpienie pasujące do zapytania. Musimy tylko pamiętać, że wymagane jest wtedy filtrowanie danego pola.
+
+```js
+db.collection('movies').fetch({countries: {$eq: "China"}}, {projection: { "countries.$": 1 }})
+```
+
+`$elemMatch`  jest bardziej elastyczny i pozwala na tworzenie elastycznych zapytań, które zdefiniują, kiedy pola mają być zwrócone.
+
+## findOne
+
+Na sam koniec warto jeszcze wspomnieć o metodzie `findOne`. Dzięki temu otrzymamy pierwszy dokument z kolekcji, który spełnia zadane przez nas parametry.
+
+```js
+const movie = await db.collection('movies').findOne({countries: {$eq: "China"}});
+console.log(movie)
+```
+
+W odróżnieniu od metody `find` tutaj nie dostajemy obiektu `Cursor` tylko od razu rezultat. Więc nawet jeśli da się uzyskać pojedynczy obiekt przy pomocy `find` to tutaj szybciej dostaniemy się do wyniku.

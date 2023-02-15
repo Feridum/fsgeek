@@ -1,0 +1,41 @@
+---
+import { CollectionEntry, getCollection } from 'astro:content';
+import {
+  BlogGallery,
+  NewerOlderPagination,
+  PaginationHeader,
+  Section,
+  BlogGallery
+} from '@/ui';
+
+import { CTA } from '@/partials/CTA';
+import { BlogPost } from '@/partials/BlogPost';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+
+type GetStaticPaths = {
+  paginate: any;
+}; // Overrides `GetStaticPathsOptions` types from Astro
+
+const posts = (await getCollection('post')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const firstPage  = posts.slice(0, 6);
+
+interface Props {
+  page: CollectionEntry<'blog'>;
+}
+
+const description =
+  'Pagination example built with Astro styled with Tailwind CSS.';
+
+---
+
+<Base head={{ title: "Ostatnie posty", description: '', }}>
+  <Section>
+  <BlogGallery postList={firstPage} />
+  <NewerOlderPagination page={{url: {next: '/post/2/'}}}>
+  <CTA />
+  </Section>
+</Base>

@@ -1,0 +1,200 @@
+---
+title: "Angular - podstawy routingu"
+slug: "angular-podstawy-routingu"
+author: "Feridum"
+image: "/assets/images/angular-routing/logo.png"
+tags: ["Angular", "routes", "routing", "ścieżki", "nawigacja"]
+date: 2018-02-26T07:15:00+01:00
+draft: false
+---
+
+Każdy serwis internetowy składa się ze zbioru stron pomiędzy którymi możemy się przenosić. Ze świecą szukać serwisów napisanych w dużych frameworkach gdzie mamy tylko jedną stronę. Dopiero przy wielu stronach możemy zobaczyć zysk z ich korzystania w postaci SPA. Dziś o tym jak zdefiniować podstawowy routing w Angularze i jak go możemy wykorzystać.  Zapraszam do czytania
+
+
+
+## Definicja prostego routingu
+
+Konfigurację routingu w Angularze możemy przeprowadzić na dwa sposoby. Pierwszy z nich to zdefiniowanie go w pliku `app.module.ts` i według mnie przydaje się gdy mamy mało konfiguracji (czyli prawie nigdy ;) ). Drugi to zdefiniowanie routingu w osobnym module i zaimportowanie odpowiedniej klasy do pliku `app.module.ts`. Oczywiście oba sposoby są ze sobą kompatybilne i w łatwy sposób możemy przejść z pierwszej metody do drugiej co pod koniec postu pokażę.  Aktualnie konfiguracja routingu wygląda u mnie następująco:
+
+```
+import { RouterModule, Routes } from '@angular/router';
+
+const appRoutes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+    data:{page: 'Home page'}
+  },
+  {
+    path: 'news/:newsId',
+    component: NewsComponent,
+  },
+  {
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+  { path: '**',
+  component: NotFoundComponent }
+]
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    NewsComponent,
+    NotFoundComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    ),
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+```
+
+Jak widać składa się z dwóch części: definicji ścieżek oraz umieszczeniu odpowiedniego wpisu w `@NgModule`. Najpierw zajmę się przez chwilę tą drugą częścią. 
+
+```
+RouterModule.forRoot(
+	appRoutes,
+	{ enableTracing: true } // <-- debugging purposes only
+)
+
+
+```
+Aby zdefiniować nasz routing musimy zaimportować moduł `RoutingModule`. Udostępnia on dwie metody których należy użyć w zależności od miejsca deklaracji. Jeśli definiujemy nasz główny routing(nadrzędny) to musimy użyć metody `forRoot()` która tworzy odpowiedni moduł ale również serwis odpowiedzialny za sterowanie naszą nawigacją. Jeśli definiujemy nawigację w konkretnym module(podrzędną) używamy metody `forChild`, która różni się od poprzedniej, że nie zawiera wspomnianego serwisu. 
+
+Oprócz tej jednej drobnej różnicy używamy tych metod identycznie. Jako pierwszy parametr musimy tam umieścić zmienną typu `Routing` czyli tablicę obiektów z których każdy jest osobną deklaracją ścieżki. Oprócz tego jako drugi argument możemy podać dodatkowe ustawienia w postaci obiektu z odpowiednimi polami. Ciekawe jest pole `enableTracing`, które wyświetla logi dotyczące routingu w konsoli.
+
+![enableTracing](/assets/images/angular-routing/enable-tracing.png)
+
+## Tablica ścieżek
+
+Dużo bardziej interesująca jest zmienna typu `Routing` w której dzieje się prawdziwa konfiguracja. Każdy obiekt definiuje zachowanie dla pojedynczej ścieżki. 
+
+```
+{
+    path: 'login',
+    component: LoginComponent,
+},
+```
+
+To jest najbardziej minimalna konfiguracja jaką możemy zrobić. Składa się z adresu pod jaki możemy się odwołać oraz komponentu jaki zostanie wyświetlony po wejściu pod ten adres. Należy pamiętać, że w Angularze ścieżki podajemy bez poprzedzającego ich znaku `/` - dla ścieżki `/login` musimy w konfiguracji podać `login`.
+
+Oprócz podstawowej konfiguracji możemy również rozbudować obiekty o inne elementy. Możemy wykorzystać pole `data` do przekazywania statycznych danych do komponentu np.: nazwę strony
+
+```
+data:{page: 'Home page'}
+```
+
+Oczywiście istnieje możliwość definiowania parametrów w ścieżce - bez tego system byłby ubogi. Wykorzystywany bardzo często przy wyświetlaniu szczegółów wybranego elementu z listy. Definiuje się go następująco: 
+
+```
+path: 'news/:newsId',
+```
+
+Dzięki temu jeśli użytkownik wpisze adres `/news/news-123` to w komponencie dostaniemy pod zmienną `newsId` wartość `news-123`. Możemy potem użyć tego do pobrania odpowiednich wartości z bazy danych i wyświetlaniu ich. 
+
+Mamy również możliwość przekierowania użytkownika pod inny adres. 
+
+```
+{
+    path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+},
+
+```
+
+W tym przypadku jeśli użytkownik wejdzie pod adres `/` to chcę aby był od razu przekierowany pod adres `/home`. Tutaj warto zauważyć, że potrzebujemy znaku `/` na początku. W momencie definiowania routingu warto również zdefiniować ścieżkę pod którą zostanie przekierowany użytkownik jeśli wpisze jako adres losowy ciąg znaków - często znane jako strona 404. W Angularze aby osiągnąć coś takiego musimy zdefiniować na samym dole tablicy obiekt, który będzie miał zdefiniowaną ścieżkę jako tzw.: wildcart - czyli nieważne jaki będzie adres to zostanie dopasowany
+
+```
+{ 
+    path: '**',
+    component: NotFoundComponent 
+}
+```
+
+## Routing w plikach html
+
+Konfiguracja powyżej jest konieczna ale niewystarczająca do poprawnego działania. Nic nam nie przyjdzie ze zdefiniowania ścieżek, komponentów jakie maja im odpowiadać bez zdefiniowania w pliku html nawigacji oraz zdefiniowania miejsca gdzie maja się wyświetlić komponenty danej ścieżki. 
+
+```
+
+<nav>
+	<a routerLink="/login" >Login</a>
+	<a routerLink="/home" >Home</a>
+	<a routerLink="/news/post-123">Post</a>
+	<a routerLink="/">Main Page</a>
+	<a routerLink="/takiej-sciezki-nie-ma">Brak strony</a>
+</nav>
+<router-outlet></router-outlet>
+```
+
+Angular dostarcza nam dwie dyrektywy: `routerLink`, który służy do przechodzenia pomiędzy widokami i odpowiada atrybutowi `href` oraz `router-outlet` w którym będzie umieszczony widok z komponentu ścieżki którą wybrał użytkownik. Oczywiście nie jesteśmy ograniczeni tylko do jednego takiego elementu na stronie ale wtedy musimy podać unikalną nazwę dla takiego outletu oraz przy definicji ścieżki określić do jakiego outletu ma być renderowany. 
+
+## Przekazywanie parametrów
+
+Chwilę temu napisałem, że możemy zdefiniować adres do którego można przekazać parametr. Jednak jak go pobrać w komponencie? 
+
+```
+export class NewsComponent implements OnInit {
+	param: string = "";
+	constructor(private route: ActivatedRoute) { }
+	
+	ngOnInit() {
+		this.route.paramMap.forEach(({params}:Params)=>{
+			this.param = params['newsId']
+		})
+	}
+}
+```
+
+Aby to zrobić musimy najpierw wstrzyknąć  interfejs `AcivatedRoute` do naszej klasy. Dzięki temu w funkcji `ngOnInit` możemy wykorzystać naszą zdefiniowaną w konstruktorze zmienną `route` do wyciągnięcia naszego parametru. 
+
+## Przeniesienie routingu do osobnego pliku
+
+Jeszcze na sam koniec jak można przenieść definicje naszego routingu z pliku `app.module.ts` do osobne modułu. Pierwsze co to należy stworzyć plik np.: `app.routes.ts`. Następnie musimy w pliku umieścić dekorator `@NgModule`  nad klasą którą będziemy potem eksportować
+
+```
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    )
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRouting {}
+```
+
+Oprócz tego musimy przekopiować naszą tablicę ze zdefiniowanymi ścieżkami. Teraz wystarczy umieścić naszą klasie w pliku `app.module.ts` w sekcji `imports`.
+
+```
+imports: [
+    BrowserModule,
+    FormsModule,
+    AppRouting,
+],
+
+```
+
+Oczywiście nie jest to wszystko co możemy zrobić ale takie minimum, które pozwala na tworzenie wielu stron w naszej aplikacji i zarządzaniu nimi. Jednak zostało jeszcze parę tematów które postaram się poruszyć w innym poście. 
+

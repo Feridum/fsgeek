@@ -1,99 +1,130 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby's default starter
-</h1>
+# Astro Boilerplate with TypeScript and Tailwind CSS [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ixartz)](https://twitter.com/ixartz)
 
-Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+🚀 Astro Boilerplate is starter code for your blog or portfolio based on Astro
+with Tailwind CSS 3.0. ⚡️ Made with Astro, TypeScript, ESLint, Prettier,
+Tailwind CSS.
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.org/docs/gatsby-starters/)._
+Clone this project and use it to create your own Astro blog. You can check the
+[Astro templates demo](https://creativedesignsguru.com/demo/astro-boilerplate/).
 
-## 🚀 Quick start
+## Features
 
-1.  **Create a Gatsby site.**
+A complete Blog feature:
 
-    Use the Gatsby CLI to create a new site, specifying the default starter.
+- 🎈 Syntax Highlighting
+- 🤖 SEO friendly with sitemap.xml and robots.txt
+- ⚙️ RSS feed
+- 📖 Pagination
+- 🌈 Include a dark blog theme
+- ⬇️ Markdown
+- 📦 Image lazy loading
+- 💎 Responsive design
 
-    ```shell
-    # create a new Gatsby site using the default starter
-    gatsby new my-default-starter https://github.com/gatsbyjs/gatsby-starter-default
-    ```
+Developer experience first:
 
-1.  **Start developing.**
+- 🔥 Astro
+- 🎨 Tailwind CSS with aspect ratio and typography plugin
+- 🎉 TypeScript
+- ✏️ ESLint compatible with .astro files
+- 🛠 Prettier compatible with .astro files
+- 🦊 Husky
+- 🚫 lint-staged
+- 🚨 Commitlint
+- 🔧 One-click deploy on Netlify (or, manual if you prefer)
 
-    Navigate into your new site’s directory and start it up.
+ESLint with:
 
-    ```shell
-    cd my-default-starter/
-    gatsby develop
-    ```
+- Airbnb styled guide
+- TypeScript compatible
+- Astro compatible
+- Automatically remove unused imports
+- Import sorting
+- Tailwind CSS plugin
 
-1.  **Open the source code and start editing!**
+### Philosophy
 
-    Your site is now running at `http://localhost:8000`!
+- Minimal code
+- SEO-friendly
+- 🚀 Production-ready
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
+### Requirements
 
-    Open the `my-default-starter` directory in your code editor of choice and edit `src/pages/MainList.tsx`. Save your changes and the browser will update in real time!
+- Node.js and npm
 
-## 🧐 What's inside?
+#### Optional
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+- [nvm](https://github.com/nvm-sh/nvm)
+- [volta](https://volta.sh/)
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+While Astro-boilerplate should work with the latest Node version, it has been
+tested with the versions in .nvmrc & the bottom of package.json. At current
+writing, that's Node v16.15.1
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+### Getting started
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for “source code”.
+Run the following command on your local environment:
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+``` bash
+git clone --depth=1 https://github.com/ixartz/Astro-boilerplate
+cd my-project-name
+npm install
+```
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+Then, you can run locally in development mode with live reload:
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.org/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+``` bash
+npm run dev
+```
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://www.gatsbyjs.org/docs/gatsby-config/) for more detail).
+Open [http://localhost:3000](http://localhost:3000) with your favorite browser
+to see your project.
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.org/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+### Deploy to production (manual)
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+You can create an optimized production build with:
 
-9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
+```shell
+npm run build
+```
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won’t change this file directly).**
+Now, your blog is ready to be deployed. All generated files are located at
+`dist` folder, which you can deploy the folder to any hosting service you
+prefer.
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
+### Deploy to Netlify
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+Clone this repository on own GitHub account and deploy to Netlify:
 
-## 🎓 Learning Gatsby
+[![Netlify Deploy button](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/ixartz/Astro-boilerplate)
 
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.org/). Here are some places to start:
+## 🧞 Commands
 
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.org/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
+All commands are run from the root of the project, from a terminal:
 
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.org/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
+| Command           | Action                                       |
+|:----------------  |:-------------------------------------------- |
+| `npm install`     | Installs dependencies                        |
+| `npm run dev`     | Starts local dev server at `localhost:3000`  |
+| `npm run build`   | Build your production site to `./dist/`      |
+| `npm run preview` | Preview your build locally, before deploying |
+| `npm run clean`   | Remove `./dist` folder                       |
+| `npm run lint`    | Run ESLint and report styling error          |
 
-## 💫 Deploy
+### Contributions
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
+Everyone is welcome to contribute to this project.
+Feel free to open an issue if you have question or found a bug.
 
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/import/project?template=https://github.com/gatsbyjs/gatsby-starter-default)
+### Additional Checks
 
-<!-- AUTO-GENERATED-CONTENT:END -->
+This README.md was linted with
+[markdownlint](https://github.com/igorshubovych/markdownlint-cli)
+
+### License
+
+Licensed under the MIT License, Copyright © 2022
+
+---
+
+Made with ♥ by [CreativeDesignsGuru](https://creativedesignsguru.com)
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ixartz)](https://twitter.com/ixartz)

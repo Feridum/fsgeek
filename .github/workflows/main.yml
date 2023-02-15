@@ -30,12 +30,12 @@ jobs:
           node-version: '16.x'
       - name: Installing dependencies
         run: npm i
-      - name: Building Gatsby site
-        run: npm run build --log-pages
+      - name: Building site
+        run: npm run build
         env:
           CI: true
       - name: Zip Folder
-        run: cd public && zip -r public.zip .\
+        run: cd dist && zip -r public.zip .\
       - name: Deploy to server
         run: cd public && scp public.zip feridum@s12.mydevil.net:~/domains/fsgeek.pl
       

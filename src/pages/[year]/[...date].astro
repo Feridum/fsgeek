@@ -1,0 +1,47 @@
+---
+import { CollectionEntry, getCollection } from 'astro:content';
+import {
+  BlogGallery,
+  NewerOlderPagination,
+  PaginationHeader,
+  Section,
+} from '@/ui';
+
+import { CTA } from '@/partials/CTA';
+import { BlogPost } from '@/partials/BlogPost';
+import Base from '@/templates/Base.astro';
+import { AppConfig } from '@/utils/AppConfig';
+import { sortByDate } from '@/utils/Posts';
+import { AppConfig } from '@/utils/AppConfig';
+
+type GetStaticPaths = {
+  paginate: any;
+}; // Overrides `GetStaticPathsOptions` types from Astro
+
+export async function getStaticPaths() {
+	const posts = await getCollection('post');
+	return posts.filter(p=>p.data.url).map((post) => {
+	const params = post.data.url.split('/');
+	return {
+		params: { year: params[1], date: `${params[2]}/${params[3]}/${params[4]}` },
+		props: post,
+	}});
+}
+
+interface Props {
+  page: CollectionEntry<'blog'>;
+}
+
+const post = Astro.props;
+const url = `${AppConfig.site}post/${post.slug}`;
+console.log(post, url);
+---
+
+<html lang='pl'>
+<head>
+<title>{url}</title>
+<meta http-equiv="refresh" content={`0; url=${url}`}/>
+</head>
+<body>
+</body>
+</html>

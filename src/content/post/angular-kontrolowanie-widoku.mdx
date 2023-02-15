@@ -1,0 +1,83 @@
+---
+title: "Angular - kontrolowanie widoku"
+slug: "angular-kontrolowanie-widoku"
+author: "Feridum"
+image: "/assets/images/angular-kontrolowanie-widoku/logo.jpg"
+tags: ["Angular", "kontrolowanie widoku", "dyrektywy strukturalne", "ngIf", "ngSwitch"]
+date: 2018-07-13T07:00:00+02:00
+draft: false
+---
+
+Manipulowanie widokiem to jedna z głównych funkcji wszystkich frameworków SPA. W zależności od warunków i stanu aplikacji musimy wyświetlić inną rzecz dla admina, inną dla moderatora a zupełnie inną gościowi, który dopiero co trafił na naszą stronę. W Angularze do warunkowania widoczności niektórych elementów służą dyrektywny strukturalne: `*ngIf` i `*ngSwitch` oraz atrybut `hidden` o których dziś chwilę powiem.
+
+
+
+## *NgIf
+
+`*NgIf` jest prostą dyrektywą strukturalną, która w zależności od wartości umieszcza lub usuwa dany element w drzewie DOM. Wykorzystujemy go w następujący sposób:
+
+```html
+<div *ngIf="warunek"></div>
+<nazwaKomponentu *ngIf="warunek"></nazwaKomponentu>
+```
+
+
+Jak widać można go zastosować do każdego elementu HTML oraz stworzonego przez nas komponentu. Żeby sterować wyświetlaniem możemy podać zmienną typu Boolean lub wyrażenie, które w rezultacie da taka wartość
+
+```html
+<div *ngIf="zmienna"></div>
+<div *ngIf="zmienna === 'wartość'"></div>
+```
+
+Jest to bardzo przydatne, ponieważ dzięki temu jesteśmy w stanie ukryć przed użytkownikiem pewne elementy interfejsu, których nie powinien widzieć. Częściej jednak chcemy coś zamiast tego wyświetlić np.: jak użytkownik nie jest zalogowany to chcemy mu pokazać przyciski do logowania/rejestracji a jeśli już jest zalogowany to przycisk do edycji profilu. Możemy uzyskać taki efekt na dwa sposoby. Pierwszy to dwukrotne wykorzystanie dyrektywny *ngIf 
+
+```html
+<div *ngIf="zmienna">wartość dla admina</div>
+<div *ngIf="!zmienna">wartość dla gościa</div>
+```
+
+Jednak takie coś nie jest zbyt estetyczne i może prowadzić do niepotrzebnych błędów przy późniejszej edycji kodu np.: zmiany nazwy zmiennej. Dużo lepiej wykorzystać konstrukcję `if-else` znaną z tradycyjnych języków programowania: 
+
+```html
+<div *ngIf="zmienna; else guest">wartość dla admina</div>
+<ng-template #guest><div>wartość dla gościa</div></ng-template>
+```
+
+Taki kod jest już dużo bardziej poukładany i nawet przyszła edycja nie będzie problematyczna
+
+## Czym jest ta gwiazdka?
+
+Jak zauważyliście przed dyrektywą `NgIf` umieszcza się gwiazdkę `*`. Jest to tylko tzw.: `syntactic sugar`, który na uprościć kod i ułatwić życie nam programistom. Nie jest ona wymagana i możemy ją pominąć ale wtedy musimy inaczej ułożyć nasze elementy oraz wykorzystać `ng-template`
+
+```html
+<ng-template [ngIf]="visible"><div>Jestem widoczny</div></ng-template>
+```
+
+
+## Hidden
+
+Do ukrycia elementu możemy także wykorzystać atrybut `[hidden]` lub `[style.display]="'none'"`. Trzeba tylko pamiętać, że wtedy element jest ukrywany ale ciągle istnieje w drzewie DOM. Jeśli jest to nasz komponent to ciągle może odbierać i wysyłać eventy. Element taki powstaje w momencie jak jest tworzone całe drzewa nawet jeśli jest on ukryty. W związku z tym, że nie jest on usuwany to nie jest wywoływana metoda ngOnDestroy podczas ukrywania. Jednak jest on szybszy od ngIf'a ponieważ nie musimy tworzyć na nowo elementu w drzewie DOM tylko go wyświetlić. Warto się zastanowić czego potrzebujemy przy projektowaniu interfejsu ponieważ w zależności od potrzeb jedna lub druga metoda może być tą właściwą.
+
+## Switch 
+
+Na sam koniec konstrukcja, którą w standardowych językach bardzo lubię i osobiście zachęcam do wykorzystania. Często jeżeli w systemie mamy różne role to chcemy wyświetlić różne informacje dla różnych ról. Możemy wykorzystać oczywiście dyrektywę ngIf:
+
+```html
+<div *ngIf="zmienna == 'admin'">wartość dla admina</div>
+<div *ngIf="zmienna == 'moderator'">wartość dla moderatora</div>
+```
+
+Nie jest to zbyt ładne i może powodować problemy przy rozszerzaniu o kolejne możliwości. Dużo bardziej polecam wykorzystanie z dyrektywy `ngSwitch` dzięki czemu nasz kod będzie wyglądał następująco: 
+
+```html
+<div [ngSwitch]="zmienna">
+  <p *ngSwitchCase="'admin'" >wartość dla admina</p>
+  <p *ngSwitchCase="'moderator'" >wartość dla moderatora</p>
+  <p *ngSwitchDefault>wartość domyślna</p>
+</div>
+```
+
+Właściwie nie trzeba tutaj nic dodatkowo pisać ponieważ struktura jest analogiczna jak to co znamy w programowaniu. Najpierw przy pomocy `[ngSwitch]` przekazujemy zmienną którą będziemy testować a następnie przy pomocy `*ngSwitchCase` i `*ngSwitchDefault` sterujemy co ma się wyświetlić dla danych wartości. Jest to bardzo elegackie rozwiązanie i pozwala na przyszłe rozbudowywanie opcji.
+
+Wszystko co dziś pokazałem możecie sprawdzić [tutaj](https://stackblitz.com/edit/angular-xp5xnb). Dodatkowo zachecam do samodzielnego wypróbowania tych dyrektyw,ponieważ jest to najlepszy sposób na naukę
+

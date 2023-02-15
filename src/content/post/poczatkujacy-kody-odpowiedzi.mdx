@@ -1,0 +1,118 @@
+---
+title: "Podstawy aplikacji webowych - HTTP response status codes"
+slug: "http-response-status-codes"
+author: "Feridum"
+image: "/assets/images/poczatkujacy-kody-odpowiedzi/logo.jpg"
+tags: ["podstawy aplikacji webowych", "tworzenie aplikacji internetowych", "HTTP response status codes", "backend", "frontend"]
+date: 2019-06-26T16:10:00+02:00
+draft: false
+---
+
+Każda aplikacji internetowych musi komunikować się z serwerem aby otrzymywać dane, dodawać nowe i aktualizować istniejące. Każda taka komunikacja musi być kontrolowana i sprawdzana pod kątem poprawności wykonania. Do tego celu pomagają nam tak zwane kody odpowiedzi, które występują w każdej wiadomości pochodzącej z serwera. Jednak jakie kody możemy dostać i jakie powinniśmy wysyłać pisząc aplikacje webowe?
+
+
+
+## Kody odpowiedzi w aplikacjach 
+
+Kody odpowiedzi dla zapytań HTTP zostały opisane w standardzie HTTP/1.1 i możecie o nich poczytać w standardzie RFC 7231 oraz innych, które dopisywały kolejne kody odpowiedzi. Zostały one podzielone na 5 grup, każda poświęcona innemu celowi. Rozróżniamy grupy: 
+
+- 1xx - informacyjna
+- 2xx - sukcesu
+- 3xx - przekierowania
+- 4xx - błędów po stronie klienta 
+- 5xx - błędów po stronie serwera
+
+Dziś chciałbym opisać pokrótce te najczęściej spotykane w aplikacjach internetowych, kiedy je wykorzystywać i jak obsłużyć po stronie aplikacji klienckiej.
+
+## Kody 2xx
+Zaczniemy od rzeczy przyjemnych czyli kodów, które są związane z sukcesem naszej operacji.
+
+### 200 OK
+
+Na pierwszy rzut będzie standardowy kod 200 OK, który jest najbardziej ogólny i oznacza, że wysłane zapytanie zakończyło się sukcesem. Dodatkowo jeśli zapytanie zakończyło się tym statusem oznacza to, że powinniśmy również otrzymać w odpowiedzi jakieś dane.
+
+- Kiedy wysyłamy: Zawsze wtedy gdy nie wystąpiły powody do użycia innych
+- Obsługa: Dostaliśmy dane o które prosiliśmy więc możemy teraz na nich pracować
+
+### 201 Created
+
+Kod odpowiedzi najczęściej kojarzony z operacją `POST` czyli stworzeniem zasobu po stronie serwera. Co istotne tą odpowiedź możemy wysłać dopiero po faktycznym stworzeniu zasobu. Powinniśmy także wysłać informację do klienta jak się dostać do nowo utworzonego elementu. 
+
+- Kiedy wysyłamy: Kiedy został stworzony nowy zasób po stronie serwera oraz chcemy poinformować klienta jak się do niego dostać
+- Obsługa: Najczęściej obsługa będzie wiązała się z wyświetleniem komunikatu o poprawnym stworzeniu elementu, zamknięciu formularza czy też przekierowania do listy lub innego miejsca w aplikacji
+
+### 204 No Content
+
+Serwer przyjął zapytanie od klienta, przetworzył ale nic nie zwraca w odpowiedzi.
+
+- Kiedy wysyłamy: Wtedy kiedy operacja się powiodła ale nie potrzebujemy nic zwracać np.: po usunięciu elementu
+- Obsługa: obsługa  zależy od tego jaką operację wykonaliśmy ale najczęściej będzie to wyświetlenie komunikatu, odświeżenie listy elementów, przekierowanie na inną stronę itp.
+
+## Kody 4xx
+
+Teraz już nie będzie tak fajnie bo kody 4xx oraz 5xx oznaczają, że coś się nie powiodło i należy na to jakoś zareagować. Błędy 4xx charakteryzują się tym, że winę najczęściej ponosi frontend więc i na niego spada konieczność znalezienia i poprawy błędu. 
+
+### 400 Bad Request
+
+Błąd, który otrzymujemy kiedy serwer nie był w stanie przetworzyć naszego żądania. Może to być spowodowane tym, że nie wysyłamy tego co powinniśmy czyli np.: deklarujemy że wysyłamy JSON a tak naprawdę leci XML, albo wysyłamy JSON, który ma błędy i nie da się go przetworzyć. Bardzo często też widzę ten kod w odpowiedzi na wysłanie formularza, który ma niepoprawne dane np.: imię które zawiera cyfry ale do tego celu istnieje lepszy kod odpowiedzi.
+
+- Kiedy wysyłamy: Kiedy nie potrafimy przetworzyć ciała w żądaniu oraz podczas błędów walidacji żądania (o ile jest tak ustalone z zespołem)
+- Obsługa: O ile nie jest to błąd walidacji to wina leży gdzieś w naszym kodzie. Może to być błędne wysyłanie typu w jakim wysyłamy ciało żądania (na przykład biblioteka, którą używamy korzysta z jakiegoś domyślnego).
+
+### 401 Unauthorized
+
+Nazwa jest trochę pechowa, ponieważ ten kod błędu odnosi się do błędu autentykacji(uwierzytelnienia) a nie autoryzacji.  Z racji tego, że te dwa pojęcia się mylą szybka powtórka: 
+
+- Uwierzytelnienie - potwierdzenie swojej tożsamości
+- Autoryzacja - potwierdzenie dostępu do konkretnych informacji
+
+I szybki przykład: Użytkownik może być uwierzytelniony w systemie i z niego korzystać ale jeśli nie ma roli admina to nie przejdzie autoryzacji by móc np.: obejrzeć logi z systemu. 
+
+Błąd ten może wystąpić w każdym zapytaniu do serwera i informuje, że w zapytaniu nie ma odpowiednich informacji o tym czy użytkownik jest zalogowany w systemie (może to być token JWT, odpowiednie cookie lub cokolwiek innego)
+
+- Kiedy wysyłamy: Zawsze przed rozpoczęciem przetwarzania zapytania musimy sprawdzić czy nadawca ma uprawnienia żeby go wykonać. Na sprawdzenie powinno się składać po pierwsze czy istnieje element po który, uwierzytelniamy oraz czy nie jest przedawniony. Jeśli sprawdzenie się nie powiedzie to musimy rzucić błędem 401.
+- Obsługa: Po pierwsze jeśli jesteśmy w części systemu, która powinna być widoczna po zalogowaniu to musimy przekierować użytkownika do strony logowania oraz usunąć wszystkie dane, które do tej pory mogliśmy gdzieś zapisać. Jeśli takie coś będzie się często powtarzało to może wskazywać na problem z odświeżeniem tokenu lub podtrzymywaniem sesji zalogowanego użytkownika
+
+
+### 403 Forbidden
+
+Tutaj jest miejsce dla drugiej sytuacji czyli jesteśmy uwierzytelnieni ale nie mamy dostępu do danej części systemu. Najczęściej pojawia się w systemach gdzie istnieje wiele ról, które posiadają odmienne dostępy do różnych części systemu np.: rola która zakazuje wstępu do ustawień, druga która pozwala na pobranie i wyświetlenie ale nie edycję oraz inna która może wszystko. Błąd ten może się pojawić jeśli logika w aplikacji klienckiej nie przewidziała jakiegoś przypadku i wpuściła użytkownika tam gdzie nie ma dostępu lub też użytkownik sam próbuje się tam dostać przez wpisanie odpowiedniego adresu URL
+
+- Kiedy wysyłamy: Kiedy byliśmy w stanie potwierdzić tożsamość użytkownika ale podczas sprawdzania uprawnień odkryliśmy, że rola użytkownika nie pozwala na daną akcję.
+- Obsługa: Po pierwsze musimy usunąć użytkownika z miejsca zabronionego. Możemy to zrobić albo przesuwając go wstecz do ostatniej poprawnej pozycji lub do głównej strony aplikacji. Warto też sprawdzić czy użytkownik dostał się sam w to miejsce lub też jest jakiś błąd w logice aplikacji frontendowej.
+
+### 404 Not found
+
+To czego szukamy nie istnieje na serwerze. Najczęściej się to odnosi to do sytuacji gdy chcemy pobrać pliki z serwera, pobrać informacje o nieistniejącym elemencie lub jak w przypadku stron statycznych wpisaniu niewłaściwego url'a. 
+
+- Kiedy wysyłamy: Kiedy nie możemy znaleźć elementu o który prosi nadawca żądania
+- Obsługa: Najczęściej wyświetlamy specjalna stronę gdzie informujemy użytkownika, że elemnt który szuka nie istnieje
+
+### 405 Method Not Allowed
+
+Osobiście mój ulubiony kod z tej grupy ponieważ najczęściej jego wystąpienie jest winą backendu. Spotkamy go jeśli serwer zabronił pewnych operacji np.: ze względów bezpieczeństwa. Jest to również popularny błąd dla mechanizmu CORS jeśli backend nie zwrócił dozwolonych operacji w nagłówku `Access-Control-Request-Method`
+
+- Kiedy wysyłamy: Kiedy typ operacji nie zgadza się z listą dostępnych np.: pojawiło się żądanie PUT a dozwolone operacje to GET i POST
+- Obsługa: Tutaj nie ma wiele opcji do wyboru. Możemy zmienić typ żądania, porozmawiać z backendem aby pozwolił na operację lub prawidłowo skonfigurował CORS'y (jeśli to ich konfiguracja spowodowała błąd)
+
+### 422 Unprocessable Entity
+
+To jest błąd, który według specyfikacji powinniśmy wykorzystywać dla błędów żądania, które są poprawne pod względem techniczym ale zawierają błędy w wartości.
+
+- Kiedy wysyłamy: W momencie gdy żądanie zawiera błędy wartości czyli została wysłana wartość niewłaściwa dla tego pola. Razem z tym błędem powinniśmy wysłać opisy błędów i jakich pól dotyczą
+- Obsługa: W większości ten błąd wystąpi podczas wysyłania danych w formularzu. Jeśli dostaniemy taki błąd to oprócz błędu dostaniemy obiekt zawierający pola oraz jakie błędy zawierają.
+
+## Kody 5xx
+
+I błędy, których nikt nie chce widzieć ponieważ oznaczają, że coś zepsuło po stronie serwera. 
+
+### 500 Internal Server Error
+
+Błąd też oznacza, że serwer napotkał jakiś problem i nie może skończyć żądania. Może być spowodowany za dużą ilością żądań a więc przeciążeniem serwera, błędem w kodzie np.: próbowanie wyciągnięcia wartości z nulla, błędnie napisanym skrypcie lub też innym wyjątkiem, który nie został poprawnie złapany i obsłużony. Znalezienie przyczyny i naprawa takiego błędu może być utrudniona i zająć sporo czasu jeśli nie mamy odpowiednio tworzonych logów.
+
+- Kiedy wysyłamy: NIGDY - taki błąd oznacza, że coś złego się stało po naszej stronie. 
+- Obsługa: Niestety tutaj nie pozostaje nam nic innego jak wyświetlić stronę gdzie przepraszamy za utrudnienia i prosimy by wrócić za chwilę 
+
+
+Z błędów, z którymi spotykam się najczęściej to będzie wszystko. Czy jest coś co byście dodali do tej listy? A możecie macie własne przemyślenia dotyczące kodów odpowiedzi HTTP? Zapraszam do komentowania i dzielenia się wpisem.
+

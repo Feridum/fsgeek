@@ -9,7 +9,7 @@ import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com/', trailingSlash: 'always',
+  site: 'https://fsgeek.pl/', trailingSlash: 'always',
   experimental: {
     integrations: true
   },

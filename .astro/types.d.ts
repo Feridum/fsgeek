@@ -644,6 +644,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2023/yt-hof/index.mdx": {
+  id: "2023/yt-hof/index.mdx",
+  slug: "javascript-higher-order-function",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "angular-component.mdx": {
   id: "angular-component.mdx",
   slug: "angular-komponenty",

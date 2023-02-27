@@ -1,9 +1,9 @@
 ---
+import { CookieBar } from '@/partials/CookieBar';
 import { Footer } from '@/partials/Footer';
 import { Navbar } from '@/partials/Navbar';
-import { CookieBar } from '@/partials/CookieBar';
+import { Search } from '@/partials/Search';
 import { AppConfig } from '@/utils/AppConfig';
-
 
 export interface Props {
   head: {
@@ -20,38 +20,81 @@ const {
 const canonicalURL = new URL(`${Astro.url.pathname}`, Astro.site);
 ---
 
-<html lang='en'>
+<html lang="pl">
   <head>
-    <meta charset='UTF-8' />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <meta name='description' content={description} />
-    <meta name='author' content={AppConfig.author} />
+    <meta name="description" content={description} />
+    <meta name="author" content={AppConfig.author} />
 
-    <link rel='alternate' type='application/rss+xml' href='/index.xml' />
-    <link rel='icon' type='image/x-icon' href='/favicon.ico' />
-    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml">
-    <link rel="canonical" href={canonicalURL}/>
+    <link rel="alternate" type="application/rss+xml" href="/index.xml" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+    <link rel="canonical" href={canonicalURL} />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
+    />
   </head>
-  <body class='bg-[#001F20] text-gray-100'>
-
-    <Navbar />
-    <slot></slot>
-    <CookieBar client:only="react"/>
+  <body class="bg-[#001F20] text-gray-100">
+    <Navbar><Search client:only="react" /></Navbar>
+    <slot />
+    <CookieBar client:only="react" />
     <Footer />
   </body>
   <!-- MailerLite Universal -->
-  <script defer data-domain="fsgeek.pl" src="https://plausible.io/js/script.js"></script>  
-  <script async defer data-website-id="ad37e119-5e6f-4674-a002-ecfeb105e3ba" src="https://mws02-40456.wykr.es/umami.js"></script>
+  <script defer data-domain="fsgeek.pl" src="https://plausible.io/js/script.js"
+  ></script>
+  <script
+    async
+    defer
+    data-website-id="ad37e119-5e6f-4674-a002-ecfeb105e3ba"
+    src="https://mws02-40456.wykr.es/umami.js"
+  ></script>
   <script>
-  (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
-  var c={ a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
-  f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);
-  var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));
-  _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
+    (function (m, a, i, l, e, r) {
+      m['MailerLiteObject'] = e;
+      function f() {
+        var c = { a: arguments, q: [] };
+        var r = this.push(c);
+        return 'number' != typeof r ? r : f.bind(c.q);
+      }
+      f.q = f.q || [];
+      m[e] = m[e] || f.bind(f.q);
+      m[e].q = m[e].q || f.q;
+      r = a.createElement(i);
+      var _ = a.getElementsByTagName(i)[0];
+      r.async = 1;
+      r.src = l + '?v' + ~~(new Date().getTime() / 1000000);
+      _.parentNode.insertBefore(r, _);
+    })(
+      window,
+      document,
+      'script',
+      'https://static.mailerlite.com/js/universal.js',
+      'ml'
+    );
 
-  var ml_account = ml('accounts', '2669557', 'd1b7k0h4n3', 'load');
+    var ml_account = ml('accounts', '2669557', 'd1b7k0h4n3', 'load');
   </script>
   <!-- End MailerLite Universal -->
-  <script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+  <script>
+    var d = document,
+      w = 'https://tally.so/widgets/embed.js',
+      v = function () {
+        'undefined' != typeof Tally
+          ? Tally.loadEmbeds()
+          : d
+              .querySelectorAll('iframe[data-tally-src]:not([src])')
+              .forEach(function (e) {
+                e.src = e.dataset.tallySrc;
+              });
+      };
+    if ('undefined' != typeof Tally) v();
+    else if (d.querySelector('script[src="' + w + '"]') == null) {
+      var s = d.createElement('script');
+      (s.src = w), (s.onload = v), (s.onerror = v), d.body.appendChild(s);
+    }
+  </script>
 </html>

@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
+
 import { Logo, NavbarTwoColumns, NavMenu, NavMenuItem, Section } from '@/ui';
 
-const Navbar = () => (
+const Navbar = (props: { children: ReactNode }) => (
   <Section>
     <NavbarTwoColumns>
       <a href="/">
@@ -18,6 +20,7 @@ const Navbar = () => (
       </a>
 
       <NavMenu>
+        {props.children}
         <NavMenuItem href="/post/">Blog</NavMenuItem>
       </NavMenu>
     </NavbarTwoColumns>

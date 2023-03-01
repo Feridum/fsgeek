@@ -525,13 +525,6 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
-"2021/s3-deploy/index.mdx": {
-  id: "2021/s3-deploy/index.mdx",
-  slug: "amazon-s3-konfiguracja-spa-deploy",
-  body: string,
-  collection: "post",
-  data: InferEntrySchema<"post">
-},
 "2021/sentry/index.mdx": {
   id: "2021/sentry/index.mdx",
   slug: "sentry-logowanie-zdarzen-w-aplikacji",
@@ -640,6 +633,13 @@ declare module 'astro:content' {
 "2023/js-console/index.mdx": {
   id: "2023/js-console/index.mdx",
   slug: "javascript-console",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
+"2023/s3-deploy/index.mdx": {
+  id: "2023/s3-deploy/index.mdx",
+  slug: "amazon-s3-konfiguracja-spa-deploy",
   body: string,
   collection: "post",
   data: InferEntrySchema<"post">

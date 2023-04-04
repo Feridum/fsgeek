@@ -36,7 +36,7 @@ const description ='';
 const { Content } = await post.render();
 ---
 
-<Base head={{ title: post.data.title, description }}>
+<Base head={{ title: post.data.title, description: post.data.description ?? "" }}>
   <BlogPost frontmatter={post.data}>
     <Content/>
   </BlogPost>

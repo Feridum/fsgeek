@@ -476,13 +476,6 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
-"2021/github-actions/index.mdx": {
-  id: "2021/github-actions/index.mdx",
-  slug: "ci-github-actions",
-  body: string,
-  collection: "post",
-  data: InferEntrySchema<"post">
-},
 "2021/jakosc-kodu/index.mdx": {
   id: "2021/jakosc-kodu/index.mdx",
   slug: "jakosc-kodu-prettier-eslint-ci-cd-testowanie",
@@ -626,6 +619,13 @@ declare module 'astro:content' {
 "2022/trendy-js-2022/index.mdx": {
   id: "2022/trendy-js-2022/index.mdx",
   slug: "trendy-javascript-2022",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
+"2023/github-actions/index.mdx": {
+  id: "2023/github-actions/index.mdx",
+  slug: "ci-github-actions",
   body: string,
   collection: "post",
   data: InferEntrySchema<"post">

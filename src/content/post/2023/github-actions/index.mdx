@@ -1,0 +1,184 @@
+---
+title: "Praktyczne wprowadzenie do CI/CD na przykładzie GitHub Actions"
+slug: "ci-github-actions"
+author: "Feridum"
+image: "/assets/post/2023/github-actions/logo.png"
+tags: ["ci", "github actions"]
+date: "2023-04-05T09:00:00.953Z"
+description: "CI/CD to podstawa każdego projektu. Zobacz, jak skonfigurować swój pierwszy workflow w Github Actions dla projektu JavaScript."
+---
+
+CI/CD to podstawa każdego dobrze prowadzonego projektu. Bez tego ciężko utrzymać projekt w dobrym stanie. Konfiguracja odbywa się najczęściej raz na początku projektu i potem aktualizacje od czasu do czasu. Na początku wydaje się to skomplikowane, ale po pierwszej konfiguracji jest już prosto
+
+<a href="https://youtu.be/5mhb07MUI0c">
+![logo filmu na YT o github actions](/assets/post/2023/github-actions/yt.png)
+</a>
+
+## Zobacz na YouTube jak skonfigurować workflow w Github Actions.
+
+Jeśli wolisz video od tekstu, to zerknij na poniższy film na YT. Krok po kroku pokazuję jak stworzyć workflow,  jak go skonfigurować i jak wygląda uruchamianie tego skryptu. Workflow jest stworzony dla projektu JavaScript, ale możesz go w prosty sposób dostosować do swoich potrzeb. Sam skrypt znajdziesz na dole tego wpisu. 
+
+## Różnica między CI/CD/CD:
+
+-   **Continuous Integration.** Polega na **ciągłym integrowaniu kodu**  z główną gałęzią. Nawet kilka razy dziennie. Dzięki temu nie mamy żadnych zmian, które długo czekają na możliwość zmergowania. Aby móc wprowadzić taki proces należy mieć zautomatyzowane sprawdzanie kodu. I to zarówno od strony statycznej, jak i testów. Kolejnym etapem jest również budowanie kodu
+-   **Continuous Delivery. A**utomatyzujemy cały proces deployu. Czyli mając Continuous Delivery, programista nie musi pamiętać jak wypuścić zmiany, ale może jednym kliknięciem rozpocząć proces i iść na kawę.
+-   **Continuous Deployment.** Tutaj już automatyzujemy wszystko - jeśli wszystkie testy przeszły, to deploy jest automatycznie uruchamiany. Na tym etapie użytkownicy dostają wszystkie poprawki, jak tylko zostaną zmergowane.
+
+## Co warto uruchamiać na CI:
+
+-   **Statyczna analiza kodu.** Podstawowe testy jakie należy przeprowadzić na każdym Pull Request. Dzięki temu mamy pewność, że nowy kod spełnia nasze reguły. Jest to podstawowe narzędzie do utrzymania czystego kodu.
+-   **Testy jednostkowe.** Druga najważniejszy element każdego Pull Requestu. Dzięki temu mamy pewność, że nie wprowadzamy regresji do projektu. Ma to znaczenie, gdy chcemy wprowadzić cały proces CI/CD i chcemy mieć automatyczny deploy
+-   **Testy E2E.** Bardzo fajne narzędzie do testów regresji. Uwaga! Uruchamianie na każdym PR jest złym pomysłem ze względu na czas, Dużo lepiej jest puszczać od czasu do czasu lub podczas większych zmian.
+-   **Bezpieczeństwo**. Coraz ważniejszy temat przy tworzeniu aplikacji. Może to być zarówno prosty npm audit, jak i bardziej zaawansowane (zewnętrzne) narzędzia.
+-   **Inne narzędzia**. Tak naprawdę podczas CI/CD można uruchamiać wiele różnych narzędzi. Tylko od nas zależy na czym nam zależy i co chcemy sprawdzać.
+
+## Jakie są narzędzia do tworzenia CI/CD
+
+W ostanich latach powstało bardzo dużo narzędzi do tworzenia i zarządzania skryptami CI/CD. Każdy serwer git ma swoje rozwiązanie + istnieje wiele zewnętrznych serwisów np.:
+
+-   Bibucket Pipelines
+-   GitLab CI/CD
+-   Microsoft Azure Pipelines
+-   Github Actions
+
+W każdym proces wygląda podobnie i można go opisać jako - test, build and deploy. Jeśli naucz się jednego narzędzia, to pozostałe działają podobnie. Różnią się tylko szczegółami i cennikiem. Github Actions jest idealne na początek bo pewnie i tak masz swój projekt na Github.
+
+## Co to jest Github Actions?
+
+Github Actions jest narzędziem do tworzenia skryptów CI/CD. Jesteśmy w stanie puszczać testy, sprawdzać jakość naszej aplikacji, budować ja i robić deploy na odpowiednie środowiska. Jest dostępny dla każdego repozytorium w Github. Możesz z niego korzystać dla dowolnego języka np.: JavaScript, PHP, Python, Java itd.
+
+### Jak możesz wykorzystać Workflows?
+
+Github Actions pozwala zautomatyzować wiele zadań w obrębie repozytorium. Istnieje parę standardowych zastosowań, ale możesz to dostosować do swoich potrzeb w projekcie. Przykładowe zastosowania to:
+
+-   Sprawdzanie kodu
+-   Upload kodu na środowisko testowe/produkcyjne
+-   Budowanie obrazów dockerowych 
+-   Automatyczne wypuszczanie paczek npm 
+-   Puszczanie testów automatycznych 
+-   Automatyzacja niektórych zadań np.: czyszczenie cache'a aplikacji
+-   Wysyłanie powiadomień np.: na Slack'a
+-   Skrypty DevOps
+-   Cykliczne uruchamianie skryptów do backupu
+-   Budowanie środowisk tymczasowych
+
+### Github Actions – ile kosztuje?
+
+Github Actions jest darmowe dla publicznych repozytoriów. Dotyczy to zarówno Github-hosted runners jak i self-hosted runners. Dla prywatnych repozytoriów github są dostępne darmowe minuty:
+
+-   konto Free 2000 minut
+-   Pro 3000 minut
+-   Free for organizations 2000 minut
+-   Team 3000 minut
+-   Enterpise Cloud 50000 minut
+
+## Słowniczek podstawowych pojęć dla Github Action
+
+Zanim przejdę do tego co najważniejsze, czyli kodu i rozwiązań konkretnych problemów, mam słowniczek pojęć. Pozwoli nam się sprawniej porozumiewać i posługiwać tymi samymi określeniami
+
+### Workflow
+
+Automatyczna procedura dodana do naszego repozytorium. Workflow może się składać z jednego lub więcej zadań (job), które mogą aktywować się na konkretne zdarzenie lub ręcznie.
+
+### Event
+
+Zdarzenie, jest aktywnością w naszym repozytorium, która będzie aktywowała konkretny workflow. Do takich aktywności zaliczamy np.: wypuszczenie kodu na gałąź (branch), utworzenie pull-request'a czy też utworzenie release'a. Do najczęściej wykorzystywanych będą:
+
+-   push - np.: do budowania na środowisko
+-   pull-request - np.: do testowania kodu
+
+### Job
+
+Zadanie składa się z wykonywanych sekwencyjnie kroków (steps). Zadania są wykonywane w Github Actions równolegle. Można na szczęście konfigurować zadania tak aby wykonywały się po kolei, jedna po drugiej.
+
+### Step
+
+Pojedyncze zadanie wykonywane w ramach zadania. Może być zarówno poleceniem konsolowym jak i akcją. Kroki w obrbie zadania są wykonywane w tym samym środowisku i mogą dzielić dane między sobą.
+
+### Action
+
+Najmniejszy jednostka budulcowa w Github Actions. Są komponowane w kroki (steps) by budować zadania (jobs).
+
+### Runners
+
+Środowisko w którym uruchamiane są zadania. Technicznie jest to serwer z zainstalowaną aplikacją Github Actions runner. Może to być zarówno środowisko, które dostarcza Github (Windows Server, Ubuntu, macOs) jak i własny serwer.
+
+## Przykładowy Github Actions Workflows dla frontendu
+
+```yaml
+name: CI
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Installing dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+```
+
+Pierwszym krokiem jest stworzenie pliku yaml w folderze .github/workflows. Dobrze, aby ten plik miał nazwę, która opisuje cel w którym został stworzony, Dzięki temu będzie łatwiej tym zarządzać. Pamiętaj, by dodać do repozytorium git.
+
+```yaml
+name: CI
+```
+W pierwszej linii masz nazwę skryptu. Ona potem się pojawia na portalu Github w zakładce Actions więc powinna być maksymalnie opisowa. Jak będziesz mieć setki skryptów, to warto wiedzieć, co się dzieje i gdzie.
+
+```yaml
+on:
+  pull_request:
+    branches: [main]
+```
+Dalej w sekcji on jest konfiguracja dla jakich zdarzeń nasz skrypt ma się aktywować. Przykładowy workflow uruchomi się gdy ktoś otworzy pull request do brancha main. W nawiasach kwadratowych możesz zmienić nazwę brancha lub dopisać inne np.: [master, develop]
+
+```yaml
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Installing dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+```
+
+Następnie jest już sekcja jobs, która definiuje jakie są konkretne zadania dla tego skryptu. W przypadku tego skryptu jest tylko jeden job o nazwie build_and_test, który działa się na maszynie linuks (ustawiamy to opcją runs-on).  
+
+W każdym zadaniu trzeba skonfigurować poszczególne kroki które będą po kolei wykonywane. Pierwszym z nich zazwyczaj będzie akcja checkout, która pobiera najnowszy kod i pozwala pozostałym krokom operować na kodzie. Opcja __uses__ informuje nas, że korzystamy z akcji, która istnieje w Github Marketplace - jest to kawałek kodu, który ktoś przygotował, by ułatwić nam pracę
+
+> Uwaga. Zanim skorzytasz z takiego gotowca, to sprawdź czy nie zawiera potencjalnie szkodliwego kodu.
+
+Takie skrypty mają często opcje przekazywania dodatkowych parametrów, co widać podczas ustawiania konkretnej wersji node'a. Możesz równie programować własne akcje, ale tym tematem zajmę się w innym wpisie. 
+
+Pozostałe akcje korzystają ze skryptów stworzonych w pliku package.json. Najpierw instaluję wszystkie zależności, następnie uruchamiam statyczną analizę kodu i na koniec proces budowania aplikacji. To ostatnie jest  przydatne, by sprawdzić, czy nie błędów podczas budowania oraz jest wymagane, by wygenerować artefakt. Z takim artefaktem potem możemy budować aplikację.
+
+Teraz możesz zmodyfikować skrypt pod siebie. Jeśli pracujesz w projekcie JavaScript, to pierwsze kroki bedą identyczne, a zmienią się tylko ostatnie skrypty. Jeśli pracujesz z innym językiem musisz więcej zmienić, ale sposób działania jest taki sam. 
+
+## Github Actions w Twoim repozytorium
+
+![panel github actions](/assets/post/2023/github-actions/github-actions-panel.png)
+
+Jeśli poprawnie dodałeś plik z pierwszym workflow, to w ramach repozytorium zobaczysz zakładkę Actions. Zawiera ona wszystkie informacje na temat uruchamianych skryptów. Możesz też zarządzać cachem z poziomu tego panelu (Tym tematem zajmę się w osobnym wpisie. Teraz tylko wspomnę, że możesz przechowywać pewne informacje pomiędzy zadaniami, by przyspieszyć pracę ).
+
+![github actions workflow details](/assets/post/2023/github-actions/workflow-details.png)
+
+Jeśli wejdziesz w szczegóły workflow, to zobaczysz jakie zadania zostały, wykonane, z jakim statusem i ile trwało.
+
+![github actions job details](/assets/post/2023/github-actions/job-details.png) 
+
+Możesz też wejśc w szczegóły joba i zobaczyć jakie kroki się wykonywały. Masz tam informacje o konkretnym kroku, czasie i tym co zostało wyświetlone w konsoli. Jest to szczególnie przydatne podczas szukania błędów.

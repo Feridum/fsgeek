@@ -24,8 +24,6 @@ const BlogCard = (props: Props) => {
           <div className="mt-1 text-xs text-gray-400">
             {format(props.instance.data.date, 'LLL d, yyyy')}
           </div>
-
-          <div className="mt-2 text-sm">{props.instance.data.description}</div>
         </div>
       </div>
     </a>

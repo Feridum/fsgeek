@@ -637,6 +637,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2023/next-auth0/index.mdx": {
+  id: "2023/next-auth0/index.mdx",
+  slug: "nextjs-auth0-configuration",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "2023/s3-deploy/index.mdx": {
   id: "2023/s3-deploy/index.mdx",
   slug: "amazon-s3-konfiguracja-spa-deploy",

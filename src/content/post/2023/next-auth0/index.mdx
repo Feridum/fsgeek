@@ -1,0 +1,134 @@
+---
+title: "Dodaj uwierzytelnianie do aplikacji Next.js przy  pomocy Auth0 API"
+slug: "nextjs-auth0-configuration"
+author: "Feridum"
+image: "/assets/post/2023/next-auth0/logo.png"
+tags: ["javascript"]
+date: 2023-10-11T09:00:00+01:00
+draft: false
+description: "Uwierzytelnianie pozwala zabezpieczyć dostęp do aplikacji tylko dla uprawnionych użytkowników. Przeczytaj post i dowiedz się jak użyć usługi Auth0 do tego."
+---
+
+Nie wyobrażam sobie, by w 2023 aplikacja nie miała modułu uwierzytelniania. Jest to podstawą bezpieczeństwa jeśli aplikacja chce oferować użytkownikom konta i możliwość zapisywania efektów swoich prac. Ale jak to zaimplementować? Czy warto robić samemu? Sprawdź.
+
+## Czym jest uwierzytelnianie i autoryzacja?
+
+Te dwa pojęcia są bardzo do siebie podobne (szczególnie w angielskim) i lubią się mylić nawet doświadczonym programistą. Uwierzytelnianie (eng. authentication - autentykacja jest kalką językową i staraj się nie używać) jest procesem identyfikacji tożsamości osoby. System sprawdza (za pomocą email i hasła) czy faktycznie jesteś osobą, za którą się podajesz i można ci pokazać dodatkowe treści w aplikacji. Autoryzacja (eng. authorization) jest z kolei procesem sprawdzania, czy masz wystarczające uprawnienia, by obejrzeć daną stronę lub czy możesz uzyskać dostęp do dodatkowych zasobów. Warto znać różnicę między tymi procesami, ponieważ jest to częste pytanie na rozmowach kwalifikacyjnych.
+
+## Dlaczego nie warto tego implementować samodzielnie?
+
+Procesy uwierzytelniania i autoryzacji mocno wchodzą w temat bezpieczeństwa aplikacji. Jest tu wiele rzeczy na które trzeba uważać i odpowiednio zaimplementować, by dane użytkowników były bezpieczne. W związku z tym, żeby zrobić to poprawnie trzeba mieć dużą wiedzę i zainwestować sporo czasu w ten proces. Dodatkowy element to elastyczność. Zauważ, że w aplikacjach znajdziesz nie tylko logowanie przy pomocy email/hasło, ale również różnego rodzaju logowanie przez social media, uwierzytelnianie wieloskładnikowe (2FA), maile i jeszcze więcej. Każda taka integracja zajmuje czas. Dlatego większość firm wybiera gotowe rozwiązania, które dostarczają bezpieczne metody logowania/rejestracji w modelu SaaS (Software as a Service). Najpopularniejszą usługa tego typu jest bez wątpienia Auth0.
+
+
+## Czym jest Auth0?
+
+Auth0 jest usługą typu SaaS, która dostarcza rozwiązanie do uwierzytelniania i autoryzacji w naszej aplikacji. Jest to obecnie jedno z najpopularniejszych rozwiązań tego typu, ponieważ umożliwia bezproblemową integrację w każdym jezyku i frameworku. Pozwala na wybranie wielu opcji uwierzytelniania - od zwykłego email, hasło przez szeroki wybór uwierzytelnienia przez social media aż po zaawansowane zagadnienia związane z SSO. Korzystanie z tego rozwiązania eliminuje problem zarządzania użytkownikami  i innymi elementami typowo administracyjnymi. 
+
+
+### Konfiguracja Auth0 w Next.js
+
+Wybrałem Next.js, ponieważ pozwala w pełni zaimplementować Auth0 nie tylko od strony frontendu, ale również backendu. Jest to dobry sposób, by poznać możliwości tej platformy. No i proces integracji nie jest tak skomplikowany jak się może wydawać na początku. Wystarczy, że będziesz postępować zgodnie z instrukcją od Auth0.
+
+### Konfiguracja aplikacji w panelu
+
+Nie będę przechodził po procesie rejestracji, ponieważ każdy da sobie z tym radę. Konfigurację zacznę od procesu tworzenia aplikacji. W menu bocznym kliknij Applications i wybierz Create Application. Z racji tego, że konfigurujemy wszystko w Next.js to mamy zarówno część frontendową i backendową, to **musimy wybrać Regular Web Application**. Następnie w sekcji Settings trzeba ustawić poprawne linki:
+
+- Allowed Callback URL - http://localhost:3000/api/auth/callback
+- Allowed Logout URL - http://localhost:3000
+
+W tej sekcji również znajdziesz Client ID, Client Secret i Domain, który przyda ci się w następnym kroku do konfiguracji. Pamiętaj, żeby dostosować to pod deploy produkcyjny potem. 
+
+### Instalacja i konfigurowanie wszystkiego w aplikacji
+
+Skoro mamy wszystko skonfigurowane po stronie usługi, to możemy przejść do implementacji w aplikacji. Zacząć trzeba od zainstalowania biblioteki i dodania odpowiednich zmiennych środowiskowych. Dla next'a biblioteka, która nas interesuje to @auth0/nextjs-auth0.
+
+```
+npm i @auth0/nextjs-auth0
+```
+
+Następny krok, to dodanie odpowiednich zmiennych środowiskowych
+
+
+- AUTH0_SECRET - losowy ciąg znaków służący do szyfrowania cookie. Możesz użyć polecenia **openssl rand -hex 32**
+- AUTH0_BASE_URL - URL aplikacji
+- AUTH0_ISSUER_BASE_URL - URL domeny, na której siedzi twoja aplikacja Auth0.
+- AUTH0_CLIENT_ID - Client ID aplikacji
+- AUTH0_CLIENT_SECRET - Client Secret aplikacji
+
+
+Ostatni etap konfiguracji to dodanie provider'a do aplikacji. UserProvider pozwalana pobieranie informacji na temat aktualnego użytkownika. Najlepiej go umieszczać na najwyższym poziomie i mieć dostępny go wszędzie. 
+
+```jsx
+import {UserProvider} from "@auth0/nextjs-auth0/client";
+
+export default function RootLayout({children}) {
+  return (
+    <html lang="en">
+      <UserProvider>
+        <body>{children}</body>
+      </UserProvider>
+    </html>
+  )
+}
+
+```
+
+### Dodawanie API
+
+Kolejny etap to skonfigurowanie API. Komunikacja z Auth0 odbywa się poprzez kilka endpodintów, które trzeba mieć w aplikacji. Zacznij od stworzenia następującego pliku w **app/api/auth/[auth0]/route.ts** (zamiast .ts może być .js, zwróc uwagę, by stworzyć ścieżkę o takim kształcie).
+
+```jsx
+import { handleAuth } from '@auth0/nextjs-auth0';
+
+export const GET = handleAuth();
+```
+
+Ta zaimportowana z biblioteki funkcja powoduje utworzenie 4 ścieżek w API: 
+
+- /api/auth/login - ścieżka służąca do logowania użytkownika
+- /api/auth/logout - ścieżka służąca do logowania użytkownika
+- /api/auth/callback - ścieżka pod którą Auth0 przekieruje użytkownika po logowaniu
+- /api/auth/me - ściężka służąca do pobierania informacji o użytkowniku.
+
+Mając to skonfigurowane, możemy przejść do najważniejszych elementów - logowanie/wylogowanie i ochrona stron w aplikacji.
+
+### Logowanie i wylogowanie
+
+Te dwie operacje są najprostsze do zaimplementowania, bo wszystko mamy przygotowane. Jedyne co trzeba zrobić, to skorzystać z API i przekierować użytkownika na adres /api/auth/login. Czyli stworzyć przycisk, otoczyć atrybutem href 
+
+Wylogowanie wygląda podobnie. Musisz przekierować użytkownika na adres /api/auth/logout i tyle. Gdzie teraz trafi użytkownik? Na początku w panelu projektu konfigurowaliśmy **Allowed Logout URL**. I pod ten adres zostanie przekierowany użytkownik po poprawnym logout. 
+
+```jsx
+import {getSession} from "@auth0/nextjs-auth0";
+
+export default async function Home() {
+    const session = await getSession();
+    const btn = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+    return (
+        <main className="flex min-h-screen flex-col items-center justify-between p-24">
+            {session?.user ?
+                <a className={btn} href="/api/auth/logout">Logout</a>:
+                <a className={btn} href="/api/auth/login">Login</a>
+            }
+        </main>
+    )
+}
+```
+
+### Zabezpieczenia ścieżek
+
+Ostatnia rzecz, o której chcę napisać, to zabezpieczenia ścieżek w aplikacji. Jest to jeden z powodów, dla których chcemy omawiany mechanizm. W końcu do szczegółów użytkownika albo naszych sekretnych danych powinien mieć dostęp tylko konkretny użytkownik. Najprościej to zrobić wykorzystując HOF(higher order function) **withPageAuthRequired**. Kod widzisz poniżej. Wystarczy przekazać funkcję z komponentem oraz obiekt z wartością **returnTo - jest to adres url aktualnej strony**. Jeśli użytkownik nie będzie zalogowany, to zostanie przekierowany do logowania i po poprawnym logowaniu wróci na stronę.
+
+```jsx
+import { withPageAuthRequired, getSession } from '@auth0/nextjs-auth0';
+
+export default withPageAuthRequired(async function User() {
+    const session = await getSession();
+    console.log(session)
+    return <div>Hello {session?.user.name}</div>;
+}, { returnTo: '/user' })
+```
+
+## Dalsze kroki
+
+Teraz już wszystko zależy od ciebie. Podstawy już masz, więc możesz to rozwijać i dopasować do swojej aplikacji. Pamiętaj, że zawsze do dsypozycji masz dokumentację, która szczegółowo opisuje możliwości Atuh0 i jak to zaimplementować w swoim kodzi . 

@@ -1,0 +1,64 @@
+---
+title: "Jak wdrożyć aplikację z Amazon ECR i AppRunner?"
+slug: "deploy-docker-amazon-ecr-apprunner"
+author: "Feridum"
+image: "/assets/post/2023/app-runner/logo.png"
+tags: ["javascript"]
+date: 2023-12-31T09:00:00+01:00
+draft: false
+description: "Amazon ECR i AppRunner to narzędzia które powinien znać kady fullstack. Dzięki nim można bardzo szybko wdrożyć aplikację opartą o Docker'a"
+---
+
+
+AWS pozwala na bardzo szybkie uruchamianie kontenerów Dockera. Kilka kliknięć i można sprawdzić, jak aplikacja zachowuje się na środowisku produkcyjnym. I nie trzeba bardzo dużej wiedzy DevOps, by zacząć. Każdy fullstack deweloper powinien znać tę usługę.
+
+## Co to jest App Runner?
+
+AWS App Runner jest w pełni zarządzana usługa od AWS, która pozwala uruchamiać aplikację z obrazów Dockera lub bezpośrednio z repozytorium. Jest to o tyle wygodne, że nie potrzeba bardzo dużej wiedzy z zakresu DevOps, by uruchomić aplikację w środowisku deweloperskim. Uruchomienie dowolnego obrazu wymaga kilku kliknięć w serwisie.
+
+## Co to jest Amazon ECR?
+Amazaon ECR (Elastic container repository) jest to usługa wspierająca dla App Runner. Jeśli chcemy uruchomić aplikację z obrazu Dockera, to w tej usłudze będziemy trzymać ten obraz. Jest to nic innego jak prywatny Docker Registry. 
+
+### Wypuszczenie obrazu Dockera do Amazon ECR
+Postanowiłem pokazać konfigurację na podstawie obrazu API z Nest.js. Wygenerowałem podstawowy projekt i dołożyłem do niego konfigurację Dockera znalezioną w [tym poradniku](https://www.tomray.dev/nestjs-docker-production). Możesz to zrobić tak jak ja lub pobrać jakiś ogólnodostępny obraz z Docker Hub i wykorzystać go do do konfiguracji App Runnera.
+
+Zakładając, że masz już obraz, to trzeba go wrzucić do Amazon ECR. Pierwsza rzecz jaką musisz zrobić, to konfiguracja miejsca na ten obraz. 
+
+
+![Konfiguracja Amazon ECR](/assets/post/2023/app-runner/ecr-tworzenie.png)
+
+Następny krok to faktyczne umieszczenie obrazu. Robi się to przy pomocy odpowiedniej komendy CLI. Nawet nie musisz jej szukać, bo ECR sam podaje ci komplet komend jakie potrzebujesz, by wypuścić obraz. Musisz tylko pamiętać, że musisz być już poprawnie uwierzytelniony w AWS CLI.
+
+![Konfiguracja Amazon ECR - komendy](/assets/post/2023/app-runner/ecr-komendy.png)
+
+## Konfiguracja kontenera w App Runner
+Gdy ma się wrzucony obraz Docker'a do ECR to można uruchomić go w usłudze App Runner. Jest to tak samo proste (a nawet prostsze od ECR), bo wystarczy wyklikać parę elementów.
+
+Na początek musimy wskazać, skąd bierzemy obraz aplikacji. Możemy wybrać albo ECR albo repozytorium. Ja oczywiście wybrałem ECR. Następnie trzeba wybrać konkretny obraz i sposób wdrożenia. 
+
+![Konfiguracja App Runner part 1](/assets/post/2023/app-runner/apprunner-step1.png)
+
+Następnie są sprawy techniczne, czyli konfiguracja dotycząca mocy dla usługi, bezpieczeństwo, Auto scaling, Health check itd. Poza ustawieniem Virtual CPU na mniejszą wartość to resztę elementów zostawiłem z domyślnymi wartościami.
+
+![Konfiguracja App Runner part 2](/assets/post/2023/app-runner/apprunner-step2.png)
+
+I tyle. Teraz trzeba poczekać parę minut, by wszystko się postawiło i można korzystać z naszego serwisu. Jeśli wszystko się powiedzie, to w panelu zobaczysz przydatne informacje jak adres URL do aplikacji. Jeśli coś się nie uda, to trzeba spojrzeć głębiej w logi.
+
+![App Runner panel](/assets/post/2023/app-runner/apprunner-details.png)
+
+## Pricing
+
+Kwestia ceny jest tutaj ciężka do oszacowania dla wszystkich. Wiele zależy od tego, ile będziesz wykorzystywał/a API i jak duże będzie obciążenie. Cena zaczyna się od 5$ za miesiąc i sky is the limit, bo usługa jest przygotowana do obsługi dużego ruchu. 
+
+Dużo prościej jest z ECR. Tutaj jest 0.10$ za 1GB danych i jest to jedyna opłata, o ile korzystamy z App Runner w tym samym regionie. 
+
+I ostatnia rada  - jeśli nie potrzebujesz API, które działa cały czas to możesz je zastopować.
+
+> Za zastopowany serwis w App Runner nie jest naliczana opłata
+
+
+Bardzo ważne przy korzystaniu z dowolnej chmury albo innego serwisu, to monitorowanie kosztów infrastruktury. Ustawienie odpowiednich limitów oraz powiadomień pozwoli ci się zabezpieczyć przed kosztami. 
+
+## Podsumowanie
+
+Bardzo lubię usługę App Runner, bo umożliwia uruchomienie dowolnego obrazu Dockera w parę minut. Jest to przydatne do testowania rozwiązań self-hosted, które bardzo często są dystrybuowane przy pomocy Dockera. Nie wymaga też bardzo dużej wiedzy na temat DevOps i proces konfiguracji jest prosty. Jeśli masz konto AWS i potrzebujesz uruchomić kontener Docker'a to koniecznie sprawdź App Runner.

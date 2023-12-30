@@ -14,7 +14,7 @@ AWS pozwala na bardzo szybkie uruchamianie kontenerów Dockera. Kilka kliknięć
 
 ## Co to jest App Runner?
 
-AWS App Runner jest w pełni zarządzana usługa od AWS, która pozwala uruchamiać aplikację z obrazów Dockera lub bezpośrednio z repozytorium. Jest to o tyle wygodne, że nie potrzeba bardzo dużej wiedzy z zakresu DevOps, by uruchomić aplikację w środowisku deweloperskim. Uruchomienie dowolnego obrazu wymaga kilku kliknięć w serwisie.
+AWS App Runner jest w pełni zarządzaną usługą od AWS, która pozwala uruchamiać aplikację z obrazów Dockera lub bezpośrednio z repozytorium. Jest to o tyle wygodne, że nie potrzeba bardzo dużej wiedzy z zakresu DevOps, by uruchomić aplikację w środowisku deweloperskim. Uruchomienie dowolnego obrazu wymaga kilku kliknięć w serwisie.
 
 ## Co to jest Amazon ECR?
 Amazaon ECR (Elastic container repository) jest to usługa wspierająca dla App Runner. Jeśli chcemy uruchomić aplikację z obrazu Dockera, to w tej usłudze będziemy trzymać ten obraz. Jest to nic innego jak prywatny Docker Registry. 
@@ -24,25 +24,26 @@ Postanowiłem pokazać konfigurację na podstawie obrazu API z Nest.js. Wygenero
 
 Zakładając, że masz już obraz, to trzeba go wrzucić do Amazon ECR. Pierwsza rzecz jaką musisz zrobić, to konfiguracja miejsca na ten obraz. 
 
-
 ![Konfiguracja Amazon ECR](/assets/post/2023/app-runner/ecr-tworzenie.png)
 
-Następny krok to faktyczne umieszczenie obrazu. Robi się to przy pomocy odpowiedniej komendy CLI. Nawet nie musisz jej szukać, bo ECR sam podaje ci komplet komend jakie potrzebujesz, by wypuścić obraz. Musisz tylko pamiętać, że musisz być już poprawnie uwierzytelniony w AWS CLI.
+Następny krok to faktyczne umieszczenie obrazu. Robi się to przy pomocy odpowiedniej komendy CLI. Nawet nie musisz jej szukać, bo ECR sam podaje ci komplet komend, jakie potrzebujesz, by wypuścić obraz. Musisz tylko pamiętać, że musisz być już poprawnie uwierzytelniony w AWS CLI.
 
 ![Konfiguracja Amazon ECR - komendy](/assets/post/2023/app-runner/ecr-komendy.png)
 
 ## Konfiguracja kontenera w App Runner
-Gdy ma się wrzucony obraz Docker'a do ECR to można uruchomić go w usłudze App Runner. Jest to tak samo proste (a nawet prostsze od ECR), bo wystarczy wyklikać parę elementów.
+Gdy ma się wrzucony obraz Docker'a do ECR, to można uruchomić go w usłudze App Runner. Jest to tak samo proste (a nawet prostsze od ECR), bo wystarczy wyklikać parę elementów.
 
 Na początek musimy wskazać, skąd bierzemy obraz aplikacji. Możemy wybrać albo ECR albo repozytorium. Ja oczywiście wybrałem ECR. Następnie trzeba wybrać konkretny obraz i sposób wdrożenia. 
 
 ![Konfiguracja App Runner part 1](/assets/post/2023/app-runner/apprunner-step1.png)
 
-Następnie są sprawy techniczne, czyli konfiguracja dotycząca mocy dla usługi, bezpieczeństwo, Auto scaling, Health check itd. Poza ustawieniem Virtual CPU na mniejszą wartość to resztę elementów zostawiłem z domyślnymi wartościami.
+Następnie są sprawy techniczne, czyli konfiguracja dotycząca mocy dla usługi, bezpieczeństwo, Auto scaling, Health check itd. Poza ustawieniem Virtual CPU na mniejszą wartość, to resztę elementów zostawiłem z domyślnymi wartościami.
 
 ![Konfiguracja App Runner part 2](/assets/post/2023/app-runner/apprunner-step2.png)
 
-I tyle. Teraz trzeba poczekać parę minut, by wszystko się postawiło i można korzystać z naszego serwisu. Jeśli wszystko się powiedzie, to w panelu zobaczysz przydatne informacje jak adres URL do aplikacji. Jeśli coś się nie uda, to trzeba spojrzeć głębiej w logi.
+I tyle. Teraz trzeba poczekać parę minut, by wszystko się postawiło i można korzystać z naszego serwisu. Jeśli wszystko się powiedzie, to w panelu zobaczysz przydatne informacje jak adres URL do aplikacji. Jeśli coś się nie uda, to trzeba spojrzeć głębiej w logi. 
+
+> Jeśli pracujesz na Mac'u z procsorem ARM to dodaj w Dockerfile FROM --platform=linux/amd64 node:20-alpine, by obraz ruszył w AppRunner
 
 ![App Runner panel](/assets/post/2023/app-runner/apprunner-details.png)
 
@@ -55,7 +56,6 @@ Dużo prościej jest z ECR. Tutaj jest 0.10$ za 1GB danych i jest to jedyna opł
 I ostatnia rada  - jeśli nie potrzebujesz API, które działa cały czas to możesz je zastopować.
 
 > Za zastopowany serwis w App Runner nie jest naliczana opłata
-
 
 Bardzo ważne przy korzystaniu z dowolnej chmury albo innego serwisu, to monitorowanie kosztów infrastruktury. Ustawienie odpowiednich limitów oraz powiadomień pozwoli ci się zabezpieczyć przed kosztami. 
 

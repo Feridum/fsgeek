@@ -623,6 +623,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2023/app-runner/index.mdx": {
+  id: "2023/app-runner/index.mdx",
+  slug: "deploy-docker-amazon-ecr-apprunner",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "2023/github-actions/index.mdx": {
   id: "2023/github-actions/index.mdx",
   slug: "ci-github-actions",

@@ -1,0 +1,166 @@
+---
+title: "Budowanie aplikcji GenAI z AWS Bedrock"
+slug: "budowanie-aplikacji-gen-ai-aws-bedrock"
+author: "Feridum"
+image: "/assets/post/2024/aws-bedrock/logo.png"
+tags: ["aws"]
+date: 2024-01-11T09:00:00+01:00
+draft: false
+description: "Amazon Bedrock to usługa, które pomaga budować aplikacje oparte o GenAI poprzez dostępnośc modeli i innych narzędzi"
+---
+
+
+> AWS Bedrock cały czas się rozwija i informacje w artykule pochodzą ze stycznia 2024. Jeśli czytasz artykuł później, to informacje mogą się różnić (szczególnie cena, dostępne modele i dostępne regiony)
+## Czym jest Amazon Bedrock
+
+Amazon Bedrock jest to stosunkowo nowa usługa, która dostarcza modele Generative AI i więcej. Szczególnie dużo funkcjonalności zostało dodanych podczas ostatniego Re:Invent.
+
+## Gdzie jest dostępne?
+
+Jeśli korzystasz z AWS, to powinieneś/aś znać sposób wypuszczania nowych funkcjonalności w AWS. Pierwszym regionem, który otrzymuje wszystkie nowości, jest zawsze us-east-1. Jest to najlepsze miejsce do testowania nowości. Potem nowe funkcjonalności są uruchamiane w kolejnych regionach.
+
+Aktualnie AWS Bedrock jest dostępny w następujących regionach:
+- us-east-1
+- us-west-2
+- ap-southeast-1
+- ap-northeast-1
+- eu-central-1
+
+Trzeba pamiętać, że funkcjonalności najpierw trafiają na us-east-1 a potem na kolejne regiony. Dostępność poszczególnych modeli i funkcjonalności w regionach może być różna. 
+
+>Przez resztę postu opisuję możliwości an us-east-1. Jeśli potrzebujesz koniecznie innego regionu, to sprawdź, co tam jest możliwe.
+
+
+## Dostępne modele
+W Amazon Bedrock nie znajdziesz modelu OpenAI ale znajdziesz inne modele w różnych kategoriach: text, image, embedding.
+
+Text:
+- AI21 Labs
+	- Jurassic-2 Ultra
+	- Jurassic-2 Mid
+- Amazon
+	- Titan Text G1 - Lite
+	- Titan Text G1 - Express
+- Anthropic
+	- Claude v2.0 i v2.1
+	- Claude Instant
+- Cohere
+	- Command
+	- Command Light
+- Meta
+	- Llama 2 Chat 13B
+	- Llama 2 Chat 70B
+	- Llama 2 13B
+	- Llama 2 70B
+
+Embeddings:
+- Amazon
+	- Titan Embeddings G1 - Text
+	- Titan Multimodal Embeddings G1
+- Cohere
+	- Embed English
+	- Embed Multilingual
+
+Image:
+- Amazon
+	- Titan Image Generator G1
+- Stability AI
+	- SDXL 0.8
+	- SDXL 1.0
+
+
+Jak widać dużą zaletą Amazon Bedrock jest różnorodność modeli. Dzięki temu można wybrać coś dla siebie i eksperymentować z modelami. Ja aktualnie sporo używam Claude i jestem zadowolony. Oprócz tego warto zwrócić uwagę na Llama - jest to model, który można hostować lokalnie na maszynie. Ale zanim zaczniesz konfigurować serwer, który to udźwignie, można bardzo tanio przetestować czy model daje radę.
+
+## Cena.
+Jeżeli znasz cennik dla OpenAI, to nie powinno cię zdziwić, że tutaj też płacisz za ilość użytych tokenów. Dla wybranych modeli ceny kształtują się następująco:
+- Claude - Input $0.008/1k token i Output $0.024/1k token
+- Llama 2 Chat (70B) - Input $0.00195/1k token i Output $0.00256/1k token
+- Titan Text Express - Input $0.0008/1k token i Output $0.0016/1k token
+
+Wszystkie ceny można zobaczyć na [oficjalnej stronie](https://aws.amazon.com/bedrock/pricing/). Warto się temu przyjrzeć, bo cena za tokeny jest bardzo ważnym wskaźnikiem.
+
+Jeśli dobrze to przeliczysz, to zauważysz, że przy dużym ruchu koszty mocno rosną. Dlatego wtedy może być opłacalny model Provisioned.
+
+## Inne możliwości Bedrock.
+Tak jak wspomniałem na początku artykułu podczas re:Invent zostało zaprezentowanych wiele ciekawych funkcjonalności wbudowanych w Bedrock. 
+
+### Knowledge bases.
+Nowość od Amazon Bedrock ogłoszona na re:Invent 2023. Jest to rozwiązanie, które ułatwia tworzenie bazy wiedzy. Po prostu wskazujemy, gdzie są nasze dokumenty, wybieramy bazę wektorową i tyle. Resztą zajmuje się AWS. Jest to dosyć ciekawe rozwiązanie, które pomaga przyspieszyć pracę. Uwaga tylko na pricing przy bazach wektorowych.
+### Agents.
+Wraz z bazą wiedzy do Amazon Bedrock zostali dołożeni agenci. Jest to rozwiązanie podobne do OpenAI Assistants, ale bardziej zintegrowane z usługami AWS'a. Agent może korzystać z 1 lub więcej bazy wiedzy oraz akcji, które uruchomią funkcje Lambda. Dzięki temu dosyć szybko można wyklikać agenta, który będzie wykonywał nawet zaawansowane operacje.
+
+## Langchain i Amazon Bedrock.
+
+Langchain to na czas pisania (styczeń 2023) najlepszy (i jedna z niewielu) bibliotek, które upraszczają komunikację z różnymi modelami. Oczywiście można komunikować się z Amazon Bedrock bez tej biblioteki. 
+
+Wymogi przedwstępne:
+- konto na AWS 
+- skonfigurowane AWS CLI 
+- dostęp do wybranego modelu Amazon Bedrock
+
+### Proste odpytanie modelu przy pomocy Langchain
+
+Zobaczmy, jak zaimplementować prostą funkcjonalność do odpytywania modelu
+
+```js
+import { ChatBedrock } from "langchain/chat_models/bedrock";  
+import { HumanMessage } from "langchain/schema";
+
+async function chat(question){
+	const model = new ChatBedrock({  
+		model: "anthropic.claude-v2",  
+		region: 'eu-central-1' 
+	});  
+	  
+	const res = await model.invoke([new HumanMessage({ content: question })]);  
+	
+	return res;
+}
+```
+
+
+Wybrałem model Claude V2, bo po moich testach okazał się najlepszy i najbardziej zbliżony do możliwości OpenAI. 
+
+Jak widzisz, kodu nie jest dużo, co jest zaletą korzystania z Langchain. Trochę kodu boilerplate jest ukryte i możemy się skupić na najważniejszym. Ja lubię korzystać do takich rzeczy, bo uprasza mi to kod. Ale jeśli chodzi o bardziej zaawansowane elementy np.: agenci, to na razie unikam. Za dużo tam magii i nie czuję kontroli nad tym. 
+
+### Podstawowy chat przy pomocy Langchain
+
+Drugi kod, jaki chcę pokazać, to wywoływanie chatu z pamięcią. Ta funkcjonalność już bardziej przypomina, to co znamy np.: z ChatGPT. 
+
+```javascript
+async function chat(question){
+	const memory = new BufferMemory({  
+		chatHistory: new DynamoDBChatMessageHistory({  
+			tableName: 'memory',  
+			partitionKey: "id",  
+			sessionId: 'sessionId',  
+			config: {  
+				region: 'eu-central-1',  
+			},  
+		}),  
+	});  
+	  
+	const model = new ChatBedrock({  
+	model: "anthropic.claude-v2",  
+	region: config.region,  
+	});  
+	  
+	const chain = new ConversationChain({ llm: model, memory });  
+	  
+	const res = await chain.call({ input: event.body.question });
+	
+	return res;
+}
+```
+
+Ten kod jest trochę bardziej skomplikowany, ale też nie ma tragedii. Na początku definiujemy naszą pamięć, w której będą zapisywane nasze pytania i odpowiedzi od modelu. BufferMemory wrzuca całą pamięć do konwersacji więc w przypadku dużych konwersacji lepiej użyć BufferWindowMemory, który ogranicza ilość wiadomości. 
+
+Ja tutaj się zdecydowałem na wykorzystanie bazy NoSQL od AWS czyli DynamoDB. Czuję się dobrze z tą bazą i dlatego ją wybrałem. Ale możesz wybrać inną bazę danych bo Langchain ma wiele innych integracji np.: Redis, MongoDB, Firestore itd.
+
+Dalej jest już podobny kod do wyżej. Zamiast bezpośrednio wywoływać model, korzystamy z ConversationChain, który dodaje zawartość pamięć. Wywołujemy i zwracamy rezultat. Warto też pamiętać, że automatycznie nasze pytanie i odpowiedź zostanie zapisane w bazie. 
+
+## Gdzie uruchamiać aplikację LLM?
+
+Tutaj mamy kilka opcji, które zależą od tego, jak często będziemy wywoływać naszą aplikację. W przypadku testów i budowania POC/MVP spokojnie można uruchomić to na AWS Lambda, ponieważ płacimy wtedy tylko i wyłącznie za konkretne wywołania. Jeśli ruch jest stabilniejszy albo mamy już API, które działa np.: na AWS App Runner (tutaj znajdziesz post o tym, [jak wdrożyć API na App Runner](https://fsgeek.pl/post/deploy-docker-amazon-ecr-apprunner/)), to nie ma przeciwwskazań, by uruchomić to obok innych endpointów.
+
+To jest według mnie najlepsza rzecz w całym budowaniu aplikacji na podstawie LLM. Jeśli masz już wszystkie dane i poukładany proces, to stworzenie aplikacji jest stosunkowo proste i można dany kawałek kodu wrzucić w dowolne miejsce.

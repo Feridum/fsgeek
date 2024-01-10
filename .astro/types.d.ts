@@ -665,6 +665,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2024/aws-bedrock/index.mdx": {
+  id: "2024/aws-bedrock/index.mdx",
+  slug: "budowanie-aplikacji-gen-ai-aws-bedrock",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "angular-component.mdx": {
   id: "angular-component.mdx",
   slug: "angular-komponenty",

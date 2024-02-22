@@ -1,5 +1,5 @@
 ---
-title: "Dostęp do prywatnych plików na S3"
+title: "Dostęp do prywatnych plików na S3 na 4 sposoby"
 slug: "aws-presigned-url-s3-cloudfront"
 author: "Feridum"
 image: "/assets/post/2024/aws-presigned-url/logo.png"
@@ -10,14 +10,14 @@ description: "S3 Buckets powinny być prywatne. Ale co jeśli potrzebujemy od cz
 ---
 
 
-S3 jest usługą którą pozwala trzymanie plików w chmurze. Jednym z zastosowań jest hosting stron internetowych i wtedy pliki są publiczne. Ale w większości zastosowań chcemy, by pliki były prywatne. A co zrobić, gdy chcemy udostępnić jakiś plik lub grupę plików? Wtedy musimy pracować z Presigned URLs.
+S3 jest usługą, którą pozwala na trzymanie plików w chmurze. Jednym z zastosowań jest hosting stron internetowych i wtedy pliki są publiczne. Ale w większości zastosowań chcemy, by pliki były prywatne np.: przechowywanie dokumentów. A co zrobić, gdy chcemy udostępnić jakiś plik lub grupę plików? Wtedy musimy pracować z Presigned URLs.
 
 
 ## Przypadek prosty - S3 Presigned URL
 S3 presigned URL jest to mechanizm, który użyjemy przy najprostszych sytuacjach. Przykładem sytuacji, w której chcemy to zastosować, jest typowe udostępnianie pojedynczych plików np.: zdjęć, dokumentów. Co istotne możemy kontrolować czas życia URL, co pozwala chronić prywatne zasoby.
 
 Generowanie takiego URL jest proste i możemy zrobić to na 3 sposoby:
-- W panelu AWS
+- W panelu AWS. Musimy wybrać plik, kliknąć actions, wybrać Share with a presigned URL i ustawić czas życia linku.
 
 - Używając CLI
 ```bash
@@ -32,7 +32,7 @@ const createPresignedUrlWithClient = ({ region, bucket, key }) => {
 };
 ```
 ## Wykorzystanie Cloudfront
-S3 Presigned Url można zastosować do najprostszych sytuacji, gdy chcemy udostępnić jeden plik. A co gdy chcemy coś bardziej zaawansowanego albo chcemy udostępnić cały folder, albo dodać bardziej zaawansowane warunki dostępu? Wtedy z pomocą przychodzi usługa Cloudfront. 
+S3 Presigned Url można zastosować do najprostszych sytuacji, gdy chcemy udostępnić jeden plik. A co gdy chcemy coś bardziej zaawansowanego np.: chcemy udostępnić cały folder, albo dodać bardziej zaawansowane warunki dostępu? Wtedy z pomocą przychodzi usługa Cloudfront. 
 
 Cloudfront jest to CDN, który pozwala przyspieszyć ładowanie plików z S3. Ale ma też możliwość udostępniania plików z prywatnego S3. Można to zrobić na dwa sposoby:
 - Signed URL - bardzo podobne do S3 Presigned URL
@@ -71,7 +71,7 @@ const url = cloudFront.getSignedUrl({
 ```
 
 ### Cloudfront Signed Cookies
-Przy Signed URL musimy zawsze przesyłać parametry w postaci query params. Może to nie być wygodne gdy musimy pobrać wiele plików. Wtedy rozwiązaniem jest Signed Cookies. Wystarczy, że te same paramtetry co ustawiamy w URL dodamy do cookies. I wtedy będą wysyłane z każdym zapytaniem a my mamy dostęp do plików. Cała reszta jest identyczna jak w przypadku Cloudfront Signed URLs
+Przy Signed URL musimy zawsze przesyłać parametry w postaci query params. Może to nie być wygodne, gdy musimy pobrać wiele plików. Wtedy rozwiązaniem jest Signed Cookies. Wystarczy, że te same parametry co ustawiamy w URL, dodamy do cookies. I wtedy będą wysyłane z każdym zapytaniem, a my mamy dostęp do plików. Cała reszta jest identyczna jak w przypadku Cloudfront Signed URLs
 
 ```javascript
  const signedCookie = cloudFront.getSignedCookie({
@@ -79,7 +79,7 @@ Przy Signed URL musimy zawsze przesyłać parametry w postaci query params. Moż
     });
 ```
 
-Co więcej możemy wyciągnąć z signedCookie potrzebne informacje i sami złożyć odpowiedni URL
+Co więcej, możemy wyciągnąć z signedCookie potrzebne informacje i sami złożyć odpowiedni URL
 
 ```javascript
 const url = `https://d111111abcdef8.cloudfront.net/${directory}/index.html?Policy=${signedCookie['CloudFront-Policy']}&Signature=${signedCookie['CloudFront-Signature']}&Key-Pair-Id=${signedCookie['CloudFront-Key-Pair-Id']}`
@@ -89,13 +89,13 @@ const url = `https://d111111abcdef8.cloudfront.net/${directory}/index.html?Polic
 
 Jakiś czas temu miałem bardzo ciekawy przypadek w pracy i musiałem ładować zestaw plików (powiedzmy, że widget do strony internetowej) w iframe. Jakie miałem możliwości:
 - S3 Presigned URL - odpada bo potrzebuję dać dostęp do wielu plików
-- Cloudfront Signed URLs - brzmi dobrze ale nie działa w pełni z iframe. Udało sie przekazać url do iframe z odpowiednimi parametrami ale kolejne pliki nie dodają potrzebnych query params.
+- Cloudfront Signed URLs - brzmi dobrze, ale nie działa w pełni z iframe. Udało się przekazać url do iframe z odpowiednimi parametrami, ale kolejne zapytania po pliki nie dodają potrzebnych query params.
 - Cloudfront Signed Cookies - też nie do końca, bo iframe nie widział plików cookies z głównej aplikacji.
 
 Rozwiązanie?
 Połączenie Cloudfront Signed URLs z Signed Cookies przy pomocy Cloudfront functions.
 
-Cloudfront functions pozwalają modyfikować odpowiedź z Cloudfront zanim trafi do klienta. Daje to ciekawe możliwości.
+Cloudfront functions pozwalają modyfikować odpowiedź z Cloudfront, zanim trafi do klienta. Daje to ciekawe możliwości.
 
 ```javascript
 function handler(event) {
@@ -105,7 +105,6 @@ function handler(event) {
     var querystring = request.querystring;
     var headers = response.headers;
 
-    console.log(event);
     
     var attributes = "SameSite=None; Secure;"  
     if(querystring['Policy']){
@@ -130,7 +129,4 @@ function handler(event) {
 }
 ```
 
-W src do iframe'a dodałem odpowiednie query params by uzyskać dostęp do plików. Następnie w Cloudfront functions wykorzystałem te dane by utworzyć właściwe cookies w iframe przy pomocy nagłówka z Set-Cookie.
-Dzięki temu w iframe zostały stworzone cookies z odpowiednimi danymi i byłem w stanie pobrać pozostałe pliki. 
-
-
+W src do iframe'a podawałem Signed Url do pliku index.html z odpowiednimi query params. Następnie w Cloudfront functions wykorzystałem te dane, by utworzyć właściwe cookies w iframe przy pomocy nagłówka z Set-Cookie. Dzięki temu w iframe zostały stworzone cookies z odpowiednimi danymi i pobieranie kolejnych plików wysyłało cookies, co pozwalało pobrać wszystkie potrzebne pliki.

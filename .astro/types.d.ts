@@ -672,6 +672,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2024/aws-presigned-url/index.mdx": {
+  id: "2024/aws-presigned-url/index.mdx",
+  slug: "aws-presigned-url-s3-cloudfront",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "angular-component.mdx": {
   id: "angular-component.mdx",
   slug: "angular-komponenty",

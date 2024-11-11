@@ -4,11 +4,7 @@ import { getCollection } from 'astro:content';
 
 import { BlogPost } from '@/partials/BlogPost';
 import { CTA } from '@/partials/CTA';
-import Base from '@/templates/Base.astro';
-
-type GetStaticPaths = {
-  paginate: any;
-}; // Overrides `GetStaticPathsOptions` types from Astro
+import BasePost from '@/templates/BasePost.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('post');
@@ -18,21 +14,11 @@ export async function getStaticPaths() {
   }));
 }
 
-interface Props {
-  page: CollectionEntry<'blog'>;
-}
-
 const post = Astro.props;
 
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 ---
 
-<Base
-  head={{ title: post.data.title, description: post.data.description ?? '' }}
->
-  <BlogPost frontmatter={post.data}>
+<BasePost content={post.data} headings={headings}>
     <Content />
-  </BlogPost>
-
-  <CTA />
-</Base>
+</BasePost>

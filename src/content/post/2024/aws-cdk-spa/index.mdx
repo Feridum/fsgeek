@@ -1,0 +1,212 @@
+---
+title: "AWS CDK dla frontend developera - deploy SPA"
+slug: "aws-cdk-frontend-deploy-spa"
+author: "Feridum"
+image: "/assets/post/2024/aws-cdk-spa/logo.png"
+tags: ["aws"]
+date: 2024-11-11T09:00:00+01:00
+draft: false
+description: "AWS CDK to najszybszy sposób na skonfigurowanie infrastruktury. Jest to tak proste, że każdy frontend developer jest w stanie skonfigurować infrastrukturę dla statycznych stron SPA"
+---
+
+Uważam, że każdy programista powinien być w stanie dostarczyć swoje rozwiązanie od A DO Z. Od wygenerowania boilerplate'u, przez wrzucenie na Gita, dorzucenie pipelinów CI/CD aż do wdrożenia na środowisko. Dziś zajmę się tym ostatnim elementem.
+
+## Czy w takim razie potrzebny jest devops?
+
+Zanim zacznę część techniczną, muszę wyjaśnić jedną rzecz. To, że każdy programista musi umieć wdrożyć swoje rozwiązanie, nie oznacza, że chcę się pozbyć DevOpsów. Oni mają inne zadanie. Programista ma umieć wdrożyć coś na środowisko dev, staging, czyli prostą konfigurację bez wchodzenia za dużo w szczegóły. DevOps ma dużo większą odpowiedzialność, bo przygotowuje klocki do wdrożenia dla developerów, dba o bezpieczeństwo całej infrastruktury, pomaga wdrażać produkcję itd. DevOps jest odpowiedzialny za bardziej skomplikowane rzeczy. A jeśli programiści będą umieć sami wdrożyć te łatwiejsze rzeczy, to z jednej strony pomagają DevOpsom odciążyć ich z pracy, a z drugiej nie muszą czekać na nich z najmniejszymi rzeczami. Same plusy.
+
+## Infrastructure as Code
+
+Infrastructure as Code, czyli w skrócie IaC, robi dokładnie to, co sugeruje nazwa. Zamiast wyklikiwać wszystko ręcznie, piszemy kod, który robi dokładnie to samo. W zależności od tego, jakie rozwiązanie wybierzemy, może też być prościej niż samodzielne klikanie, np. poprzez gotowe klocki, które wstępnie konfigurują pewne elementy. Na rynku jest kilka rozwiązań, które pomagają tworzyć skrypty IaC: Terraform, OpenTofu (wersja open source Terraform), Pulumi czy też AWS CDK. Pierwsze 3 są ogólnego zastosowania, co oznacza, że można nimi budować infrastrukturę na dowolną chmurę. AWS CDK, jak sama nazwa wskazuje, jest przeznaczony tylko dla chmury AWS. Można za pomocą tych narzędzi stworzyć infrastrukturę pod całe aplikacje, ale w tym poście skupimy się wyłącznie na części frontendowej.
+
+## Deploy frontendu na AWS
+
+Infrastruktura statycznej aplikacji frontendowej na AWS nie jest skomplikowana. Najczęściej sprowadza się to do utworzenia odpowiedniego bucketu na S3, wrzucenia plików oraz skonfigurowania CloudFront. Jak zrobić to ręcznie, opisywałem w artykule [Amazon S3 dla frontend developera](https://fsgeek.pl/post/amazon-s3-konfiguracja-spa-deploy/). Taką typową konfigurację widać na diagramie poniżej.
+
+![diagram infrastruktury dla frontendu](`/assets/post/2024/aws-cdk-spa/spa-architecture.png`)
+
+### Przygotowanie kodu
+
+Zakładam, że masz już jakąś aplikację np.: React, którą możesz wdrożyć. To, co tutaj opisuję, będzie umożliwiać deploy dowolnej aplikacji, która potrafi się zbudować do pojedynczego folderu build. Ja na potrzeby wpisu stworzyłem nową aplikację React przy pomocy Vite
+
+```markdown
+create-vite react-cdk --template react-ts
+```
+
+Następnie stworzyłem nowy folder o nazwie **infrastructure** i wewnątrz niego uruchomiłem to polecenie
+
+```markdown
+cdk init app -l typescript
+```
+
+Powoduje to wygenerowanie wstępnej konfiguracji dla cdk w języku typescript. Można to oczywiście skonfigurować samemu, ale upraszcza to pracę.
+
+Zanim przejdę do folderu infrastructure to jedna rzecz to konfiguracji po stronie SPA. Trzeba ustalić, gdzie będzie budowana aplikacja. Ja ustawiłem to na folder infrastructure/build
+
+```markdown
+  build: {
+    outDir: 'infrastructure/build',
+    emptyOutDir: true,
+  }
+```
+
+### AWS CDK podstawowa terminologia
+
+- App. Kontener dla całej aplikacji CDK. Zawiera w sobie kilka stack’ów i definuje całą infrastrukturę dla aplikacji
+- Stack. Kolekcja zasobów, które zarządzane jako pojedyncza jednostka.
+- Construct. Podstawowa klocek budulcowy, który opakowuje jeden lub więcej serwisów AWS wraz z konfiguracją
+
+### AWS CDK Stack dla SPA
+
+Aby utworzyć CDK Stack dla SPA, musimy skonfigurować następujące elementy:
+
+- utworzyć S3 Bucket
+- utworzyć dystrybucję AWS Cloudfront
+- wrzucić pliki na S3
+
+Kod, aby utworzyć bucket S3, znajduje się poniżej:
+
+```tsx
+const s3 = new Bucket(this, 's3-react-bucket', {
+  autoDeleteObjects: true,
+  publicReadAccess: true,
+  blockPublicAccess: new BlockPublicAccess({
+    blockPublicAcls: false,
+    blockPublicPolicy: false,
+    ignorePublicAcls: false,
+    restrictPublicBuckets: false
+  }),
+  removalPolicy: RemovalPolicy.DESTROY,
+  websiteIndexDocument: 'index.html',
+})
+```
+
+Jest tu kilka istotnych elementów. Po pierwsze hostowanie strony na S3 to będzie jedyna sytuacja, gdy pliki na S3 będą publiczne. Bardzo istotne jest też podanie websiteIndexDocument, które aktywuje **Static website hosting** w S3.
+
+Następnie trzeba utworzyć dystrybucję Cloudfront, która działa jak CDN i przyspiesza działanie naszej aplikacji.
+
+```tsx
+const distribution = new Distribution(this, 'react-distribution', {
+  defaultBehavior: {
+    origin: new S3StaticWebsiteOrigin(s3),
+  },
+  defaultRootObject: 'index.html',
+}) 
+```
+
+Tutaj korzystamy z gotowej klasy S3StaticWebsiteOrigin, która konfiguruje to, co potrzebujemy. Przekazujemy tam tylko nasz utworzony bucket S3, który będzie źródłem na Cloudfronta. Definiujemy również root object, który będzie naszym plikiem index.html
+
+Na sam koniec trzeba przekopiować pliki na S3. W tym momencie można by to zrobić ręcznie, ale wymaga to pamiętania odpowiedniej komendy, a potem również wyczyszczenia cache na Cloudfront. Na szczęście można to zrobić jako część Stacku.
+
+```tsx
+new BucketDeployment(this, "deployment", {
+  sources: [Source.asset("./build")],
+  destinationBucket: s3,
+  distribution,
+  distributionPaths: ['/*'],
+})
+```
+
+Po pierwsze musimy zdefiniować, gdzie są nasze pliki (konfigurowałem to wyżej) oraz gdzie chcemy wrzucić (nasz nowy bucket s3). Istotne są też pola distribution i distributionPaths, które będą czyścić cache Cloudfront przy deployu zmian na S3.
+
+Na sam koniec warto sobie również wypisać w konsoli przydatne informacje np.: nazwę bucket’a na S3 oraz adres url Cloudfront’a, gdzie będzie dostępna strona. Można do tego użyć klasy CfnOutput.
+
+```tsx
+new CfnOutput(this, 'CloudFrontURL', {
+  value: distribution.domainName,
+  description: 'Distribution URL',
+  exportName: 'CloudfrontURL',
+});
+
+new CfnOutput(this, 'BucketName', {
+  value: s3.bucketName,
+  description: 'S3 name:',
+  exportName: 'BucketName',
+});
+```
+
+### Cały kod Stack
+
+```tsx
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import {BlockPublicAccess, Bucket} from "aws-cdk-lib/aws-s3";
+import {CfnOutput, RemovalPolicy} from "aws-cdk-lib";
+import {S3StaticWebsiteOrigin} from "aws-cdk-lib/aws-cloudfront-origins";
+import {Distribution} from "aws-cdk-lib/aws-cloudfront";
+import {BucketDeployment, Source} from "aws-cdk-lib/aws-s3-deployment";
+
+export class ReactInfrastructureStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    const s3 = new Bucket(this, 's3-react-bucket', {
+      autoDeleteObjects: true,
+      publicReadAccess: true,
+      blockPublicAccess: new BlockPublicAccess({
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false
+      }),
+      removalPolicy: RemovalPolicy.DESTROY,
+      websiteIndexDocument: 'index.html',
+    })
+
+    const distribution = new Distribution(this, 'react-distribution', {
+      defaultBehavior: {
+        origin: new S3StaticWebsiteOrigin(s3),
+      },
+      defaultRootObject: 'index.html',
+    })
+
+    new BucketDeployment(this, "deployment", {
+      sources: [Source.asset("./build")],
+      destinationBucket: s3,
+      distribution,
+      distributionPaths: ['/*'],
+    })
+
+    new CfnOutput(this, 'CloudFrontURL', {
+      value: distribution.domainName,
+      description: 'Distribution URL',
+      exportName: 'CloudfrontURL',
+    });
+
+    new CfnOutput(this, 'BucketName', {
+      value: s3.bucketName,
+      description: 'S3 name:',
+      exportName: 'BucketName',
+    });
+
+  }
+}
+```
+
+### Konfiguracja CDK App
+
+Zanim wdrożymy zmiany, to trzeba skonfigurować naszą aplikację. To na co warto zwrócić uwagę to, w jakim regionie będziemy wdrażać naszą aplikację. Ma to znaczenie pod kątem wydajnościowym oraz kosztowym.
+
+```tsx
+const app = new cdk.App();
+new ReactInfrastructureStack(app, 'ReactInfrastructureStack', {
+    env: { region: 'eu-central-1' },
+});
+```
+
+### Deploy AWS CDK
+
+Został sam deploy całej infrastruktury na AWS. Wystarczy do tego jedno polecenie.
+
+```tsx
+"deploy": "cdk deploy --profile profile_name",
+"destroy": "cdk destroy --profile profile_name"
+```
+
+Ja polecam wrzucić te polecenia do package.json i mieć gotowe do użycia. Jeśli masz tylko jedno konto na AWS to możesz pominąć przełącznik —profile.
+
+Po uruchomieniu npm run deploy wszystko zostanie utworzone na AWS i odpowiednio skonfigurowane. Jeśli robisz to dla testów, to pamiętaj o uruchomieniu npm run destroy, by usunąć niepotrzebne zasoby.
+
+## Podsumowanie
+
+Powyższa konfiguracja jest najprostszą, jaką można zrobić, by uruchomić statyczną stronę na AWS. Zajmuje to wszystko 5 minut i jest gotowe środowisko do testów, demo, stagingu itd. I co najważniejsze, nie jest to nic na tyle skomplikowanego, by nie poradził sobie z tym każdy programista. Oczywiście można teraz to konfigurować bardziej np.: skonfigurować S3 jako całkowicie prywatny i dostęp do strony tylko przez Cloudfront, dorzucać kolejne

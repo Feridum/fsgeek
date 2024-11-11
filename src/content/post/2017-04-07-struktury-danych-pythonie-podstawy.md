@@ -24,7 +24,7 @@ W związku z tym, że w poprzednim wpisie(jeśli go ominęliście to znajdziecie
 
 W Pythonie możemy wyróżnić 4 główne struktury danych: listy, krotki, zbiory i słowniki . Każda z nich ma odmienną budowę i zastosowania jednak są wszystkie w pewien sposób połączone co pokażę podczas omawiania każdej struktury. Zacznę od listy, która jest najbardziej podstawowym elementem w tej całej gromadzie.
 
-####  Listy
+###  Listy
 
 Listy najbardziej przypominają tablice znane z języka C/C++ z pewnym małym wyjątkiem. W listach możemy przechowywać dane różnego typu np.:
 
@@ -40,7 +40,7 @@ Dzięki temu możemy tam wrzucać co tylko nam się podoba. Na bazie listy może
 ![kolejka](/assets/wp-content/uploads/2017/04/2017-04-03-2-e1491497025986.png)
 &nbsp;
 
-#### Krotki (tuples)
+### Krotki (tuples)
 
 <span lang="pl">Krotka jest to specjalny rodzaj zmiennej, kt</span><span lang="en-US">ó</span><span lang="pl">ra pozwala na przechowywanie kilku wartości. Podobnie jak w listach wartości mogą być r</span><span lang="en-US">ó</span><span lang="pl">żnych typ</span><span lang="en-US">ó</span><span lang="pl">w. Jednak w przeciwieństwie do list wartości w krotce nie mogą być modyfikowane. Raz zdefiniowana krotka nie zmienia swojej wartości. Moża ich używac jako parametru funkcji lub jako zwracana wartość jeśli potrzebujemy zwr</span><span lang="en-US">ó</span><span lang="pl">cić więcej niż jedną zmienną. </span>
 
@@ -50,13 +50,13 @@ Dzięki temu możemy tam wrzucać co tylko nam się podoba. Na bazie listy może
 
 ![rozklad_krotki](/assets/wp-content/uploads/2017/04/2017-04-06-2-e1491498125586.png)
 
-#### Zbiory
+### Zbiory
 
 <span lang="pl">W Pythonie zbiory są nieposortowaną kolekcją bez powt</span><span lang="en-US">ó</span><span lang="pl">rzeń. Czyli są tak naprawdę dokładnie tym samym czym pojęcie zbioru w matematyce. Oznacza to, że można na nich wykonać dokładnie takie same operacje jak w matematyce czyli: suma, r</span><span lang="en-US">ó</span><span lang="pl">żnica, iloczyn i r</span><span lang="en-US">ó</span><span lang="pl">żnica symetryczna </span>
 
 ![zbior](/assets/wp-content/uploads/2017/04/2017-04-06-3-e1491496948454.png)
 
-#### Słowniki
+### Słowniki
 
 <span lang="pl">Będzie to ostatnia z wbudowanych struktur o jakim chcę wspomnieć w tym wpisie. Słownik jest specjalnym rodzajem zbioru, kt</span><span lang="en-US">ó</span><span lang="pl">ry składa się z par klucz:wartość, przy czym klucze muszą mieć wartości unikalne w słowniku. Ten typ jest w innych językach znany pod pojęciem tablicy asocjacyjnej.</span>
 

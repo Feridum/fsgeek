@@ -39,7 +39,9 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/utils": ["src/utils/index.ts"],
+      "@/components/*": ["src/ui/components/*.astro"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"]

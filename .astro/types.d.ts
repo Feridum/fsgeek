@@ -672,6 +672,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2024/aws-cdk-spa/index.mdx": {
+  id: "2024/aws-cdk-spa/index.mdx",
+  slug: "aws-cdk-frontend-deploy-spa",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "2024/aws-presigned-url/index.mdx": {
   id: "2024/aws-presigned-url/index.mdx",
   slug: "aws-presigned-url-s3-cloudfront",

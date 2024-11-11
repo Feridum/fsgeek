@@ -1,24 +1,77 @@
 ---
-import type { IFrontmatter } from '@/ui';
-
 import { BlogPost } from '@/partials/BlogPost';
 import { CTA } from '@/partials/CTA';
 import Base from '@/templates/Base.astro';
 import { AppConfig } from '@/utils/AppConfig';
-import url from "url"
+import { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
 
 export interface Props {
   content: CollectionEntry<"post">['data'];
+  headings: MarkdownHeading[]
 }
 
-const { content } = Astro.props as Props;
+const { content, headings } = Astro.props as Props;
 const title = `${content.title} - ${AppConfig.site_name}`;
 ---
 
-<Base head={{ title, description: content.description}}>
-  <BlogPost frontmatter={content}>
+<Base head={{ title, description: content.description ?? ''}}>
+  <BlogPost frontmatter={content} headings={headings} >
     <slot></slot>
   </BlogPost>
 
   <CTA />
 </Base>
+
+<script>
+  const fnObserver = () => {
+    function handleIntersection(
+        entries: IntersectionObserverEntry[],
+        observer: IntersectionObserver
+    ) {
+      entries.forEach((entry) => {
+        const index = document.querySelector(`aside a[href="#${entry.target.id}"]`)
+
+        if (entry.isIntersecting) {
+          index?.classList.remove('bg-slate-200', 'dark:bg-slate-800') // remove bg
+          index?.classList.add(
+              'bg-[#029398]',
+              'dark:bg-[#029398]',
+              'text-white',
+              'font-bold',
+              'transition-colors',
+              'duration-200'
+          )
+        } else {
+          index?.classList.add('bg-slate-200', 'dark:bg-slate-800') // add bg
+          index?.classList.remove(
+              'bg-[#029398]',
+              'dark:bg-[#029398]',
+              'text-white',
+              'font-bold',
+              'transition-colors',
+              'duration-200'
+          )
+        }
+      })
+    }
+
+    const headings = document.querySelectorAll(
+        'div.prose h1, div.prose h2, div.prose h3, div.prose h4, div.prose h5, div.prose h6'
+    )
+
+    const options = {
+      root: null,
+      rootMargin: ' 15% 0px 0% 0px ',
+      threshold: 1
+    }
+
+    const observer = new IntersectionObserver(handleIntersection, options)
+
+    headings.forEach((heading) => {
+      observer.observe(heading)
+    })
+  }
+  fnObserver()
+  document.addEventListener('astro:after-swap', fnObserver)
+</script>

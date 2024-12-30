@@ -672,6 +672,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2024/aws-cdk-lambda-otel/index.mdx": {
+  id: "2024/aws-cdk-lambda-otel/index.mdx",
+  slug: "aws-cdk-lambda-opentelemetry",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "2024/aws-cdk-spa/index.mdx": {
   id: "2024/aws-cdk-spa/index.mdx",
   slug: "aws-cdk-frontend-deploy-spa",

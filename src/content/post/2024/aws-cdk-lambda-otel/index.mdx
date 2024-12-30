@@ -1,0 +1,217 @@
+---
+title: "Czy opłaca się wrzucać OpenTelemtry do AWS Lambda?"
+slug: "aws-cdk-lambda-opentelemetry"
+author: "Feridum"
+image: "/assets/post/2024/aws-cdk-lambda-otel/logo.png"
+tags: ["aws"]
+date: 2024-12-30T11:00:00+01:00
+draft: false
+description: "OpenTelemetry pozwala na lepsze śledzenie tego co dzieje w systemie. Można dodać ten mechanizm do Lambd. Ale czy warto?"
+---
+
+OpenTelemetry jest frameworkiem Open-Source dla obserwowalności. Pomaga tworzyć odpowiedni tracing, logi i metryki oraz eksportować je do wybranego narzędzia. Dzięki temu nie jesteśmy związani z jednym dostawcą narzędzi i możemy zmienić narzędzie w razie potrzeby.
+
+Ostatnio bawię się tym więcej i testuję, gdzie to ma sens, a gdzie nie. W tym poście opisuję jak dodać OpenTelemetry do Lambd tworzonych przy pomocy AWS CDK. Zanim zaczniesz implementować, sprawdź ostrzeżenie na końcu.
+
+## AWS Lambda w AWS CDK
+
+AWS CDK jest biblioteką od AWS’a pozwalająca na tworzenie infrastruktury zgodnie z IaaC. Pisząc odpowiedni kod, jesteśmy w stanie skonfigurować całą infrastrukturę pod potrzeby aplikacji. Tworzenie funkcji Lambda jest jedną z prostszych rzeczy.
+
+Zaczynamy od utworzenia katalogu z projektem oraz inicjalizacji cdk
+
+```tsx
+mkdir -p lambda-otel && cd lambda-otel
+cdk init app --language typescript
+```
+
+Po zainicjowaniu komendy dostaniemy taką strukturę
+
+```
+├── .gitignore
+├── .npmignore
+├── README.md
+├── bin
+│   └── lambda-otel.ts
+├── cdk.json
+├── jest.config.js
+├── lib
+│   └── lambda-otel-stack.ts
+├── package-lock.json
+├── package.json
+├── test
+│   └── lambda-otel.test.ts
+└── tsconfig.json
+```
+
+Najważniejsze pliki to `lambda-otel` oraz `lambda-otel-stack`. W pliku lambda-otel jest konfiguracja dla całej aplikacji i wszystkich stacków które istnieją.  Na ten moment umieść tam informację w jakim regionie ma być wszystko stawiane. Dużo bardziej interesujący jest plik lambda-otel-stack, gdzie za chwilę skonfigurujemy lambdę.
+
+### Hello World w Lambda
+
+Zanim przejdziemy do tworzenia infrastruktury, to potrzebujemy kod dla funkcji. Jest wiele sposób w jaki można to zrobić ale ja się będę trzymać najprostszego sposobu. Utwórz katalog functions i w nim plik hello.ts z zawartością
+
+```tsx
+exports.handler = async (event) => {
+    return {
+        statusCode: 200,
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify({ message: "Hello, World!" }),
+    };
+};
+```
+
+Nie dzieje się tu nic ciekawego oprócz tego że zwracamy obiekt JSON z kluczem message i wartością Hello, World!
+
+### Konfiguracja Lambdy w CDK
+
+Aby teraz zdeployować taki kod jako lambdę musimy napisać parę linijek kodu. Po pierwsze musimy utworzyć nową funkcję lambda i podpiąć nasz handler. Wszystko to dodajemy w pliku lambda-otel-stack w konstruktorze po funkcji super().
+
+```tsx
+const hello = new NodejsFunction(this, 'hello', {
+  functionName: 'hello',
+  entry: 'functions/hello.ts',
+  handler: 'handler',
+  runtime: lambda.Runtime.NODEJS_20_X,
+})
+
+hello.addFunctionUrl({
+  authType: lambda.FunctionUrlAuthType.NONE,
+}) 
+```
+
+Konfiguracja jest prosta. Po pierwsze podajemy pod jaką nazwą funkcja ma byc widoczna w AWS oraz wskazujemy gdzie jest kod który będzie uruchamiany w tej funkcji.
+
+Oprócz zdefiniowania funkcji musimy też dodać API Gateway, by umożliwić odpytywanie API.
+
+```tsx
+const restApi = new apigw.RestApi(this, 'myapi')
+
+const helpResource = restApi.root.addResource('hello')
+helpResource.addMethod('GET', new apigw.LambdaIntegration(hello))
+```
+
+I tutaj też wszystko powinno być wszystko oczywiste. Po pierwsze tworzymy instancję API Gateway a następnie tworzymy ścieżkę GET /hello i podpinamy naszą funkcję. I to tyle.
+
+Teraz wystarczy uruchomić
+
+```tsx
+npm run deploy
+```
+
+by zobaczyć zmiany na koncie AWS.
+
+## Lambda OpenTelemetry
+
+OpenTelemtry pozwala śledzić, co się dzieje w aplikacji i ułatwia debuggowanie. Aby działał poprawnie, trzeba go skonfigurować, co wymaga dostępu do bibliotek opentelemtry. Najprostszym sposobem na dostęp do tych bibliotek jest wykorzystanie Lambda Layers, które są tworzone przez OpenTelemetry (https://github.com/open-telemetry/opentelemetry-lambda)
+
+Aby dodać OpenTelemtry dla funkcji, musimy trochę zmodyfikować funkcję hello.
+
+```tsx
+const otel = lambda.LayerVersion.fromLayerVersionArn(this, 'otel-layer', 'arn:aws:lambda:eu-central-1:184161586896:layer:opentelemetry-nodejs-0_11_0:1')
+const hello = new NodejsFunction(this, 'hello', {
+  functionName: 'hello',
+  entry: 'functions/hello.ts',
+  handler: 'handler',
+  runtime: lambda.Runtime.NODEJS_20_X,
+  environment: {
+    "NODE_OPTIONS": "--require configuration.js",
+    'AWS_LAMBDA_EXEC_WRAPPER': "/opt/otel-handler",
+    'OTEL_EXPORTER_OTLP_ENDPOINT':"https://otel.baselime.io",
+    'OTEL_EXPORTER_OTLP_HEADERS':"x-api-key=baselime-key",
+  },
+  layers: [otel],
+  bundling: {
+    nodeModules: [
+      '@opentelemetry/auto-instrumentations-node'
+    ],
+    commandHooks: {
+      afterBundling: (inputDir: string, outputDir: string): string[] => [
+        `cp ${inputDir}/configuration.js ${outputDir}`,
+      ],
+      beforeBundling: (inputDir: string, outputDir: string): string[] => [],
+      beforeInstall: (inputDir: string, outputDir: string): string[] => [],
+    },
+  },
+})
+```
+
+Trochę się tutaj dzieje więc po kolei:
+
+- Tworzymy instancję Lambda Layer, podając ARN do już zdeployowanej warstwy. Dzięki temu nie musimy sami jej tworzyć.
+- Utworzony Layer wrzucamy jako element tablicy layers.
+- W kluczu environment konfigurujemy zmienne, które pozwolą uruchomić OpenTelemtry przed uruchomieniem funkcji (AWS_LAMBDA_EXEC_WRAPPER), dodać konfigurację (NODE_OPTIONS) oraz skonfigurować gdzie dane mają być wysyłane (ja korzystam tutaj z Baselime, ponieważ mają hojny darmowy plan, ale to może być każdy inny serwis zgodny z OTel).
+- Dodatkowo w sekcji bundling ustawiamy, że potrzebujemy bibliotekę auto-instrumentations-node oraz dodajemy skrypt, który przekopiuje nasz plik z konfiguracją po budowaniu.
+
+Plik configuration.js zawiera konfigurację tego co chcemy śledzić w naszej funkcji przy pomocy OpenTelemetry
+
+```tsx
+const {
+    getNodeAutoInstrumentations,
+} = require('@opentelemetry/auto-instrumentations-node');
+
+global.configureInstrumentations = () => {
+    return [
+        getNodeAutoInstrumentations({
+            '@opentelemetry/instrumentation-fs': {
+                enabled: false,
+            },
+            '@opentelemetry/instrumentation-winston': {
+                enabled: false,
+                disableLogSending: false,
+                logSeverity: 0,
+            },
+            '@opentelemetry/instrumentation-aws-lambda': {
+                requestHook: (span, { event, context }) => {
+                    span.updateName(`${event.httpMethod} ${context.functionName} ${event.path}`)
+                },
+                responseHook: (span, { err, res }) => {
+                    if (err instanceof Error) span.setAttribute('faas.error', err.message);
+                    if (res) {
+                        span.setAttribute('status', res.statusCode)
+                        span.setAttribute('faas.res', JSON.stringify(res))
+                    };
+                },
+            },
+        }),
+    ];
+};
+```
+
+Korzystam tutaj z auto-instrumentations-node i dodaję tylko parę dodatkowych ustawień. Dużo można sobie ustawić i skonfigurować pod siebie.
+
+Po deployu na serwer i odpytaniu endpointa w paneli Baselime widzę informacje na temat odpytania.
+
+![rezultat zbierania danych](/assets/post/2024/aws-cdk-lambda-otel/baselime.png)
+
+## Uwaga! Przeczytaj, zanim wrzucisz OpenTelemtry do Lambdy
+
+OpenTelemtry ma swoje zalety, szczególnie gdy jest bardziej skomplikowane flow albo w funkcji dużo się dzieje. Jesteśmy wtedy w stanie śledzić, co się działo, il trwało, gdzie jest wąskie gardło itd.
+
+Ale nie jest to bezkosztowne. Dodawanie Layer’a do Lambdy ma wpływ na czas trwania funkcji i tego jak szybko jest zwracana odpowiedź do użytkownika. Porównałem narzut czasowy na czystej funkcji oraz na funkcji z OTel.
+
+Funkcja bez OTel:
+
+![Funkcja bez OTel](/assets/post/2024/aws-cdk-lambda-otel/without-otel.png)
+
+Funkcja z OTel
+
+![Funkcja z OTel](/assets/post/2024/aws-cdk-lambda-otel/with-otel.png)
+
+Od razu widać, że narzut czasowy jest spory, co dyskwalifikuje to rozwiązanie jako coś domyślnego dla Lambd. Zdaję sobie sprawę, że to może być problem z moją konfiguracją i da się to zrobić lepiej. Ale pierwsze próby wskazują, że OTel w Lambdach tylko w konkretnych przypadkach, kiedy zysk będzie większy niż strata. To może być również problem z prostym przykładem. Muszę przetestować na czymś bardziej skomplikowanym i wtedy zaktualizuję artykuł.
+
+## FAQ
+
+### Czy nie lepiej korzystać z SAM/Serveless do Lambd
+
+Jestem zdania, że należy korzystać z narzędzi które się zna i potrafi się z nich korzystać. SAM/Serveless upraszczają część konfiguracji dzięki obecności pliku YAML. W przypadku CDK jest kod ale jest on trochę bardziej czytelny i możemy tego użyć do deployu również innych rzeczy a nie tylko Lambd
+
+### Czy da się to zrobić prościej/wydajniej?
+
+Obstawiam, że tak. To, co widzisz, to jest efekt moich zabaw i pierwsza działająca wersja, która poprawnie wysyła logi do zewnętrznego serwisu. Jeśli widzisz jak to poprawić, to napisz do mnie na [kontakt@fsgeek.pl](mailto:kontakt@fsgeek.pl) i zaktualizuję artykuł, dodając wzmiankę o Tobie.
+
+### Czy nie lepiej się trzymać CloudWatch’a lub innych systemów od AWS’a?
+
+Ogólnie tak i od tego sam zaczynam. Patrząc na narzut czasowy, raczej bym nie dodawał tego do każdej Lambdy. Jeśli miałbym się decydować to w Lambdach, które mają więcej logiki, trwają dłużej i widzimy, że dodatkowa widoczność nam pomoże. Ale nie jest to coś, od czego bym zaczynał.
+
+### Czy nie lepiej korzystać z gotowych integracji  np. Datadog?
+
+Pewnie tak, bo takie integracje nie wpinają się bezpośrednio w Lambdę a do metryk, które zbiera AWS. Dzięki temu mamy dodatkowe informacje na temat wywołania Lambdy, ale to ciągle jest to samo, co ma AWS, tylko jest zaprezentowane w inny sposób. Jeżeli chcemy mieć dokładniejsze dane na temat tego co się dzieje wewnątrz to OTel daje nam narzędzia, by to robić.

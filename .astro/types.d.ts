@@ -693,6 +693,13 @@ declare module 'astro:content' {
   collection: "post",
   data: InferEntrySchema<"post">
 },
+"2025/ai-opentelemetry/index.mdx": {
+  id: "2025/ai-opentelemetry/index.mdx",
+  slug: "llm-observability-with-opentelemetry-langfuse",
+  body: string,
+  collection: "post",
+  data: InferEntrySchema<"post">
+},
 "angular-component.mdx": {
   id: "angular-component.mdx",
   slug: "angular-komponenty",

@@ -157,7 +157,7 @@ Teraz jak musimy wykonać zapytanie do naszego API, by dostać odpowiednie dane.
 Po kliknięciu interesującego nas zapytania dostaniemy dodatkowe informacje.
 
 ![spans](/assets/post/2025/ai-opentelemetry/details.png)
-![span ai](/assets/post/2025/ai-opentelemetry/details_ai.png)
+![span ai](/assets/post/2025/ai-opentelemetry/ai_details.png)
 
 I tu się pokazuje cała magia OpenTelemetry. Widać od razu co się działo po odpytaniu endpointa `/ai`. Jak wejdziemy w szczegóły konkretnych wywołań, to widzimy więcej danych np.: ile tokenów, jaki promet poszedł, co przyszło z powrotem itd. Dzięki temu debuggowanie aplikacji jest dużo prostsze i jeśli coś pójdzie nie tak, to wiemy na którym etapie. Teraz to drzewko jest bardzo proste, ale wyobraź sobie bardziej zaawansowane przypadki, gdy potrzebne jest więcej niż jedno zapytanie do LLM’a. 
 
